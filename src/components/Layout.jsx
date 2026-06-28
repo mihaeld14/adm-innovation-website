@@ -17,16 +17,18 @@ function Layout() {
 
 
   useEffect(() => {
-    /*
-      Първо позволяваме на браузъра да покаже navbar-а
-      и страницата. След това активираме тежките визуални ефекти.
-    */
-    const timer = window.setTimeout(() => {
-      setEffectsReady(true)
-    }, 700)
-
+    let frameOne
+    let frameTwo
+  
+    frameOne = requestAnimationFrame(() => {
+      frameTwo = requestAnimationFrame(() => {
+        setEffectsReady(true)
+      })
+    })
+  
     return () => {
-      window.clearTimeout(timer)
+      cancelAnimationFrame(frameOne)
+      cancelAnimationFrame(frameTwo)
     }
   }, [])
 

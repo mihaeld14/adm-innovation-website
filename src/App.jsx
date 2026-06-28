@@ -11,6 +11,8 @@ import Products from "./pages/Products"
 import About from "./pages/About"
 import Contact from "./pages/Contact"
 import NotFound from "./pages/NotFound"
+import BasicWebsite from "./pages/BasicWebsite"
+import ServiceDetails from "./pages/ServiceDetails"
 
 
 const router = createBrowserRouter([
@@ -49,6 +51,15 @@ const router = createBrowserRouter([
       {
         path: "*",
         element: <NotFound />,
+      },
+
+      {
+        path: "/services/basic-website",
+        element: <BasicWebsite />,
+      },
+      {
+        path: "services/:slug",
+        element: <ServiceDetails />,
       },
 
     ],

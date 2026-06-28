@@ -87,20 +87,25 @@ const outcomes = [
 
 function Home() {
   const [wordIndex, setWordIndex] = useState(0)
-  const [effectsReady, setEffectsReady] = useState(false)
+  const [effectsReady, setEffectsReady] = useState(true)
 
   const currentWord = rotatingWords[wordIndex]
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setEffectsReady(true)
-    }, 900)
-
+    let frameOne
+    let frameTwo
+  
+    frameOne = requestAnimationFrame(() => {
+      frameTwo = requestAnimationFrame(() => {
+        setEffectsReady(true)
+      })
+    })
+  
     return () => {
-      window.clearTimeout(timer)
+      cancelAnimationFrame(frameOne)
+      cancelAnimationFrame(frameTwo)
     }
   }, [])
-
   useEffect(() => {
     if (!effectsReady) {
       return undefined

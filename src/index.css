@@ -14,3 +14,47 @@ body {
   margin: 0;
   background-color: #050505;
 }
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes heartbeat-scroll {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  12% {
+    transform: scale(1.14);
+  }
+
+  24% {
+    transform: scale(1);
+  }
+
+  36% {
+    transform: scale(1.14);
+  }
+
+  55% {
+    transform: scale(1);
+  }
+}
+
+.heartbeat-scroll {
+  animation: heartbeat-scroll 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .heartbeat-scroll {
+    animation: none;
+  }
+
+  .heartbeat-scroll .animate-ping {
+    animation: none;
+  }
+}

@@ -18,19 +18,48 @@ function ParticleField() {
       {pageParticles.map((particle, index) => (
         <m.span
           key={index}
-          className="absolute rounded-full bg-blue-300 shadow-[0_0_12px_rgba(96,165,250,0.8)]"
+          className="
+            absolute
+            rounded-full
+            bg-blue-300
+            shadow-[0_0_12px_rgba(96,165,250,0.8)]
+          "
           style={{
             left: particle.left,
             top: particle.top,
             width: particle.size,
             height: particle.size,
           }}
+          initial={
+            prefersReducedMotion
+              ? {
+                  opacity: 0.25,
+                }
+              : {
+                  x: 0,
+                  y: 0,
+                  opacity: 0.08,
+                  scale: 0.7,
+                }
+          }
           animate={
             prefersReducedMotion
-              ? { opacity: 0.25 }
+              ? {
+                  opacity: 0.25,
+                }
               : {
-                  x: [0, particle.distanceX, -particle.distanceX * 0.45, 0],
-                  y: [0, -particle.distanceY, particle.distanceY * 0.5, 0],
+                x: [
+                  0,
+                  particle.distanceX,
+                  -particle.distanceX * 0.45,
+                  0,
+                ],
+                y: [
+                  0,
+                  -particle.distanceY,
+                  particle.distanceY * 0.5,
+                  0,
+                ],
                   opacity: [0.08, 0.68, 0.2, 0.08],
                   scale: [0.7, 1.25, 0.85, 0.7],
                 }
