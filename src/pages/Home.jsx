@@ -207,12 +207,8 @@ function Home() {
           </div>
 
         {/* Text */}
-        <div className="-mt-10 mx-auto max-w-4xl lg:-translate-x-30 lg:mx-0 lg:justify-self-start">
-          <p className="text-xs font-semibold tracking-[0.22em] text-blue-300 uppercase sm:text-sm">
-            Custom software • AI • automation
-          </p>
-
-          <h1 className="mt-5 max-w-4xl text-5xl leading-[0.95] font-semibold tracking-tight sm:text-6xl md:text-7xl xl:text-[5.6rem]">
+        <div className="-mt-10 lg:-translate-x-30 mx-auto max-w-4xl lg:mx-0 lg:justify-self-start">
+          <h1 className="max-w-4xl text-5xl leading-[0.95] font-semibold tracking-tight sm:text-6xl md:text-7xl xl:text-[5.6rem]">
             <span className="block">Premium</span>
 
             <span className="relative mt-2 flex min-h-[1.12em] items-center justify-center overflow-visible perspective-[1000px] lg:justify-start">
@@ -235,99 +231,9 @@ function Home() {
 
             <span className="mt-3 block">for your business.</span>
           </h1>
-
-          <div className="mx-auto mt-8 max-w-2xl rounded-2xl border border-blue-400/25 bg-blue-500/[0.07] p-5 text-left lg:mx-0">
-            <p className="text-xs font-semibold tracking-[0.18em] text-blue-300 uppercase">
-              Payment after approval
-            </p>
-
-            <p className="mt-3 text-lg font-semibold text-white sm:text-xl">
-              See the working solution before you pay.
-            </p>
-
-            <p className="mt-2 text-sm leading-relaxed text-gray-400 sm:text-base">
-              For custom projects, the scope and price are agreed in advance.
-              You review the agreed solution before any payment is due.
-            </p>
-          </div>
-
-          <p className="mx-auto mt-3 max-w-2xl text-xs leading-relaxed text-gray-500 lg:mx-0">
-            Applies to custom projects. The €120 Basic Business Website is paid
-            in advance.
-          </p>
-
-          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
-            <Link
-              to="/contact"
-              className="rounded-lg bg-blue-600 px-7 py-3.5 font-semibold text-white transition duration-300 hover:bg-blue-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.25)]"
-            >
-              Discuss your project
-            </Link>
-
-            <Link
-              to="/services"
-              className="rounded-lg border border-white/10 bg-white/[0.035] px-7 py-3.5 font-semibold text-white transition duration-300 hover:border-white/20 hover:bg-white/[0.06]"
-            >
-              Explore services
-            </Link>
-          </div>
-        </div>
+      </div>
         
     </section>
-
-      {/* Main differentiator */}
-      <section className="mx-auto max-w-7xl px-6 pb-10 pt-4 sm:pb-14 lg:pb-16">
-        <div className="overflow-hidden rounded-2xl border border-blue-400/25 bg-blue-500/[0.065]">
-          <div className="grid gap-8 p-7 sm:p-9 lg:grid-cols-[0.88fr_1.12fr] lg:items-center lg:p-10">
-            <div>
-              <p className="text-sm font-semibold tracking-[0.22em] text-blue-300 uppercase">
-                A clearer way to start
-              </p>
-
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">
-                Built first. Reviewed by you. Paid after approval.
-              </h2>
-
-              <p className="mt-5 max-w-2xl leading-relaxed text-gray-400">
-                For custom projects, we confirm the scope, requirements and
-                price before development begins. You then review a working
-                version of the agreed solution before payment is due.
-              </p>
-
-              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-gray-400">
-                The agreed price stays the same unless you request and approve
-                a change to the project scope.
-              </p>
-
-              <p className="mt-4 text-sm leading-relaxed text-gray-500">
-                The €120 Basic Business Website is the only package paid in
-                advance.
-              </p>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-3">
-              {paymentSteps.map((item) => (
-                <article
-                  key={item.number}
-                  className="rounded-xl border border-white/10 bg-black/15 p-5"
-                >
-                  <p className="text-sm font-semibold text-blue-300">
-                    {item.number}
-                  </p>
-
-                  <h3 className="mt-4 font-semibold text-white">
-                    {item.title}
-                  </h3>
-
-                  <p className="mt-2 text-sm leading-relaxed text-gray-400">
-                    {item.body}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section className="border-y border-white/10 bg-white/[0.025]">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px px-6 py-6 sm:grid-cols-4">
@@ -405,6 +311,56 @@ function Home() {
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      {/* Payment approach */}
+      <section className="mx-auto max-w-7xl px-6 py-10 lg:py-16">
+        <div className="overflow-hidden rounded-lg border border-blue-400/20 bg-blue-500/[0.055]">
+          <div className="grid gap-8 p-7 sm:p-9 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+            <div>
+              <p className="text-sm font-semibold tracking-[0.24em] text-blue-300 uppercase">
+                A more confident way to start
+              </p>
+
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">
+                See the finished solution before you pay.
+              </h2>
+
+              <p className="mt-5 max-w-2xl leading-relaxed text-gray-400">
+                For custom projects, the scope and agreed price are confirmed
+                before development begins. We build the solution and present a
+                working version for your review. No payment is due until you
+                approve the agreed result.
+              </p>
+
+              <p className="mt-4 text-sm leading-relaxed text-gray-500">
+                The €120 Basic Business Website is the only package paid in
+                advance.
+              </p>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              {paymentSteps.map((item) => (
+                <article
+                  key={item.number}
+                  className="rounded-lg border border-white/10 bg-black/15 p-5"
+                >
+                  <p className="text-sm font-semibold text-blue-300">
+                    {item.number}
+                  </p>
+
+                  <h3 className="mt-4 font-semibold text-white">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-2 text-sm leading-relaxed text-gray-400">
+                    {item.body}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
