@@ -1,6 +1,34 @@
 import { Link } from "react-router"
 import servicesData from "../data/servicesData"
 
+
+const customServices = servicesData.filter(
+  (service) => service.slug !== "basic-website",
+)
+
+
+const projectSteps = [
+  {
+    number: "01",
+    title: "Scope and price",
+    description:
+      "We define what will be built, what is included and the agreed project price before development begins.",
+  },
+  {
+    number: "02",
+    title: "Working solution",
+    description:
+      "We build the agreed solution and present a working version for your review.",
+  },
+  {
+    number: "03",
+    title: "Approval and handover",
+    description:
+      "After you approve the result, payment is completed and the agreed files, access and solution are handed over.",
+  },
+]
+
+
 function ArrowIcon() {
   return (
     <svg
@@ -41,31 +69,12 @@ function CheckIcon() {
 }
 
 
-function ScrollDownIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      className="h-5 w-5"
-    >
-      <path
-        d="M12 5v14M6.5 13.5 12 19l5.5-5.5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-
 function ServiceCard({ service }) {
+  const features = service.capabilities?.slice(0, 4) ?? []
+
   return (
     <Link
       to={`/services/${service.slug}`}
-      aria-label={`Learn more about ${service.title}`}
       className="
         group
         relative
@@ -75,14 +84,13 @@ function ServiceCard({ service }) {
         border
         border-white/8
         bg-white/3
-        p-7
-        transition-all
+        p-6
+        transition
         duration-300
         hover:-translate-y-1
         hover:border-blue-500/30
         hover:bg-white/5
-        hover:shadow-[0_20px_60px_rgba(37,99,235,0.1)]
-        sm:p-9
+        sm:p-7
       "
     >
       <div
@@ -102,12 +110,12 @@ function ServiceCard({ service }) {
         "
       />
 
-      <div className="relative flex items-start justify-between gap-6">
+      <div className="relative flex items-start justify-between gap-5">
         <span
           className="
             flex
-            h-11
-            w-11
+            h-10
+            w-10
             items-center
             justify-center
             rounded-xl
@@ -133,8 +141,7 @@ function ServiceCard({ service }) {
             border
             border-white/10
             text-gray-500
-            transition-colors
-            duration-300
+            transition
             group-hover:border-blue-400/30
             group-hover:text-blue-300
           "
@@ -143,30 +150,36 @@ function ServiceCard({ service }) {
         </span>
       </div>
 
-      <div className="relative mt-8">
-        <h3 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+      <div className="relative mt-6">
+        <h2 className="text-2xl font-semibold tracking-tight text-white">
           {service.title}
-        </h3>
+        </h2>
 
-        <p className="mt-4 max-w-xl leading-relaxed text-gray-400">
+        <p className="mt-3 leading-relaxed text-gray-400">
           {service.shortDescription}
         </p>
 
-        <div className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-blue-300">
-          Explore service
-
-          <span className="transition-transform duration-300 group-hover:translate-x-1">
-            <ArrowIcon />
-          </span>
-        </div>
+        {features.length > 0 && (
+          <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
+            {features.map((feature) => (
+              <li
+                key={feature.title}
+                className="flex items-start gap-2.5 text-sm text-gray-300"
+              >
+                <CheckIcon />
+                <span>{feature.title}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div
         className="
           absolute
-          right-8
+          right-7
           bottom-0
-          left-8
+          left-7
           h-px
           origin-left
           scale-x-0
@@ -183,339 +196,207 @@ function ServiceCard({ service }) {
   )
 }
 
+
 function Services() {
   return (
     <div className="relative overflow-hidden">
-      {/* Hero */}
-      <section className="mx-auto max-w-6xl px-6 pt-36 pb-20 sm:pt-40 sm:pb-24">
-        <p className="text-sm font-medium tracking-[0.2em] text-blue-400 uppercase">
-          Services
-        </p>
+      {/* Compact hero */}
+      <section
+        className="
+          mx-auto
+          max-w-6xl
+          px-5
+          pt-28
+          pb-10
+          sm:px-6
+          sm:pt-36
+          sm:pb-12
+          lg:pt-40
+        "
+      >
+        <div
+          className="
+            grid
+            items-end
+            gap-8
+            lg:grid-cols-[1fr_360px]
+            lg:gap-12
+          "
+        >
+          <div>
+            <p className="text-xs font-medium tracking-[0.18em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.2em]">
+              Services
+            </p>
 
-        <h1 className="mt-5 max-w-5xl text-5xl leading-[0.98] font-semibold tracking-tight text-white md:text-7xl">
-          Software built around your business.
-        </h1>
+            <h1
+              className="
+                mt-4
+                max-w-4xl
+                text-4xl
+                leading-[1]
+                font-semibold
+                tracking-tight
+                text-white
+                sm:text-6xl
+                md:text-7xl
+              "
+            >
+              Digital solutions built around your business.
+            </h1>
 
-        <p className="mt-7 max-w-2xl text-lg leading-relaxed text-gray-400">
-          From custom software and AI tools to websites and workflow
-          automation, we create digital solutions designed around the way
-          your business operates.
-        </p>
+            <p className="mt-5 max-w-2xl leading-relaxed text-gray-400 sm:mt-6 sm:text-lg">
+              Explore custom software, websites, AI solutions, automation and
+              system integration designed around real business requirements.
+            </p>
+
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-gray-500">
+              For custom projects, the scope and price are agreed in advance.
+              You review the working solution before payment is due.
+            </p>
+          </div>
+
+          {/* Quick payment summary */}
+          <aside
+            className="
+              rounded-3xl
+              border
+              border-blue-500/20
+              bg-blue-500/6
+              p-6
+            "
+          >
+            <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase">
+              Custom project payment
+            </p>
+
+            <h2 className="mt-3 text-2xl font-semibold text-white">
+              Review first. Pay after approval.
+            </h2>
+
+            <p className="mt-3 text-sm leading-relaxed text-gray-400">
+              No upfront development payment is required for custom projects.
+              The agreed price changes only if you request and approve a change
+              in scope.
+            </p>
+
+            <p className="mt-4 border-t border-white/8 pt-4 text-xs leading-relaxed text-gray-500">
+              The Basic Business Website package is paid in advance.
+            </p>
+          </aside>
+        </div>
       </section>
 
 
-      {/* Featured service options */}
-      <section className="mx-auto max-w-6xl px-6 pb-12">
-        <div className="grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
-          {/* Custom development card */}
+      {/* Quick service paths */}
+      <section className="mx-auto max-w-6xl px-5 pb-10 sm:px-6 sm:pb-12">
+        <div className="grid gap-4 md:grid-cols-2">
           <a
-            href="#capabilities"
-            aria-label="Explore our custom development capabilities"
+            href="#custom-services"
             className="
               group
-              relative
-              block
-              overflow-hidden
-              rounded-3xl
+              rounded-2xl
               border
-              border-blue-500/25
-              bg-blue-500/5
-              px-7
-              py-10
-              transition-all
-              duration-300
-              hover:-translate-y-1
-              hover:border-blue-400/55
-              hover:bg-blue-500/11
-              hover:shadow-[0_20px_60px_rgba(37,99,235,0.14)]
-              sm:px-10
-              sm:py-12
+              border-white/8
+              bg-white/3
+              p-5
+              transition
+              hover:border-blue-500/25
+              hover:bg-white/5
             "
           >
-            {/* Background glow */}
-            <div
-              className="
-                pointer-events-none
-                absolute
-                -top-32
-                -left-24
-                h-72
-                w-72
-                rounded-full
-                bg-blue-600/12
-                blur-[90px]
-              "
-            />
+            <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase">
+              Custom solutions
+            </p>
 
-            <div className="relative flex h-full flex-col">
-              <p className="text-sm font-medium tracking-[0.18em] text-blue-400 uppercase">
-                Custom development
-              </p>
+            <div className="mt-3 flex items-end justify-between gap-5">
+              <div>
+                <h2 className="text-xl font-semibold text-white">
+                  Software, AI and automation
+                </h2>
 
-              <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-5xl">
-                Digital solutions built specifically for your business.
-              </h2>
-
-              <p className="mt-5 max-w-2xl leading-relaxed text-gray-400">
-                From internal software and AI tools to automation and system
-                integration, every solution is designed around your processes,
-                requirements and long-term goals.
-              </p>
-
-              {/* Learn more label */}
-              <div className="mt-auto flex items-end pt-9">
-                <span
-                  className="
-                    group/scroll
-                    relative
-                    inline-flex
-                    shrink-0
-                    items-center
-                    justify-center
-                    gap-2
-                    rounded-full
-                    border
-                    border-blue-400/35
-                    bg-blue-500/12
-                    px-5
-                    py-3
-                    text-sm
-                    font-semibold
-                    text-blue-300
-                    shadow-[0_0_25px_rgba(59,130,246,0.18)]
-                    transition-colors
-                    duration-300
-                    group-hover:border-blue-300/60
-                    group-hover:bg-blue-500/20
-                    group-hover:text-white
-                  "
-                >
-                  <span
-                    className="
-                      pointer-events-none
-                      absolute
-                      inset-0
-                      rounded-full
-                      border
-                      border-blue-400/20
-                    "
-                  />
-
-                  <span className="relative">
-                    Learn more
-                  </span>
-
-                  <span
-                    className="
-                      relative
-                      transition-transform
-                      duration-300
-                      group-hover/scroll:translate-y-1
-                      group-hover:translate-y-1
-                    "
-                  >
-                    <ScrollDownIcon />
-                  </span>
-                </span>
+                <p className="mt-2 text-sm leading-relaxed text-gray-400">
+                  Tailored projects based on your workflows and requirements.
+                </p>
               </div>
-            </div>
 
-            {/* Bottom accent */}
-            <div
-              className="
-                pointer-events-none
-                absolute
-                right-8
-                bottom-0
-                left-8
-                h-px
-                origin-left
-                scale-x-0
-                bg-linear-to-r
-                from-transparent
-                via-blue-400/70
-                to-transparent
-                transition-transform
-                duration-500
-                group-hover:scale-x-100
-              "
-            />
+              <span className="shrink-0 text-gray-500 transition group-hover:text-blue-300">
+                ↓
+              </span>
+            </div>
           </a>
 
-
-          {/* Basic website offer */}
           <Link
             to="/services/basic-website"
-            aria-label="Learn more about the Basic Business Website offer"
             className="
               group
-              relative
-              block
-              overflow-hidden
-              rounded-3xl
+              rounded-2xl
               border
-              border-blue-400/30
-              bg-blue-500/8
-              px-7
-              py-10
-              transition-all
-              duration-300
-              hover:-translate-y-1
-              hover:border-blue-400/55
-              hover:bg-blue-500/11
-              hover:shadow-[0_20px_60px_rgba(37,99,235,0.14)]
-              sm:px-9
-              sm:py-12
+              border-blue-500/20
+              bg-blue-500/6
+              p-5
+              transition
+              hover:border-blue-400/35
+              hover:bg-blue-500/9
             "
           >
-            {/* Background glow */}
-            <div
-              className="
-                pointer-events-none
-                absolute
-                -top-20
-                -right-20
-                h-56
-                w-56
-                rounded-full
-                bg-blue-500/20
-                blur-[75px]
-              "
-            />
+            <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase">
+              Fixed-price option
+            </p>
 
-            <div className="relative flex h-full flex-col">
-              <div className="flex items-center justify-end">
-                <span
-                  className="
-                    group/offer
-                    relative
-                    inline-flex
-                    items-center
-                    justify-center
-                    gap-2
-                    rounded-full
-                    border
-                    border-blue-400/35
-                    bg-blue-500/12
-                    px-5
-                    py-3
-                    text-sm
-                    font-semibold
-                    text-blue-300
-                    shadow-[0_0_25px_rgba(59,130,246,0.18)]
-                    transition-colors
-                    duration-300
-                    group-hover:border-blue-300/60
-                    group-hover:bg-blue-500/20
-                    group-hover:text-white
-                  "
-                >
-                  <span
-                    className="
-                      pointer-events-none
-                      absolute
-                      inset-0
-                      rounded-full
-                      border
-                      border-blue-400/20
-                    "
-                  />
+            <div className="mt-3 flex items-end justify-between gap-5">
+              <div>
+                <h2 className="text-xl font-semibold text-white">
+                  Basic Business Website
+                </h2>
 
-                  <span className="relative">View offer</span>
-
-                  <span
-                    className="
-                      relative
-                      transition-transform
-                      duration-300
-                      group-hover/offer:translate-x-1
-                      group-hover:translate-x-1
-                    "
-                  >
-                    <ArrowIcon />
-                  </span>
-                </span>
-              </div>
-
-              <h2 className="mt-7 text-3xl font-semibold tracking-tight text-white">
-                Basic Business Website
-              </h2>
-
-              <div className="mt-7">
-                <p className="text-sm tracking-[0.14em] text-gray-400 uppercase">
-                  Complete website from
-                </p>
-
-                <div className="mt-2 flex items-start">
-                  <span className="mt-2 text-2xl font-semibold text-blue-300">
-                    €
-                  </span>
-
-                  <span className="text-7xl leading-none font-semibold tracking-[-0.06em] text-white">
-                    120
-                  </span>
-                </div>
-
-                <p className="mt-3 text-sm text-gray-400">
-                  One-time payment
+                <p className="mt-2 text-sm leading-relaxed text-gray-400">
+                  Up to six pages from €120, paid in advance.
                 </p>
               </div>
+
+              <span className="shrink-0 text-blue-300">
+                <ArrowIcon />
+              </span>
             </div>
-
-            {/* Bottom accent */}
-            <div
-              className="
-                pointer-events-none
-                absolute
-                right-8
-                bottom-0
-                left-8
-                h-px
-                origin-left
-                scale-x-0
-                bg-linear-to-r
-                from-transparent
-                via-blue-400/70
-                to-transparent
-                transition-transform
-                duration-500
-                group-hover:scale-x-100
-              "
-            />
           </Link>
         </div>
       </section>
 
 
-      {/* Custom services heading */}
+      {/* Service cards appear immediately */}
       <section
-        id="capabilities"
-        className="mx-auto max-w-6xl scroll-mt-28 px-6 pt-16 pb-10"
+        id="custom-services"
+        className="
+          mx-auto
+          max-w-6xl
+          scroll-mt-28
+          px-5
+          pt-8
+          pb-16
+          sm:px-6
+          sm:pt-10
+          sm:pb-20
+        "
       >
         <div className="max-w-3xl">
-          <p className="text-sm font-medium tracking-[0.18em] text-blue-400 uppercase">
-            Our capabilities
+          <p className="text-xs font-medium tracking-[0.18em] text-blue-400 uppercase sm:text-sm">
+            Custom development services
           </p>
 
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-5xl">
-            Explore our custom development services.
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:mt-4 sm:text-5xl">
+            Choose the capability that matches your challenge.
           </h2>
 
-          <p className="mt-5 leading-relaxed text-gray-400">
-            Choose from a range of development capabilities designed to solve
-            operational problems, improve productivity and support business
-            growth.
+          <p className="mt-4 leading-relaxed text-gray-400 sm:mt-5">
+            Each service page explains typical use cases, capabilities,
+            deliverables, technologies and the project process.
           </p>
         </div>
-      </section>
 
-
-      {/* Custom service cards */}
-      <section className="mx-auto max-w-6xl px-6 pb-28">
-        <div className="grid gap-5 md:grid-cols-2">
-          {servicesData.map((service) => (
+        <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {customServices.map((service) => (
             <ServiceCard
-              key={service.number}
+              key={service.slug}
               service={service}
             />
           ))}
@@ -523,8 +404,82 @@ function Services() {
       </section>
 
 
+      {/* Informative payment/process section */}
+      <section
+        className="
+          border-y
+          border-white/6
+          bg-white/[0.015]
+        "
+      >
+        <div
+          className="
+            mx-auto
+            max-w-6xl
+            px-5
+            py-14
+            sm:px-6
+            sm:py-20
+          "
+        >
+          <div className="max-w-3xl">
+            <p className="text-xs font-medium tracking-[0.18em] text-blue-400 uppercase sm:text-sm">
+              How custom projects work
+            </p>
+
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:mt-4 sm:text-5xl">
+              A clear process before any payment is required.
+            </h2>
+
+            <p className="mt-4 max-w-2xl leading-relaxed text-gray-400 sm:mt-5">
+              The project scope and price are confirmed first, so you know what
+              will be built and what it will cost before development starts.
+            </p>
+          </div>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-3 sm:mt-12">
+            {projectSteps.map((step) => (
+              <article
+                key={step.number}
+                className="
+                  rounded-2xl
+                  border
+                  border-white/8
+                  bg-white/3
+                  p-6
+                "
+              >
+                <p className="text-sm font-semibold text-blue-400">
+                  {step.number}
+                </p>
+
+                <h3 className="mt-4 text-xl font-semibold text-white">
+                  {step.title}
+                </h3>
+
+                <p className="mt-3 text-sm leading-relaxed text-gray-400">
+                  {step.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
       {/* Final CTA */}
-      <section className="mx-auto max-w-6xl px-6 pb-32">
+      <section
+        className="
+          mx-auto
+          max-w-6xl
+          px-5
+          py-16
+          pb-24
+          sm:px-6
+          sm:py-20
+          sm:pb-28
+        "
+      >
         <div
           className="
             relative
@@ -533,8 +488,8 @@ function Services() {
             border
             border-blue-500/20
             bg-blue-500/6
-            px-7
-            py-12
+            px-6
+            py-11
             text-center
             sm:px-12
             sm:py-16
@@ -548,6 +503,7 @@ function Services() {
               left-1/2
               h-64
               w-96
+              max-w-full
               -translate-x-1/2
               -translate-y-1/2
               rounded-full
@@ -557,24 +513,24 @@ function Services() {
           />
 
           <div className="relative">
-            <p className="text-sm font-medium tracking-[0.18em] text-blue-400 uppercase">
+            <p className="text-xs font-medium tracking-[0.18em] text-blue-400 uppercase sm:text-sm">
               Start a project
             </p>
 
             <h2 className="mx-auto mt-4 max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-5xl">
-              Have a process that takes too much time?
+              Not sure which service fits your project?
             </h2>
 
             <p className="mx-auto mt-5 max-w-xl leading-relaxed text-gray-400">
-              Let&apos;s explore how custom software, AI or automation can
-              improve the way your business operates.
+              Describe the problem or process you want to improve. We will help
+              identify the most appropriate solution.
             </p>
 
             <Link
               to="/contact"
               className="
                 group
-                mt-8
+                mt-7
                 inline-flex
                 items-center
                 gap-3
@@ -585,7 +541,6 @@ function Services() {
                 font-semibold
                 text-white
                 transition
-                duration-300
                 hover:bg-blue-500
                 hover:shadow-[0_0_35px_rgba(59,130,246,0.28)]
               "
