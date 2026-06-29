@@ -35,26 +35,31 @@ const nextSteps = [
   },
   {
     number: "02",
-    title: "We clarify the requirements",
+    title: "We confirm the scope and price",
     description:
-      "We contact you if additional details are needed before defining the project.",
+      "Before development begins, you receive a defined project scope and an agreed price.",
   },
   {
     number: "03",
-    title: "You receive a clear proposal",
+    title: "We build and present the solution",
     description:
-      "We prepare an initial scope, estimated timeline and pricing approach.",
+      "For custom projects, no payment is due while we build. You first review a working version of the agreed result.",
   },
   {
     number: "04",
-    title: "Development begins",
+    title: "You approve, pay and receive the project",
     description:
-      "Work starts after the project scope and conditions have been approved.",
+      "After approval, the agreed payment is completed and the final files, access and project handover follow.",
   },
 ]
 
 
 const faqs = [
+  {
+    question: "When do I pay for a custom project?",
+    answer:
+      "The scope and price are agreed before development begins, but no advance development payment is required. You first review a working version of the agreed solution. Payment is completed after approval and before the final project handover. The €120 Basic Business Website package is the exception and is paid in advance.",
+  },
   {
     question: "How quickly will you respond?",
     answer:
@@ -561,10 +566,10 @@ ${formData.projectDescription}
             <div className="mt-8 border-t border-white/8 pt-7">
               <ul className="space-y-3">
                 {[
-                  "No hidden fees",
-                  "Transparent project scope",
-                  "Direct communication",
-                  "No obligation to proceed",
+                  "Scope and price agreed before development",
+                  "No upfront payment for custom projects",
+                  "Working solution shown before payment",
+                  "Basic Website package paid in advance",
                 ].map((item) => (
                   <li
                     key={item}

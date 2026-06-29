@@ -739,6 +739,60 @@ function ServiceDetails() {
       </section>
 
 
+      {/* Payment approach */}
+      <section
+        className="
+          mx-auto
+          max-w-6xl
+          px-5
+          py-8
+          sm:px-6
+          sm:py-12
+        "
+      >
+        <div
+          className="
+            grid
+            gap-6
+            rounded-3xl
+            border
+            border-blue-500/20
+            bg-blue-500/6
+            p-6
+            sm:p-8
+            lg:grid-cols-[0.8fr_1.2fr]
+            lg:items-center
+          "
+        >
+          <div>
+            <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.18em]">
+              Payment approach
+            </p>
+
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:mt-4 sm:text-3xl">
+              Review the finished solution before payment.
+            </h2>
+          </div>
+
+          <div>
+            <p className="leading-relaxed text-gray-300">
+              The project scope and agreed price are confirmed before
+              development begins. You review a working version of the agreed
+              solution before any payment is due. After approval, the agreed
+              payment is completed and the final files, access and project
+              handover follow.
+            </p>
+
+            <p className="mt-3 text-sm leading-relaxed text-gray-500">
+              No advance development payment is required for this custom
+              service, and any change outside the confirmed scope is discussed
+              before it can affect the price.
+            </p>
+          </div>
+        </div>
+      </section>
+
+
       {/* Technologies and deliverables */}
       <section
         className="

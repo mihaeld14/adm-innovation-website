@@ -76,6 +76,25 @@ const processSteps = [
   },
 ]
 
+
+const paymentSteps = [
+  {
+    number: "01",
+    title: "Scope and price agreed",
+    body: "The required result and project price are confirmed before development begins.",
+  },
+  {
+    number: "02",
+    title: "Working solution presented",
+    body: "You see the agreed solution working and review it before any payment is due.",
+  },
+  {
+    number: "03",
+    title: "Approval, payment and handover",
+    body: "After approval, the agreed payment is completed and the finished project is handed over.",
+  },
+]
+
 const outcomes = [
   "A sharper digital presence",
   "Less repetitive manual work",
@@ -292,6 +311,56 @@ function Home() {
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      {/* Payment approach */}
+      <section className="mx-auto max-w-7xl px-6 py-10 lg:py-16">
+        <div className="overflow-hidden rounded-lg border border-blue-400/20 bg-blue-500/[0.055]">
+          <div className="grid gap-8 p-7 sm:p-9 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+            <div>
+              <p className="text-sm font-semibold tracking-[0.24em] text-blue-300 uppercase">
+                A more confident way to start
+              </p>
+
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">
+                See the finished solution before you pay.
+              </h2>
+
+              <p className="mt-5 max-w-2xl leading-relaxed text-gray-400">
+                For custom projects, the scope and agreed price are confirmed
+                before development begins. We build the solution and present a
+                working version for your review. No payment is due until you
+                approve the agreed result.
+              </p>
+
+              <p className="mt-4 text-sm leading-relaxed text-gray-500">
+                The €120 Basic Business Website is the only package paid in
+                advance.
+              </p>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              {paymentSteps.map((item) => (
+                <article
+                  key={item.number}
+                  className="rounded-lg border border-white/10 bg-black/15 p-5"
+                >
+                  <p className="text-sm font-semibold text-blue-300">
+                    {item.number}
+                  </p>
+
+                  <h3 className="mt-4 font-semibold text-white">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-2 text-sm leading-relaxed text-gray-400">
+                    {item.body}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

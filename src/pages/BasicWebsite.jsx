@@ -38,15 +38,15 @@ const includedFeatures = [
 const processSteps = [
   {
     number: "01",
-    title: "Send your information",
+    title: "Confirm scope and content",
     description:
-      "Provide your logo, texts, images, contact details and preferred website structure.",
+      "We confirm the required pages, supplied content and the fixed €120 package price.",
   },
   {
     number: "02",
-    title: "Design and development",
+    title: "Payment and development",
     description:
-      "The website is designed and developed for desktop and mobile devices.",
+      "After the advance payment is completed, the website is designed and developed for desktop and mobile devices.",
   },
   {
     number: "03",
@@ -95,6 +95,11 @@ const faqs = [
     question: "What is included in the €120 price?",
     answer:
       "The package includes a responsive informational website with up to six standard pages, a contact form, basic SEO setup, one revision round and deployment assistance.",
+  },
+  {
+    question: "When is payment required?",
+    answer:
+      "The fixed €120 package price is paid in advance after the scope has been confirmed. Development begins once the required content and payment have been received.",
   },
   {
     question: "Are domain and hosting included?",
@@ -332,13 +337,20 @@ function BasicWebsite() {
                 </span>
               </div>
 
-              <p className="mt-3 text-sm text-gray-400">
-                One-time payment
+              <p className="mt-3 text-sm font-medium text-gray-300">
+                Fixed price · paid in advance
               </p>
 
-              <p className="mt-5 border-t border-white/8 pt-5 text-sm leading-relaxed text-gray-500">
-                Domain and hosting expenses are not included.
-              </p>
+              <div className="mt-5 space-y-2 border-t border-white/8 pt-5">
+                <p className="text-sm leading-relaxed text-gray-400">
+                  The scope and €120 price are confirmed before payment and
+                  development begins.
+                </p>
+
+                <p className="text-sm leading-relaxed text-gray-500">
+                  Domain and hosting expenses are not included.
+                </p>
+              </div>
             </div>
           </div>
         </div>
