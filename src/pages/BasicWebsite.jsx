@@ -1,4 +1,9 @@
 import { Link } from "react-router"
+import {
+  ArrowIcon,
+  CheckIcon,
+  InfoPanel,
+} from "../components/CardStandards"
 
 
 const includedFeatures = [
@@ -129,46 +134,6 @@ const faqs = [
 ]
 
 
-function CheckIcon() {
-  return (
-    <svg
-      viewBox="0 0 20 20"
-      fill="none"
-      aria-hidden="true"
-      className="mt-0.5 h-5 w-5 shrink-0 text-blue-400"
-    >
-      <path
-        d="m4 10 4 4 8-8"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-
-function ArrowIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
-    >
-      <path
-        d="M5 12h14M13 6l6 6-6 6"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-
 function BasicWebsite() {
   return (
     <div className="relative overflow-hidden">
@@ -296,32 +261,7 @@ function BasicWebsite() {
           </div>
 
           {/* Price */}
-          <div
-            className="
-              relative
-              overflow-hidden
-              rounded-3xl
-              border
-              border-blue-500/25
-              bg-blue-500/7
-              p-6
-              sm:p-7
-            "
-          >
-            <div
-              className="
-                pointer-events-none
-                absolute
-                -top-20
-                -right-16
-                h-48
-                w-48
-                rounded-full
-                bg-blue-500/20
-                blur-[70px]
-              "
-            />
-
+          <InfoPanel className="p-6 sm:p-7">
             <div className="relative">
               <p className="text-xs tracking-[0.14em] text-gray-400 uppercase sm:text-sm">
                 Website package from
@@ -352,23 +292,16 @@ function BasicWebsite() {
                 </p>
               </div>
             </div>
-          </div>
+          </InfoPanel>
         </div>
       </section>
 
 
       {/* Quick facts */}
       <section className="mx-auto max-w-6xl px-5 pb-14 sm:px-6 sm:pb-20">
-        <div
-          className="
-            grid
-            overflow-hidden
-            rounded-3xl
-            border
-            border-white/8
-            bg-white/3
-            sm:grid-cols-3
-          "
+        <InfoPanel
+          className="grid p-0 sm:grid-cols-3"
+          contentClassName="contents"
         >
           <div className="border-b border-white/8 p-5 sm:border-r sm:border-b-0 sm:p-7">
             <p className="text-sm text-gray-500">Pages</p>
@@ -393,7 +326,7 @@ function BasicWebsite() {
               One revision round
             </p>
           </div>
-        </div>
+        </InfoPanel>
       </section>
 
 
@@ -445,24 +378,13 @@ function BasicWebsite() {
             "
           >
             {includedFeatures.map((feature) => (
-              <article
+              <InfoPanel
+                as="article"
                 key={feature.title}
-                className="
-                  rounded-3xl
-                  border
-                  border-white/8
-                  bg-white/3
-                  p-6
-                  transition
-                  duration-300
-                  hover:-translate-y-1
-                  hover:border-blue-500/25
-                  hover:bg-white/5
-                  sm:p-7
-                "
+                className="p-6 sm:p-7"
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-500/8">
-                  <CheckIcon />
+                  <CheckIcon className="h-5 w-5" />
                 </div>
 
                 <h3 className="mt-5 text-xl font-semibold text-white">
@@ -472,7 +394,7 @@ function BasicWebsite() {
                 <p className="mt-3 leading-relaxed text-gray-400">
                   {feature.description}
                 </p>
-              </article>
+              </InfoPanel>
             ))}
           </div>
         </div>
@@ -493,15 +415,9 @@ function BasicWebsite() {
       >
         <div className="grid gap-5 lg:grid-cols-2">
           {/* Not included */}
-          <article
-            className="
-              rounded-3xl
-              border
-              border-white/8
-              bg-white/3
-              p-6
-              sm:p-9
-            "
+          <InfoPanel
+            as="article"
+            className="p-6 sm:p-9"
           >
             <p className="text-xs tracking-[0.16em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.18em]">
               Standard package
@@ -537,18 +453,12 @@ function BasicWebsite() {
                 </li>
               ))}
             </ul>
-          </article>
+          </InfoPanel>
 
           {/* Optional upgrades */}
-          <article
-            className="
-              rounded-3xl
-              border
-              border-blue-500/20
-              bg-blue-500/6
-              p-6
-              sm:p-9
-            "
+          <InfoPanel
+            as="article"
+            className="p-6 sm:p-9"
           >
             <p className="text-xs tracking-[0.16em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.18em]">
               Optional upgrades
@@ -585,7 +495,7 @@ function BasicWebsite() {
                 </li>
               ))}
             </ul>
-          </article>
+          </InfoPanel>
         </div>
       </section>
 
@@ -625,15 +535,10 @@ function BasicWebsite() {
             "
           >
             {processSteps.map((step) => (
-              <article
+              <InfoPanel
+                as="article"
                 key={step.number}
-                className="
-                  rounded-2xl
-                  border
-                  border-white/8
-                  bg-white/3
-                  p-6
-                "
+                className="p-6"
               >
                 <p className="text-sm font-semibold text-blue-400">
                   {step.number}
@@ -646,7 +551,7 @@ function BasicWebsite() {
                 <p className="mt-3 text-sm leading-relaxed text-gray-400">
                   {step.description}
                 </p>
-              </article>
+              </InfoPanel>
             ))}
           </div>
         </div>
@@ -743,21 +648,7 @@ function BasicWebsite() {
           lg:pb-32
         "
       >
-        <div
-          className="
-            relative
-            overflow-hidden
-            rounded-3xl
-            border
-            border-blue-500/25
-            bg-blue-500/7
-            px-6
-            py-11
-            text-center
-            sm:px-12
-            sm:py-16
-          "
-        >
+        <InfoPanel className="px-6 py-11 text-center sm:px-12 sm:py-16">
           <div
             className="
               pointer-events-none
@@ -813,7 +704,7 @@ function BasicWebsite() {
               <ArrowIcon />
             </Link>
           </div>
-        </div>
+        </InfoPanel>
       </section>
     </div>
   )

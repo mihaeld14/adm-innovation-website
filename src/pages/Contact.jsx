@@ -1,5 +1,10 @@
 import { useState } from "react"
 import { Link } from "react-router"
+import {
+  ArrowIcon,
+  CheckIcon,
+  InfoPanel,
+} from "../components/CardStandards"
 
 
 const contactEmail = "contact@adminnovations.com"
@@ -92,46 +97,6 @@ const initialForm = {
   budget: "",
   projectDescription: "",
   consent: false,
-}
-
-
-function ArrowIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
-    >
-      <path
-        d="M5 12h14M13 6l6 6-6 6"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-
-function CheckIcon() {
-  return (
-    <svg
-      viewBox="0 0 20 20"
-      fill="none"
-      aria-hidden="true"
-      className="mt-0.5 h-4 w-4 shrink-0 text-blue-400"
-    >
-      <path
-        d="m4 10 4 4 8-8"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
 }
 
 
@@ -283,32 +248,10 @@ ${formData.projectDescription}
 
 
           {/* Contact information card */}
-          <aside
-            className="
-              relative
-              overflow-hidden
-              rounded-3xl
-              border
-              border-blue-500/20
-              bg-blue-500/6
-              p-6
-              sm:p-7
-            "
+          <InfoPanel
+            as="aside"
+            className="p-6 sm:p-7"
           >
-            <div
-              className="
-                pointer-events-none
-                absolute
-                -top-20
-                -right-16
-                h-48
-                w-48
-                rounded-full
-                bg-blue-500/20
-                blur-[75px]
-              "
-            />
-
             <div className="relative">
               <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase sm:text-sm">
                 Contact information
@@ -337,7 +280,7 @@ ${formData.projectDescription}
                 />
               </div>
             </div>
-          </aside>
+          </InfoPanel>
         </div>
       </section>
 
@@ -363,16 +306,10 @@ ${formData.projectDescription}
           "
         >
           {/* Form */}
-          <form
+          <InfoPanel
+            as="form"
             onSubmit={handleSubmit}
-            className="
-              rounded-3xl
-              border
-              border-white/8
-              bg-white/3
-              p-6
-              sm:p-9
-            "
+            className="p-6 sm:p-9"
           >
             <div className="max-w-2xl">
               <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.18em]">
@@ -501,21 +438,13 @@ ${formData.projectDescription}
                 information already prepared.
               </p>
             )}
-          </form>
+          </InfoPanel>
 
 
           {/* What happens next */}
-          <aside
-            className="
-              rounded-3xl
-              border
-              border-white/8
-              bg-white/3
-              p-6
-              sm:p-8
-              lg:sticky
-              lg:top-28
-            "
+          <InfoPanel
+            as="aside"
+            className="p-6 sm:p-8 lg:sticky lg:top-28"
           >
             <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.18em]">
               What happens next
@@ -581,7 +510,7 @@ ${formData.projectDescription}
                 ))}
               </ul>
             </div>
-          </aside>
+          </InfoPanel>
         </div>
       </section>
 
@@ -685,21 +614,7 @@ ${formData.projectDescription}
           lg:pb-32
         "
       >
-        <div
-          className="
-            relative
-            overflow-hidden
-            rounded-3xl
-            border
-            border-blue-500/25
-            bg-blue-500/7
-            px-6
-            py-11
-            text-center
-            sm:px-12
-            sm:py-16
-          "
-        >
+        <InfoPanel className="px-6 py-11 text-center sm:px-12 sm:py-16">
           <div
             className="
               pointer-events-none
@@ -782,7 +697,7 @@ ${formData.projectDescription}
               </Link>
             </div>
           </div>
-        </div>
+        </InfoPanel>
       </section>
     </div>
   )

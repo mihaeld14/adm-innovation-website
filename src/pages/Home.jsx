@@ -1,8 +1,15 @@
 import { lazy, Suspense, useEffect, useState } from "react"
 import { Link } from "react-router"
 import heroGraphic from "../assets/hero.png"
+import {
+  ArrowIcon,
+  CheckIcon,
+  InfoPanel,
+} from "../components/CardStandards"
+
 
 const AnimatedWord = lazy(() => import("./AnimatedWord"))
+
 
 const rotatingWords = [
   "websites",
@@ -10,6 +17,7 @@ const rotatingWords = [
   "AI tools",
   "automations",
 ]
+
 
 const proofPoints = [
   {
@@ -29,6 +37,7 @@ const proofPoints = [
     label: "Measured impact",
   },
 ]
+
 
 const capabilities = [
   {
@@ -52,6 +61,7 @@ const capabilities = [
     accent: "border-amber-400/40 text-amber-300",
   },
 ]
+
 
 const processSteps = [
   {
@@ -77,24 +87,6 @@ const processSteps = [
 ]
 
 
-const paymentSteps = [
-  {
-    number: "01",
-    title: "Scope and price agreed",
-    body: "The required result and project price are confirmed before development begins.",
-  },
-  {
-    number: "02",
-    title: "Working solution presented",
-    body: "You see the agreed solution working and review it before any payment is due.",
-  },
-  {
-    number: "03",
-    title: "Approval, payment and handover",
-    body: "After approval, the agreed payment is completed and the finished project is handed over.",
-  },
-]
-
 const outcomes = [
   "A sharper digital presence",
   "Less repetitive manual work",
@@ -104,27 +96,31 @@ const outcomes = [
   "A partner who can think and build",
 ]
 
+
 function Home() {
   const [wordIndex, setWordIndex] = useState(0)
   const [effectsReady, setEffectsReady] = useState(true)
 
   const currentWord = rotatingWords[wordIndex]
 
+
   useEffect(() => {
     let frameOne
     let frameTwo
-  
+
     frameOne = requestAnimationFrame(() => {
       frameTwo = requestAnimationFrame(() => {
         setEffectsReady(true)
       })
     })
-  
+
     return () => {
       cancelAnimationFrame(frameOne)
       cancelAnimationFrame(frameTwo)
     }
   }, [])
+
+
   useEffect(() => {
     if (!effectsReady) {
       return undefined
@@ -153,39 +149,11 @@ function Home() {
     }
   }, [effectsReady])
 
+
   return (
     <div>
-    <section
-      className="
-        relative
-        mx-auto
-        grid
-        min-h-screen
-        max-w-7xl
-        items-center
-        justify-center
-        gap-8
-        px-6
-        pt-34
-        pb-20
-        text-center
-        lg:grid-cols-[auto_auto]
-        lg:gap-6
-        lg:pt-36
-        lg:text-left
-      "
-    >
-
-        <div
-          className="
-            -mt-10
-            relative
-            flex
-            justify-center
-            lg:justify-end
-            lg:justify-self-end
-          "
-          >
+      <section className="relative mx-auto grid min-h-screen max-w-7xl items-center justify-center gap-8 px-6 pt-34 pb-20 text-center lg:grid-cols-[auto_auto] lg:gap-6 lg:pt-36 lg:text-left">
+        <div className="relative -mt-10 flex justify-center lg:justify-self-end lg:justify-end">
           <img
             src={heroGraphic}
             alt="Layered digital platform visual"
@@ -193,21 +161,11 @@ function Home() {
             height="360"
             loading="eager"
             decoding="async"
-            className="
-              relative
-              z-10
-              w-[72%]
-              max-w-[430px]
-              translate-x-0
-              lg:w-[500px]
-              lg:max-w-none
-              lg:translate-x-8
-            "
+            className="relative z-10 w-[72%] max-w-[430px] translate-x-0 lg:w-[500px] lg:max-w-none lg:translate-x-8"
           />
-          </div>
+        </div>
 
-        {/* Text */}
-        <div className="-mt-10 lg:-translate-x-30 mx-auto max-w-4xl lg:mx-0 lg:justify-self-start">
+        <div className="mx-auto -mt-10 max-w-4xl lg:mx-0 lg:-translate-x-30 lg:justify-self-start">
           <h1 className="max-w-4xl text-5xl leading-[0.95] font-semibold tracking-tight sm:text-6xl md:text-7xl xl:text-[5.6rem]">
             <span className="block">Premium</span>
 
@@ -231,26 +189,36 @@ function Home() {
 
             <span className="mt-3 block">for your business.</span>
           </h1>
-      </div>
-        
-    </section>
+        </div>
+      </section>
+
 
       <section className="border-y border-white/10 bg-white/[0.025]">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px px-6 py-6 sm:grid-cols-4">
           {proofPoints.map((point) => (
-            <div key={point.label} className="px-3 py-5 text-center">
-              <p className="text-lg font-semibold text-blue-300">{point.value}</p>
-              <p className="mt-2 text-lg text-gray-300">{point.label}</p>
+            <div
+              key={point.label}
+              className="px-3 py-5 text-center"
+            >
+              <p className="text-lg font-semibold text-blue-300">
+                {point.value}
+              </p>
+
+              <p className="mt-2 text-lg text-gray-300">
+                {point.label}
+              </p>
             </div>
           ))}
         </div>
       </section>
+
 
       <section className="mx-auto max-w-7xl px-6 py-24">
         <div className="max-w-3xl">
           <p className="text-sm font-semibold tracking-[0.24em] text-blue-300 uppercase">
             Capabilities
           </p>
+
           <h2 className="mt-5 text-4xl font-semibold tracking-tight text-white md:text-6xl">
             Everything a modern business needs to look sharp and work smarter.
           </h2>
@@ -258,32 +226,38 @@ function Home() {
 
         <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {capabilities.map((capability) => (
-            <article
+            <InfoPanel
+              as="article"
               key={capability.title}
-              className="rounded-lg border border-white/10 bg-white/[0.035] p-6 transition duration-300"
+              className="p-6"
             >
-              <div className={`mb-6 h-10 w-10 rounded-lg border ${capability.accent} grid place-items-center text-sm font-semibold`}>
+              <div className={`mb-6 grid h-10 w-10 place-items-center rounded-lg border text-sm font-semibold ${capability.accent}`}>
                 {capability.title.slice(0, 2)}
               </div>
+
               <h3 className="text-xl font-semibold text-white">
                 {capability.title}
               </h3>
+
               <p className="mt-4 text-sm leading-relaxed text-gray-400">
                 {capability.body}
               </p>
-            </article>
+            </InfoPanel>
           ))}
         </div>
       </section>
+
 
       <section className="mx-auto grid max-w-7xl gap-12 px-6 py-10 lg:grid-cols-[0.86fr_1.14fr] lg:py-24">
         <div>
           <p className="text-sm font-semibold tracking-[0.24em] text-cyan-300 uppercase">
             Method
           </p>
+
           <h2 className="mt-5 text-4xl font-semibold tracking-tight text-white md:text-5xl">
             Professional work feels calm, structured and deliberate.
           </h2>
+
           <p className="mt-6 text-base leading-relaxed text-gray-400">
             The goal is not to throw features at a problem. The goal is to
             understand the business, build the right system and make every
@@ -293,86 +267,51 @@ function Home() {
 
         <div className="grid gap-4">
           {processSteps.map((item, index) => (
-            <article
+            <InfoPanel
+              as="article"
               key={item.step}
-              className="grid gap-5 rounded-lg border border-white/10 bg-white/[0.035] p-5 sm:grid-cols-[92px_1fr]"
+              className="grid gap-5 p-5 sm:grid-cols-[92px_1fr]"
+              contentClassName="contents"
             >
               <div>
                 <p className="text-xs tracking-[0.2em] text-gray-500 uppercase">
                   Step {index + 1}
                 </p>
-                <p className="mt-2 text-blue-300">{item.step}</p>
+
+                <p className="mt-2 text-blue-300">
+                  {item.step}
+                </p>
               </div>
+
               <div>
-                <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                <h3 className="text-lg font-semibold text-white">
+                  {item.title}
+                </h3>
+
                 <p className="mt-2 text-sm leading-relaxed text-gray-400">
                   {item.body}
                 </p>
               </div>
-            </article>
+            </InfoPanel>
           ))}
         </div>
       </section>
 
-      {/* Payment approach */}
-      <section className="mx-auto max-w-7xl px-6 py-10 lg:py-16">
-        <div className="overflow-hidden rounded-lg border border-blue-400/20 bg-blue-500/[0.055]">
-          <div className="grid gap-8 p-7 sm:p-9 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-            <div>
-              <p className="text-sm font-semibold tracking-[0.24em] text-blue-300 uppercase">
-                A more confident way to start
-              </p>
-
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">
-                See the finished solution before you pay.
-              </h2>
-
-              <p className="mt-5 max-w-2xl leading-relaxed text-gray-400">
-                For custom projects, the scope and agreed price are confirmed
-                before development begins. We build the solution and present a
-                working version for your review. No payment is due until you
-                approve the agreed result.
-              </p>
-
-              <p className="mt-4 text-sm leading-relaxed text-gray-500">
-                The €120 Basic Business Website is the only package paid in
-                advance.
-              </p>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-3">
-              {paymentSteps.map((item) => (
-                <article
-                  key={item.number}
-                  className="rounded-lg border border-white/10 bg-black/15 p-5"
-                >
-                  <p className="text-sm font-semibold text-blue-300">
-                    {item.number}
-                  </p>
-
-                  <h3 className="mt-4 font-semibold text-white">
-                    {item.title}
-                  </h3>
-
-                  <p className="mt-2 text-sm leading-relaxed text-gray-400">
-                    {item.body}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section className="mx-auto max-w-7xl px-6 py-24">
-        <div className="grid overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] lg:grid-cols-[1fr_1.1fr]">
+        <InfoPanel
+          className="grid p-0 lg:grid-cols-[1fr_1.1fr]"
+          contentClassName="contents"
+        >
           <div className="border-b border-white/10 p-8 sm:p-10 lg:border-r lg:border-b-0">
             <p className="text-sm font-semibold tracking-[0.24em] text-emerald-300 uppercase">
               Outcome
             </p>
+
             <h2 className="mt-5 text-4xl font-semibold tracking-tight text-white md:text-5xl">
               Built to impress clients and make daily work easier.
             </h2>
+
             <p className="mt-6 text-base leading-relaxed text-gray-400">
               ADM Innovations combines design taste, technical execution and
               operational thinking, so the final product looks professional and
@@ -382,34 +321,49 @@ function Home() {
 
           <div className="grid gap-px bg-white/10 sm:grid-cols-2">
             {outcomes.map((outcome) => (
-              <div key={outcome} className="bg-[#090909] p-6">
-                <p className="text-lg font-medium text-white">{outcome}</p>
+              <div
+                key={outcome}
+                className="bg-[#090909] p-6"
+              >
+                <p className="flex items-start gap-3 text-lg font-medium text-white">
+                  <CheckIcon className="mt-1" />
+                  <span>{outcome}</span>
+                </p>
               </div>
             ))}
           </div>
-        </div>
+        </InfoPanel>
       </section>
 
+
       <section className="mx-auto max-w-7xl px-6 pb-32">
-        <div className="rounded-lg border border-blue-400/20 bg-blue-500/[0.07] px-6 py-10 text-center sm:px-10">
-          <p className="text-sm font-semibold tracking-[0.24em] text-blue-300 uppercase">
-            Ready when you are
-          </p>
-          <h2 className="mx-auto mt-5 max-w-3xl text-4xl font-semibold tracking-tight text-white md:text-5xl">
-            Let us turn your idea, workflow or business problem into a serious digital product.
-          </h2>
-          <div className="mt-8 flex justify-center">
-            <Link
-              to="/contact"
-              className="rounded-lg bg-white px-8 py-4 font-semibold text-black transition duration-300"
-            >
-              Tell us what to build
-            </Link>
+        <InfoPanel className="px-6 py-10 text-center sm:px-10">
+          <div className="pointer-events-none absolute top-1/2 left-1/2 h-64 w-96 max-w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/8 blur-[80px]" />
+
+          <div className="relative">
+            <p className="text-sm font-semibold tracking-[0.24em] text-blue-300 uppercase">
+              Ready when you are
+            </p>
+
+            <h2 className="mx-auto mt-5 max-w-3xl text-4xl font-semibold tracking-tight text-white md:text-5xl">
+              Let us turn your idea, workflow or business problem into a serious digital product.
+            </h2>
+
+            <div className="mt-8 flex justify-center">
+              <Link
+                to="/contact"
+                className="group inline-flex items-center gap-3 rounded-xl bg-white px-8 py-4 font-semibold text-black transition duration-300 hover:bg-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              >
+                Tell us what to build
+                <ArrowIcon />
+              </Link>
+            </div>
           </div>
-        </div>
+        </InfoPanel>
       </section>
     </div>
   )
 }
+
 
 export default Home

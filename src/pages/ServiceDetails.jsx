@@ -1,45 +1,10 @@
 import { Link, Navigate, useParams } from "react-router"
 import servicesData from "../data/servicesData"
-
-
-function ArrowIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
-    >
-      <path
-        d="M5 12h14M13 6l6 6-6 6"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-
-function CheckIcon() {
-  return (
-    <svg
-      viewBox="0 0 20 20"
-      fill="none"
-      aria-hidden="true"
-      className="mt-0.5 h-4 w-4 shrink-0 text-blue-400"
-    >
-      <path
-        d="m4 10 4 4 8-8"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
+import {
+  ArrowIcon,
+  CheckIcon,
+  InfoPanel,
+} from "../components/CardStandards"
 
 
 function ServiceImage({
@@ -52,7 +17,6 @@ function ServiceImage({
   return (
     <div
       className={`
-        group
         relative
         overflow-hidden
         rounded-2xl
@@ -75,9 +39,6 @@ function ServiceImage({
           w-full
           object-cover
           object-center
-          transition-transform
-          duration-700
-          group-hover:scale-[1.025]
           ${imageClassName}
         `}
         onError={(event) => {
@@ -291,23 +252,7 @@ function ServiceDetails() {
 
             {/* Optional price */}
             {service.price && (
-              <div
-                className="
-                  mt-6
-                  inline-flex
-                  items-end
-                  gap-3
-                  rounded-2xl
-                  border
-                  border-blue-400/20
-                  bg-blue-500/8
-                  px-5
-                  py-4
-                  sm:mt-8
-                  sm:px-6
-                  sm:py-5
-                "
-              >
+              <InfoPanel className="mt-6 inline-flex px-5 py-4 sm:mt-8 sm:px-6 sm:py-5">
                 <div>
                   <p className="text-xs tracking-[0.12em] text-gray-400 uppercase sm:text-sm sm:tracking-[0.14em]">
                     {service.price.label}
@@ -327,7 +272,7 @@ function ServiceDetails() {
                     {service.price.note}
                   </p>
                 </div>
-              </div>
+              </InfoPanel>
             )}
 
             <div className="mt-7 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:flex-wrap sm:gap-4">
@@ -490,24 +435,10 @@ function ServiceDetails() {
           "
         >
           {service.capabilities.map((capability, index) => (
-            <article
+            <InfoPanel
+              as="article"
               key={capability.title}
-              className="
-                group
-                relative
-                overflow-hidden
-                rounded-3xl
-                border
-                border-white/8
-                bg-white/3
-                p-6
-                transition
-                duration-300
-                hover:-translate-y-1
-                hover:border-blue-500/30
-                hover:bg-white/5
-                sm:p-7
-              "
+              className="p-6 sm:p-7"
             >
               <span className="text-sm font-semibold text-blue-400">
                 {String(index + 1).padStart(2, "0")}
@@ -520,26 +451,7 @@ function ServiceDetails() {
               <p className="mt-3 leading-relaxed text-gray-400">
                 {capability.description}
               </p>
-
-              <div
-                className="
-                  absolute
-                  right-7
-                  bottom-0
-                  left-7
-                  h-px
-                  origin-left
-                  scale-x-0
-                  bg-linear-to-r
-                  from-transparent
-                  via-blue-500
-                  to-transparent
-                  transition-transform
-                  duration-500
-                  group-hover:scale-x-100
-                "
-              />
-            </article>
+            </InfoPanel>
           ))}
         </div>
       </section>
@@ -557,19 +469,16 @@ function ServiceDetails() {
           lg:py-24
         "
       >
-        <div
+        <InfoPanel
           className="
             grid
             gap-7
-            rounded-3xl
-            border
-            border-blue-500/20
-            bg-blue-500/5
             p-6
             sm:gap-10
             sm:p-10
             lg:grid-cols-[0.85fr_1.15fr]
           "
+          contentClassName="contents"
         >
           <div>
             <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.18em]">
@@ -609,7 +518,7 @@ function ServiceDetails() {
               </div>
             ))}
           </div>
-        </div>
+        </InfoPanel>
       </section>
 
 
@@ -632,16 +541,10 @@ function ServiceDetails() {
 
         <div className="mt-8 grid gap-4 sm:mt-12 sm:gap-5 md:grid-cols-2">
           {service.benefits.map((benefit) => (
-            <article
+            <InfoPanel
+              as="article"
               key={benefit.title}
-              className="
-                rounded-3xl
-                border
-                border-white/8
-                bg-white/3
-                p-6
-                sm:p-9
-              "
+              className="p-6 sm:p-9"
             >
               <h3 className="text-xl font-semibold text-white sm:text-2xl">
                 {benefit.title}
@@ -650,7 +553,7 @@ function ServiceDetails() {
               <p className="mt-3 leading-relaxed text-gray-400 sm:mt-4">
                 {benefit.description}
               </p>
-            </article>
+            </InfoPanel>
           ))}
         </div>
       </section>
@@ -704,20 +607,11 @@ function ServiceDetails() {
           {/* Process cards */}
           <div className="space-y-4 sm:space-y-5">
             {service.process.map((item) => (
-              <article
+              <InfoPanel
+                as="article"
                 key={item.step}
-                className="
-                  grid
-                  gap-4
-                  rounded-3xl
-                  border
-                  border-white/8
-                  bg-white/3
-                  p-6
-                  sm:grid-cols-[70px_1fr]
-                  sm:gap-5
-                  sm:p-8
-                "
+                className="grid gap-4 p-6 sm:grid-cols-[70px_1fr] sm:gap-5 sm:p-8"
+                contentClassName="contents"
               >
                 <span className="text-xl font-semibold text-blue-400 sm:text-2xl">
                   {item.step}
@@ -732,7 +626,7 @@ function ServiceDetails() {
                     {item.description}
                   </p>
                 </div>
-              </article>
+              </InfoPanel>
             ))}
           </div>
         </div>
@@ -750,19 +644,16 @@ function ServiceDetails() {
           sm:py-12
         "
       >
-        <div
+        <InfoPanel
           className="
             grid
             gap-6
-            rounded-3xl
-            border
-            border-blue-500/20
-            bg-blue-500/6
             p-6
             sm:p-8
             lg:grid-cols-[0.8fr_1.2fr]
             lg:items-center
           "
+          contentClassName="contents"
         >
           <div>
             <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.18em]">
@@ -789,7 +680,7 @@ function ServiceDetails() {
               before it can affect the price.
             </p>
           </div>
-        </div>
+        </InfoPanel>
       </section>
 
 
@@ -806,15 +697,9 @@ function ServiceDetails() {
         "
       >
         <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
-          <article
-            className="
-              rounded-3xl
-              border
-              border-white/8
-              bg-white/3
-              p-6
-              sm:p-9
-            "
+          <InfoPanel
+            as="article"
+            className="p-6 sm:p-9"
           >
             <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.18em]">
               Technology
@@ -844,17 +729,11 @@ function ServiceDetails() {
                 </span>
               ))}
             </div>
-          </article>
+          </InfoPanel>
 
-          <article
-            className="
-              rounded-3xl
-              border
-              border-white/8
-              bg-white/3
-              p-6
-              sm:p-9
-            "
+          <InfoPanel
+            as="article"
+            className="p-6 sm:p-9"
           >
             <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.18em]">
               Deliverables
@@ -878,7 +757,7 @@ function ServiceDetails() {
                 </div>
               ))}
             </div>
-          </article>
+          </InfoPanel>
         </div>
       </section>
 
@@ -923,16 +802,7 @@ function ServiceDetails() {
             lg:py-24
           "
         >
-          <div
-            className="
-              rounded-3xl
-              border
-              border-white/8
-              bg-white/3
-              p-6
-              sm:p-10
-            "
-          >
+          <InfoPanel className="p-6 sm:p-10">
             <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.18em]">
               Not included
             </p>
@@ -996,7 +866,7 @@ function ServiceDetails() {
                 </div>
               ))}
             </div>
-          </div>
+          </InfoPanel>
         </section>
       )}
 
@@ -1087,21 +957,7 @@ function ServiceDetails() {
           lg:pb-32
         "
       >
-        <div
-          className="
-            relative
-            overflow-hidden
-            rounded-3xl
-            border
-            border-blue-500/25
-            bg-blue-500/7
-            px-6
-            py-11
-            text-center
-            sm:px-12
-            sm:py-18
-          "
-        >
+        <InfoPanel className="px-6 py-11 text-center sm:px-12 sm:py-18">
           <div
             className="
               pointer-events-none
@@ -1158,7 +1014,7 @@ function ServiceDetails() {
               <ArrowIcon />
             </Link>
           </div>
-        </div>
+        </InfoPanel>
       </section>
     </div>
   )
