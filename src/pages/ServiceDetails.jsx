@@ -5,6 +5,7 @@ import {
   CheckIcon,
   InfoPanel,
 } from "../components/CardStandards"
+import Reveal from "../components/Reveal"
 
 
 function ServiceImage({
@@ -435,23 +436,28 @@ function ServiceDetails() {
           "
         >
           {service.capabilities.map((capability, index) => (
-            <InfoPanel
-              as="article"
+            <Reveal
               key={capability.title}
-              className="p-6 sm:p-7"
+              delay={(index % 3) * 0.07}
+              className="h-full"
             >
-              <span className="text-sm font-semibold text-blue-400">
-                {String(index + 1).padStart(2, "0")}
-              </span>
+              <InfoPanel
+                as="article"
+                className="h-full p-6 sm:p-7"
+              >
+                <span className="text-sm font-semibold text-blue-400">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
 
-              <h3 className="mt-5 text-xl font-semibold text-white sm:mt-7">
-                {capability.title}
-              </h3>
+                <h3 className="mt-5 text-xl font-semibold text-white sm:mt-7">
+                  {capability.title}
+                </h3>
 
-              <p className="mt-3 leading-relaxed text-gray-400">
-                {capability.description}
-              </p>
-            </InfoPanel>
+                <p className="mt-3 leading-relaxed text-gray-400">
+                  {capability.description}
+                </p>
+              </InfoPanel>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -540,20 +546,25 @@ function ServiceDetails() {
         />
 
         <div className="mt-8 grid gap-4 sm:mt-12 sm:gap-5 md:grid-cols-2">
-          {service.benefits.map((benefit) => (
-            <InfoPanel
-              as="article"
+          {service.benefits.map((benefit, index) => (
+            <Reveal
               key={benefit.title}
-              className="p-6 sm:p-9"
+              delay={(index % 2) * 0.08}
+              className="h-full"
             >
-              <h3 className="text-xl font-semibold text-white sm:text-2xl">
-                {benefit.title}
-              </h3>
+              <InfoPanel
+                as="article"
+                className="h-full p-6 sm:p-9"
+              >
+                <h3 className="text-xl font-semibold text-white sm:text-2xl">
+                  {benefit.title}
+                </h3>
 
-              <p className="mt-3 leading-relaxed text-gray-400 sm:mt-4">
-                {benefit.description}
-              </p>
-            </InfoPanel>
+                <p className="mt-3 leading-relaxed text-gray-400 sm:mt-4">
+                  {benefit.description}
+                </p>
+              </InfoPanel>
+            </Reveal>
           ))}
         </div>
       </section>

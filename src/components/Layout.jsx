@@ -7,9 +7,11 @@ import {
 
 import { Outlet } from "react-router"
 import Navbar from "./Navbar"
+import Footer from "./Footer"
 
 
 const ParticleField = lazy(() => import("./ParticleField"))
+const ScrollProgress = lazy(() => import("./ScrollProgress"))
 
 
 function Layout() {
@@ -36,6 +38,7 @@ function Layout() {
   return (
     <div
       className="
+        grain
         relative
         isolate
         min-h-screen
@@ -124,11 +127,19 @@ function Layout() {
       {/* Website content */}
 
       <div className="relative z-10 min-h-screen">
+        {effectsReady && (
+          <Suspense fallback={null}>
+            <ScrollProgress />
+          </Suspense>
+        )}
+
         <Navbar />
 
         <main className="min-h-screen">
           <Outlet />
         </main>
+
+        <Footer />
       </div>
     </div>
   )

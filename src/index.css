@@ -1,4 +1,10 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
 html,
 body,
 #root {
@@ -8,14 +14,206 @@ body,
 
 html {
   color-scheme: dark;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   background-color: #050505;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
-html {
-  scroll-behavior: smooth;
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+}
+
+/* Text selection */
+::selection {
+  background: rgba(59, 130, 246, 0.35);
+  color: #ffffff;
+}
+
+/* Custom scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.35) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(59, 130, 246, 0.45),
+    rgba(109, 40, 217, 0.45)
+  );
+  border-radius: 999px;
+  border: 2px solid #050505;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(96, 165, 250, 0.65),
+    rgba(139, 92, 246, 0.65)
+  );
+}
+
+/* Gradient headline text */
+.gradient-text {
+  background: linear-gradient(
+    100deg,
+    #60a5fa 0%,
+    #38bdf8 40%,
+    #a78bfa 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Giant outlined watermark text (footer, 404) */
+.text-outline {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.09);
+  color: transparent;
+  user-select: none;
+}
+
+/* Film grain overlay */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/*
+  Scroll reveal.
+
+  Content is visible by default and the animation is layered on only where
+  the browser can drive it from the scroll timeline. Anywhere that cannot —
+  older browsers, print, crawlers, headless renderers — simply shows the
+  content, so it can never get stuck invisible.
+*/
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry calc(0% + var(--reveal-offset, 0%)) entry
+        calc(56% + var(--reveal-offset, 0%));
+    }
+  }
+}
+
+/* Console line entrance */
+@keyframes console-line-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.console-line {
+  animation: console-line-in 0.4s ease-out both;
+}
+
+/* Blinking terminal caret */
+@keyframes caret-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.caret-blink {
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+/* Technology marquee */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 36s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Slow floating drift (404, decorations) */
+@keyframes float-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+.animate-float {
+  animation: float-drift 7s ease-in-out infinite;
+}
+
+/* Soft pulsing status dot */
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5);
+  }
+
+  50% {
+    opacity: 0.75;
+    box-shadow: 0 0 0 5px rgba(52, 211, 153, 0);
+  }
+}
+
+.animate-status {
+  animation: status-pulse 2.2s ease-in-out infinite;
 }
 
 @keyframes heartbeat-scroll {
@@ -50,7 +248,12 @@ html {
     scroll-behavior: auto;
   }
 
-  .heartbeat-scroll {
+  .heartbeat-scroll,
+  .animate-marquee,
+  .animate-float,
+  .animate-status,
+  .caret-blink,
+  .console-line {
     animation: none;
   }
 

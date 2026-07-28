@@ -6,6 +6,7 @@ import {
   ClickableCard,
   InfoPanel,
 } from "../components/CardStandards"
+import Reveal from "../components/Reveal"
 
 
 const customServices = servicesData.filter(
@@ -41,7 +42,7 @@ function ServiceCard({ service }) {
   return (
     <ClickableCard
       to={`/services/${service.slug}`}
-      className="p-6 sm:p-7"
+      className="h-full p-6 sm:p-7"
       contentClassName="pr-12"
     >
       <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-500/8 text-sm font-semibold text-blue-300">
@@ -192,11 +193,14 @@ function Services() {
         </div>
 
         <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {customServices.map((service) => (
-            <ServiceCard
+          {customServices.map((service, index) => (
+            <Reveal
               key={service.slug}
-              service={service}
-            />
+              delay={index * 0.06}
+              className="h-full"
+            >
+              <ServiceCard service={service} />
+            </Reveal>
           ))}
         </div>
       </section>
@@ -221,24 +225,28 @@ function Services() {
           </div>
 
           <div className="mt-8 grid gap-4 sm:mt-12 md:grid-cols-3">
-            {projectSteps.map((step) => (
-              <InfoPanel
-                as="article"
+            {projectSteps.map((step, index) => (
+              <Reveal
                 key={step.number}
-                className="p-6"
+                delay={index * 0.08}
               >
-                <p className="text-sm font-semibold text-blue-400">
-                  {step.number}
-                </p>
+                <InfoPanel
+                  as="article"
+                  className="h-full p-6"
+                >
+                  <p className="text-sm font-semibold text-blue-400">
+                    {step.number}
+                  </p>
 
-                <h3 className="mt-4 text-xl font-semibold text-white">
-                  {step.title}
-                </h3>
+                  <h3 className="mt-4 text-xl font-semibold text-white">
+                    {step.title}
+                  </h3>
 
-                <p className="mt-3 text-sm leading-relaxed text-gray-400">
-                  {step.description}
-                </p>
-              </InfoPanel>
+                  <p className="mt-3 text-sm leading-relaxed text-gray-400">
+                    {step.description}
+                  </p>
+                </InfoPanel>
+              </Reveal>
             ))}
           </div>
         </div>

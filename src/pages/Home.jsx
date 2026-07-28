@@ -1,14 +1,16 @@
 import { lazy, Suspense, useEffect, useState } from "react"
 import { Link } from "react-router"
-import heroGraphic from "../assets/hero.png"
+import heroGraphic from "../assets/hero.webp"
 import {
   ArrowIcon,
   CheckIcon,
   InfoPanel,
 } from "../components/CardStandards"
+import Reveal from "../components/Reveal"
 
 
 const AnimatedWord = lazy(() => import("./AnimatedWord"))
+const AutomationConsole = lazy(() => import("../components/AutomationConsole"))
 
 
 const rotatingWords = [
@@ -152,21 +154,28 @@ function Home() {
 
   return (
     <div>
-      <section className="relative mx-auto grid min-h-screen max-w-7xl items-center justify-center gap-8 px-6 pt-34 pb-20 text-center lg:grid-cols-[auto_auto] lg:gap-6 lg:pt-36 lg:text-left">
-        <div className="relative -mt-10 flex justify-center lg:justify-self-end lg:justify-end">
+      <section className="relative mx-auto grid min-h-screen max-w-7xl items-center gap-8 px-6 pt-34 pb-20 text-center lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-12 lg:pt-36 lg:text-left">
+        <div className="relative -mt-10 flex justify-center lg:mt-0 lg:justify-end">
+          {/* Glow behind the chip */}
+          <div
+            className="pointer-events-none absolute top-1/2 left-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/15 blur-[90px]"
+            aria-hidden="true"
+          />
+
           <img
             src={heroGraphic}
-            alt="Layered digital platform visual"
-            width="346"
-            height="360"
+            alt="Layered ADM circuit board visual"
+            width="500"
+            height="500"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
-            className="relative z-10 w-[72%] max-w-[430px] translate-x-0 lg:w-[500px] lg:max-w-none lg:translate-x-8"
+            className="relative z-10 w-[72%] max-w-[430px] drop-shadow-[0_0_60px_rgba(59,130,246,0.15)] lg:w-full lg:max-w-[460px]"
           />
         </div>
 
-        <div className="mx-auto -mt-10 max-w-4xl lg:mx-0 lg:-translate-x-30 lg:justify-self-start">
-          <h1 className="max-w-4xl text-5xl leading-[0.95] font-semibold tracking-tight sm:text-6xl md:text-7xl xl:text-[5.6rem]">
+        <div className="mx-auto -mt-10 max-w-4xl lg:mx-0 lg:mt-0 lg:max-w-none">
+          <h1 className="text-5xl leading-[0.95] font-semibold tracking-tight sm:text-6xl md:text-7xl lg:text-6xl xl:text-[4.75rem]">
             <span className="block">Premium</span>
 
             <span className="relative mt-2 flex min-h-[1.12em] items-center justify-center overflow-visible perspective-[1000px] lg:justify-start">
@@ -214,7 +223,7 @@ function Home() {
 
 
       <section className="mx-auto max-w-7xl px-6 py-24">
-        <div className="max-w-3xl">
+        <Reveal className="max-w-3xl">
           <p className="text-sm font-semibold tracking-[0.24em] text-blue-300 uppercase">
             Capabilities
           </p>
@@ -222,34 +231,83 @@ function Home() {
           <h2 className="mt-5 text-4xl font-semibold tracking-tight text-white md:text-6xl">
             Everything a modern business needs to look sharp and work smarter.
           </h2>
-        </div>
+        </Reveal>
 
         <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {capabilities.map((capability) => (
-            <InfoPanel
-              as="article"
+          {capabilities.map((capability, index) => (
+            <Reveal
               key={capability.title}
-              className="p-6"
+              delay={index * 0.08}
             >
-              <div className={`mb-6 grid h-10 w-10 place-items-center rounded-lg border text-sm font-semibold ${capability.accent}`}>
-                {capability.title.slice(0, 2)}
-              </div>
+              <InfoPanel
+                as="article"
+                className="h-full p-6"
+              >
+                <div className={`mb-6 grid h-10 w-10 place-items-center rounded-lg border text-sm font-semibold ${capability.accent}`}>
+                  {capability.title.slice(0, 2)}
+                </div>
 
-              <h3 className="text-xl font-semibold text-white">
-                {capability.title}
-              </h3>
+                <h3 className="text-xl font-semibold text-white">
+                  {capability.title}
+                </h3>
 
-              <p className="mt-4 text-sm leading-relaxed text-gray-400">
-                {capability.body}
-              </p>
-            </InfoPanel>
+                <p className="mt-4 text-sm leading-relaxed text-gray-400">
+                  {capability.body}
+                </p>
+              </InfoPanel>
+            </Reveal>
           ))}
         </div>
       </section>
 
 
+      <section className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-10 lg:grid-cols-[0.9fr_1.1fr] lg:py-24">
+        <Reveal>
+          <p className="text-sm font-semibold tracking-[0.24em] text-sky-300 uppercase">
+            Live logic
+          </p>
+
+          <h2 className="mt-5 text-4xl font-semibold tracking-tight text-white md:text-5xl">
+            Watch busywork disappear in real time.
+          </h2>
+
+          <p className="mt-6 text-base leading-relaxed text-gray-400">
+            This is what an ADM automation feels like: an event happens, the
+            system does the boring part, and your team only steps in where a
+            human decision actually matters.
+          </p>
+
+          <ul className="mt-8 space-y-4">
+            {[
+              "Runs 24/7 — no reminders, no forgotten steps",
+              "Logs every action, so nothing happens invisibly",
+              "Asks a human when judgement is required",
+            ].map((point) => (
+              <li
+                key={point}
+                className="flex items-start gap-3 text-gray-300"
+              >
+                <CheckIcon className="mt-1" />
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <Suspense
+            fallback={
+              <div className="min-h-[380px] rounded-3xl border border-white/10 bg-[#070a10]/90" />
+            }
+          >
+            <AutomationConsole />
+          </Suspense>
+        </Reveal>
+      </section>
+
+
       <section className="mx-auto grid max-w-7xl gap-12 px-6 py-10 lg:grid-cols-[0.86fr_1.14fr] lg:py-24">
-        <div>
+        <Reveal>
           <p className="text-sm font-semibold tracking-[0.24em] text-cyan-300 uppercase">
             Method
           </p>
@@ -263,42 +321,47 @@ function Home() {
             understand the business, build the right system and make every
             interaction feel intentional.
           </p>
-        </div>
+        </Reveal>
 
         <div className="grid gap-4">
           {processSteps.map((item, index) => (
-            <InfoPanel
-              as="article"
+            <Reveal
               key={item.step}
-              className="grid gap-5 p-5 sm:grid-cols-[92px_1fr]"
-              contentClassName="contents"
+              delay={index * 0.07}
             >
-              <div>
-                <p className="text-xs tracking-[0.2em] text-gray-500 uppercase">
-                  Step {index + 1}
-                </p>
+              <InfoPanel
+                as="article"
+                className="grid gap-5 p-5 sm:grid-cols-[92px_1fr]"
+                contentClassName="contents"
+              >
+                <div>
+                  <p className="text-xs tracking-[0.2em] text-gray-500 uppercase">
+                    Step {index + 1}
+                  </p>
 
-                <p className="mt-2 text-blue-300">
-                  {item.step}
-                </p>
-              </div>
+                  <p className="mt-2 text-blue-300">
+                    {item.step}
+                  </p>
+                </div>
 
-              <div>
-                <h3 className="text-lg font-semibold text-white">
-                  {item.title}
-                </h3>
+                <div>
+                  <h3 className="text-lg font-semibold text-white">
+                    {item.title}
+                  </h3>
 
-                <p className="mt-2 text-sm leading-relaxed text-gray-400">
-                  {item.body}
-                </p>
-              </div>
-            </InfoPanel>
+                  <p className="mt-2 text-sm leading-relaxed text-gray-400">
+                    {item.body}
+                  </p>
+                </div>
+              </InfoPanel>
+            </Reveal>
           ))}
         </div>
       </section>
 
 
       <section className="mx-auto max-w-7xl px-6 py-24">
+        <Reveal>
         <InfoPanel
           className="grid p-0 lg:grid-cols-[1fr_1.1fr]"
           contentClassName="contents"
@@ -333,10 +396,12 @@ function Home() {
             ))}
           </div>
         </InfoPanel>
+        </Reveal>
       </section>
 
 
       <section className="mx-auto max-w-7xl px-6 pb-32">
+        <Reveal>
         <InfoPanel className="px-6 py-10 text-center sm:px-10">
           <div className="pointer-events-none absolute top-1/2 left-1/2 h-64 w-96 max-w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/8 blur-[80px]" />
 
@@ -360,6 +425,7 @@ function Home() {
             </div>
           </div>
         </InfoPanel>
+        </Reveal>
       </section>
     </div>
   )
