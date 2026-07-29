@@ -72,8 +72,30 @@ function Footer() {
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto max-w-7xl px-6 pt-16 pb-6 sm:pt-20">
-        <div className="grid gap-12 lg:grid-cols-[1.25fr_0.75fr_1fr_1fr]">
+      <div className="relative mx-auto max-w-7xl px-6 pt-14 pb-6 sm:pt-16">
+        {/* Giant watermark, sitting behind the footer content */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 overflow-hidden"
+          aria-hidden="true"
+        >
+          <p
+            className="
+              text-outline
+              text-center
+              font-display
+              text-[30vw]
+              leading-[0.75]
+              font-bold
+              tracking-tight
+              whitespace-nowrap
+              lg:text-[19rem]
+            "
+          >
+            ADM
+          </p>
+        </div>
+
+        <div className="relative grid gap-12 lg:grid-cols-[1.25fr_0.75fr_1fr_1fr]">
           {/* Brand */}
           <div>
             <Link
@@ -223,33 +245,11 @@ function Footer() {
         </div>
 
 
-        {/* Giant watermark */}
-        <div
-          className="pointer-events-none mt-14 -mb-4 overflow-hidden sm:-mb-7"
-          aria-hidden="true"
-        >
-          <p
-            className="
-              text-outline
-              text-center
-              font-display
-              text-[21vw]
-              leading-[0.78]
-              font-bold
-              tracking-tight
-              whitespace-nowrap
-              lg:text-[17rem]
-            "
-          >
-            ADM
-          </p>
-        </div>
-
-
         {/* Bottom bar */}
         <div
           className="
             relative
+            mt-14
             flex
             flex-col
             items-center
