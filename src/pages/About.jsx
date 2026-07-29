@@ -151,7 +151,7 @@ function About() {
                     {item.word}
                   </h3>
 
-                  <p className="relative mt-3 text-sm leading-relaxed text-gray-400">
+                  <p className="relative mt-3 text-base leading-relaxed text-gray-400">
                     {item.description}
                   </p>
                 </article>

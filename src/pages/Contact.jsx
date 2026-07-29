@@ -317,7 +317,7 @@ ${formData.description}
                       {step.title}
                     </h3>
 
-                    <p className="mt-1 text-sm leading-relaxed text-gray-400">
+                    <p className="mt-1 text-base leading-relaxed text-gray-400">
                       {step.description}
                     </p>
                   </div>

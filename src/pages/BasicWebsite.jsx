@@ -189,11 +189,11 @@ function BasicWebsite() {
             </p>
 
             <div className="mt-4 space-y-2 border-t border-white/8 pt-4">
-              <p className="text-sm leading-relaxed text-gray-400">
+              <p className="text-base leading-relaxed text-gray-400">
                 The scope and price are confirmed before payment.
               </p>
 
-              <p className="text-xs leading-relaxed text-gray-500">
+              <p className="text-sm leading-relaxed text-gray-500">
                 Domain and hosting are paid separately.
               </p>
             </div>
@@ -267,7 +267,7 @@ function BasicWebsite() {
                     {feature.title}
                   </h3>
 
-                  <p className="mt-2 text-sm leading-relaxed text-gray-400">
+                  <p className="mt-2 text-base leading-relaxed text-gray-400">
                     {feature.description}
                   </p>
                 </InfoPanel>
@@ -301,7 +301,7 @@ function BasicWebsite() {
                       {step.title}
                     </h3>
 
-                    <p className="mt-1 text-sm leading-relaxed text-gray-400">
+                    <p className="mt-1 text-base leading-relaxed text-gray-400">
                       {step.description}
                     </p>
                   </div>
@@ -317,7 +317,7 @@ function BasicWebsite() {
               Outside the package
             </p>
 
-            <p className="mt-3 text-sm leading-relaxed text-gray-400">
+            <p className="mt-3 text-base leading-relaxed text-gray-400">
               These are not included in the €120 price, but most of them can
               be added under a separate quote:
             </p>
@@ -326,7 +326,7 @@ function BasicWebsite() {
               {notIncluded.map((item) => (
                 <li
                   key={item}
-                  className="flex items-start gap-2.5 text-sm leading-relaxed text-gray-400"
+                  className="flex items-start gap-2.5 text-base leading-relaxed text-gray-400"
                 >
                   <span
                     className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gray-600"

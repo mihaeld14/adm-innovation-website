@@ -259,7 +259,7 @@ function Home() {
                   {capability.title}
                 </h3>
 
-                <p className="mt-4 text-sm leading-relaxed text-gray-400">
+                <p className="mt-4 text-base leading-relaxed text-gray-400">
                   {capability.body}
                 </p>
               </InfoPanel>
@@ -357,7 +357,7 @@ function Home() {
                     {item.title}
                   </h3>
 
-                  <p className="mt-2 text-sm leading-relaxed text-gray-400">
+                  <p className="mt-2 text-base leading-relaxed text-gray-400">
                     {item.body}
                   </p>
                 </div>

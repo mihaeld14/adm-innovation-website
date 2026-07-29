@@ -51,13 +51,13 @@ function Services() {
               Review first. Pay after.
             </h2>
 
-            <p className="mt-3 text-sm leading-relaxed text-gray-400">
+            <p className="mt-3 text-base leading-relaxed text-gray-400">
               Custom projects require no advance payment — you see the working
               solution before you pay. Scope and price are fixed in writing
               before we start.
             </p>
 
-            <p className="mt-4 border-t border-white/8 pt-3.5 text-xs leading-relaxed text-gray-500">
+            <p className="mt-4 border-t border-white/8 pt-3.5 text-sm leading-relaxed text-gray-500">
               Exception: the Basic Business Website package (€120) is paid in
               advance.
             </p>
@@ -94,7 +94,7 @@ function Services() {
                     The problem
                   </p>
 
-                  <p className="mt-2 text-sm leading-relaxed text-gray-400">
+                  <p className="mt-2 text-base leading-relaxed text-gray-400">
                     {service.problem}
                   </p>
                 </div>
@@ -104,7 +104,7 @@ function Services() {
                     Our solution
                   </p>
 
-                  <p className="mt-2 text-sm leading-relaxed text-gray-300">
+                  <p className="mt-2 text-base leading-relaxed text-gray-300">
                     {service.solution}
                   </p>
 
@@ -112,7 +112,7 @@ function Services() {
                     {service.useCases.slice(0, 3).map((useCase) => (
                       <li
                         key={useCase}
-                        className="flex items-start gap-2 text-xs text-gray-500"
+                        className="flex items-start gap-2 text-sm text-gray-500"
                       >
                         <CheckIcon className="mt-0.5 h-3.5 w-3.5" />
                         {useCase}
@@ -142,7 +142,7 @@ function Services() {
                 Basic Business Website — €120
               </h2>
 
-              <p className="mt-2 text-sm leading-relaxed text-gray-400">
+              <p className="mt-2 text-base leading-relaxed text-gray-400">
                 Up to six pages, responsive design, a contact form, basic SEO
                 and deployment support. Around 5–7 working days once the
                 content is supplied.

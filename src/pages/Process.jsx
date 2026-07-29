@@ -130,7 +130,7 @@ function Process() {
               ].map((point) => (
                 <li
                   key={point}
-                  className="flex items-start gap-3 text-sm leading-relaxed text-gray-300"
+                  className="flex items-start gap-3 text-base leading-relaxed text-gray-300"
                 >
                   <CheckIcon className="mt-0.5" />
                   {point}
@@ -184,7 +184,7 @@ function Process() {
                     {step.deliverables.map((deliverable) => (
                       <li
                         key={deliverable}
-                        className="flex items-start gap-2.5 text-sm leading-relaxed text-gray-300"
+                        className="flex items-start gap-2.5 text-base leading-relaxed text-gray-300"
                       >
                         <CheckIcon className="mt-0.5" />
                         {deliverable}

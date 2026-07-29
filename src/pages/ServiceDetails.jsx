@@ -139,7 +139,7 @@ function ServiceDetails() {
               <div className="flex h-full items-start gap-3 rounded-xl border border-white/8 bg-white/[0.02] p-4">
                 <CheckIcon className="mt-0.5" />
 
-                <span className="text-sm leading-relaxed text-gray-300">
+                <span className="text-base leading-relaxed text-gray-300">
                   {useCase}
                 </span>
               </div>
@@ -200,7 +200,7 @@ function ServiceDetails() {
               {service.deliverables.map((deliverable) => (
                 <li
                   key={deliverable}
-                  className="flex items-start gap-3 text-sm leading-relaxed text-gray-300"
+                  className="flex items-start gap-3 text-base leading-relaxed text-gray-300"
                 >
                   <CheckIcon className="mt-0.5" />
                   {deliverable}
@@ -220,13 +220,13 @@ function ServiceDetails() {
               You review the finished solution before you pay.
             </h2>
 
-            <p className="mt-3 text-sm leading-relaxed text-gray-400">
+            <p className="mt-3 text-base leading-relaxed text-gray-400">
               The scope and price are confirmed in writing before development
               begins. You see a working version of the solution, approve it,
               and only then does payment and final handover happen.
             </p>
 
-            <p className="mt-4 border-t border-white/8 pt-3.5 text-xs leading-relaxed text-gray-500">
+            <p className="mt-4 border-t border-white/8 pt-3.5 text-sm leading-relaxed text-gray-500">
               Any change outside the confirmed scope is discussed and approved
               before it can affect the price.
             </p>
