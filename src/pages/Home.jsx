@@ -7,6 +7,7 @@ import {
   InfoPanel,
 } from "../components/CardStandards"
 import Reveal from "../components/Reveal"
+import usePageMeta from "../lib/meta"
 
 
 const AnimatedWord = lazy(() => import("./AnimatedWord"))
@@ -100,6 +101,13 @@ const outcomes = [
 
 
 function Home() {
+  usePageMeta({
+    title: "ADM Innovations — Software, AI and automation for your business",
+    description:
+      "Premium websites, custom software, AI tools and automations built around the way your business actually works.",
+    path: "/",
+  })
+
   const [wordIndex, setWordIndex] = useState(0)
   const [effectsReady, setEffectsReady] = useState(true)
 

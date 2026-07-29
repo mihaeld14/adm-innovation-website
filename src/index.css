@@ -1,15 +1,49 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   ADM Innovations design tokens
+--------------------------------------------------------------------------- */
 @theme {
+  /* Typography */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", monospace;
+
+  /* Surfaces */
+  --color-canvas: #060709;
+  --color-panel: #0b0d11;
+  --color-panel-2: #10131a;
+
+  /* Text */
+  --color-ink: #f4f5f7;
+  --color-ink-2: #a3adbd;
+  --color-ink-3: #6b7484;
+
+  /* Accent */
+  --color-accent: #3b82f6;
+  --color-accent-2: #60a5fa;
+
+  /* States */
+  --color-ok: #34d399;
+  --color-err: #f87171;
+
+  /*
+    Accessibility: Tailwind's default gray-500/600 fall below WCAG AA
+    contrast on this dark background, so they are lightened slightly.
+    The hierarchy is preserved: gray-400 > gray-500 > gray-600.
+  */
+  --color-gray-500: #828b9c;
+  --color-gray-600: #737c8d;
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html,
 body,
 #root {
   min-height: 100%;
-  background: #050505;
+  background: var(--color-canvas);
 }
 
 html {
@@ -19,7 +53,8 @@ html {
 
 body {
   margin: 0;
-  background-color: #050505;
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -38,6 +73,13 @@ h4 {
   color: #ffffff;
 }
 
+/* Visible focus everywhere, without doubling custom rings */
+:focus-visible {
+  outline: 2px solid var(--color-accent-2);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 /* Custom scrollbar */
 * {
   scrollbar-width: thin;
@@ -50,41 +92,47 @@ h4 {
 }
 
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: var(--color-canvas);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    180deg,
-    rgba(59, 130, 246, 0.45),
-    rgba(109, 40, 217, 0.45)
-  );
+  background: rgba(59, 130, 246, 0.4);
   border-radius: 999px;
-  border: 2px solid #050505;
+  border: 2px solid var(--color-canvas);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    180deg,
-    rgba(96, 165, 250, 0.65),
-    rgba(139, 92, 246, 0.65)
-  );
+  background: rgba(96, 165, 250, 0.6);
 }
 
-/* Gradient headline text */
+/* Skip link - visible only on keyboard focus */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 100;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: var(--color-accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  transition: top 0.15s ease-out;
+}
+
+.skip-link:focus-visible {
+  top: 16px;
+}
+
+/* Gradient headline accent */
 .gradient-text {
-  background: linear-gradient(
-    100deg,
-    #60a5fa 0%,
-    #38bdf8 40%,
-    #a78bfa 100%
-  );
+  background: linear-gradient(100deg, #60a5fa 0%, #38bdf8 55%, #93c5fd 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Giant outlined watermark text (footer, 404) */
+/* Giant outlined watermark text (footer, 404, About letters) */
 .text-outline {
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.09);
   color: transparent;
@@ -98,18 +146,49 @@ h4 {
   inset: 0;
   z-index: 70;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.04;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/*
-  Scroll reveal.
+/* ---------------------------------------------------------------------------
+   Scroll progress bar — pure CSS scroll timeline, no JS.
+   Unsupported browsers simply never see it.
+--------------------------------------------------------------------------- */
+.scroll-progress {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 60;
+  height: 2px;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(to right, #3b82f6, #60a5fa);
+  pointer-events: none;
+}
 
-  Content is visible by default and the animation is layered on only where
-  the browser can drive it from the scroll timeline. Anywhere that cannot —
-  older browsers, print, crawlers, headless renderers — simply shows the
-  content, so it can never get stuck invisible.
-*/
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-progress {
+      animation: progress-grow linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+
+@keyframes progress-grow {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll reveal — content visible by default; the animation is layered on
+   only where the browser can drive it from the scroll timeline.
+--------------------------------------------------------------------------- */
 @keyframes reveal-in {
   from {
     opacity: 0;
@@ -133,6 +212,32 @@ h4 {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Hero entrance — one choreographed sequence, CSS only
+--------------------------------------------------------------------------- */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-rise {
+  animation: hero-rise 0.65s var(--ease-out-soft) both;
+  animation-delay: var(--rise-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: none;
+  }
+}
+
 /* Console line entrance */
 @keyframes console-line-in {
   from {
@@ -142,12 +247,12 @@ h4 {
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
 .console-line {
-  animation: console-line-in 0.4s ease-out both;
+  animation: console-line-in 0.35s ease-out both;
 }
 
 /* Blinking terminal caret */
@@ -165,37 +270,6 @@ h4 {
 
 .caret-blink {
   animation: caret-blink 1s steps(1) infinite;
-}
-
-/* Technology marquee */
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-marquee {
-  animation: marquee 36s linear infinite;
-}
-
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
-/* Slow floating drift (404, decorations) */
-@keyframes float-drift {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-14px);
-  }
-}
-
-.animate-float {
-  animation: float-drift 7s ease-in-out infinite;
 }
 
 /* Soft pulsing status dot */
@@ -216,48 +290,14 @@ h4 {
   animation: status-pulse 2.2s ease-in-out infinite;
 }
 
-@keyframes heartbeat-scroll {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-
-  12% {
-    transform: scale(1.14);
-  }
-
-  24% {
-    transform: scale(1);
-  }
-
-  36% {
-    transform: scale(1.14);
-  }
-
-  55% {
-    transform: scale(1);
-  }
-}
-
-.heartbeat-scroll {
-  animation: heartbeat-scroll 1.8s ease-in-out infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
-  .heartbeat-scroll,
-  .animate-marquee,
-  .animate-float,
-  .animate-status,
   .caret-blink,
-  .console-line {
-    animation: none;
-  }
-
-  .heartbeat-scroll .animate-ping {
+  .console-line,
+  .animate-status {
     animation: none;
   }
 }

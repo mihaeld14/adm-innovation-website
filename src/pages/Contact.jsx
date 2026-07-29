@@ -1,89 +1,67 @@
 import { useState } from "react"
-import { Link } from "react-router"
 import {
   ArrowIcon,
   CheckIcon,
   InfoPanel,
 } from "../components/CardStandards"
+import usePageMeta from "../lib/meta"
 
 
 const contactEmail = "contact@adminnovations.com"
 
 
-const services = [
-  "Custom Software Development",
-  "Web Development",
-  "AI Solutions",
-  "Business Automation",
-  "System Integration",
-  "Support & Improvement",
-  "Basic Business Website — from €120",
-  "Not sure yet",
+const projectTypes = [
+  "Business software / internal system",
+  "AI solution or assistant",
+  "Process automation",
+  "New website or platform",
+  "Basic Business Website (€120)",
+  "Support for an existing system",
+  "Something else / not sure yet",
 ]
 
 
 const budgetOptions = [
   "Under €500",
-  "€500–€1,500",
-  "€1,500–€5,000",
-  "€5,000+",
+  "€500 – €1,500",
+  "€1,500 – €5,000",
+  "Over €5,000",
   "Not sure yet",
+]
+
+
+const timelineOptions = [
+  "Within 1 month",
+  "1 – 3 months",
+  "More than 3 months",
+  "Flexible",
 ]
 
 
 const nextSteps = [
   {
     number: "01",
-    title: "We review your request",
+    title: "We review your enquiry",
     description:
-      "We examine the information you provide and identify the main objective of the project.",
+      "We read through the information and identify the main objective of the project.",
   },
   {
     number: "02",
-    title: "We confirm the scope and price",
+    title: "A short free conversation",
     description:
-      "Before development begins, you receive a defined project scope and an agreed price.",
+      "We discuss the process, the problem and the possible approaches — with no obligation.",
   },
   {
     number: "03",
-    title: "We build and present the solution",
+    title: "You receive a written quote",
     description:
-      "For custom projects, no payment is due while we build. You first review a working version of the agreed result.",
+      "Fixed scope, price and timeline, before any development has started.",
   },
   {
     number: "04",
-    title: "You approve, pay and receive the project",
+    title: "You review and approve",
     description:
-      "After approval, the agreed payment is completed and the final files, access and project handover follow.",
-  },
-]
-
-
-const faqs = [
-  {
-    question: "When do I pay for a custom project?",
-    answer:
-      "The scope and price are agreed before development begins, but no advance development payment is required. You first review a working version of the agreed solution. Payment is completed after approval and before the final project handover. The €120 Basic Business Website package is the exception and is paid in advance.",
-  },
-  {
-    question: "How quickly will you respond?",
-    answer:
-      "We normally respond within one business day. More complex requests may require additional time for an initial review.",
-  },
-  {
-    question: "Do I need a complete technical specification?",
-    answer:
-      "No. A short explanation of the business problem, current process and desired result is enough to begin the discussion.",
-  },
-  {
-    question: "Do you work with businesses outside Bulgaria?",
-    answer:
-      "Yes. Projects can be completed remotely for businesses in Bulgaria and other countries.",
-  },
-  {
-    question: "Is the initial discussion free?",
-    answer:
-      "Yes. The initial project discussion and review are free and do not create an obligation to proceed.",
+      "On custom projects you see the working solution before you pay.",
   },
 ]
 
@@ -92,42 +70,22 @@ const initialForm = {
   name: "",
   company: "",
   email: "",
-  phone: "",
-  service: "",
+  projectType: "",
+  description: "",
   budget: "",
-  projectDescription: "",
+  timeline: "",
   consent: false,
 }
 
 
-function MailIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      className="h-5 w-5"
-    >
-      <path
-        d="M4 6.5h16v11H4v-11Z"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinejoin="round"
-      />
-
-      <path
-        d="m5 7.5 7 5 7-5"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-
 function Contact() {
+  usePageMeta({
+    title: "Contact — free consultation",
+    description:
+      "Get in touch with ADM Innovations: describe the problem or process you want to improve. We reply within 1 business day.",
+    path: "/contact",
+  })
+
   const [formData, setFormData] = useState(initialForm)
   const [submitted, setSubmitted] = useState(false)
 
@@ -146,25 +104,25 @@ function Contact() {
     event.preventDefault()
 
     const subject = encodeURIComponent(
-      `Project inquiry — ${formData.company || formData.name}`,
+      `Project enquiry — ${formData.company || formData.name}`,
     )
 
     const body = encodeURIComponent(
       `
-ADM INNOVATIONS PROJECT REQUEST
+ADM INNOVATIONS PROJECT ENQUIRY
 
-CONTACT INFORMATION
+CONTACT
 Name: ${formData.name}
 Company: ${formData.company || "Not provided"}
 Email: ${formData.email}
-Phone: ${formData.phone || "Not provided"}
 
-PROJECT INFORMATION
-Service: ${formData.service}
+PROJECT
+Type: ${formData.projectType}
 Budget: ${formData.budget || "Not specified"}
+Timeline: ${formData.timeline || "Not specified"}
 
-PROJECT DESCRIPTION
-${formData.projectDescription}
+DESCRIPTION
+${formData.description}
       `.trim(),
     )
 
@@ -178,212 +136,122 @@ ${formData.projectDescription}
   return (
     <div className="relative overflow-hidden">
       {/* Hero */}
-      <section
-        className="
-          mx-auto
-          max-w-6xl
-          px-5
-          pt-28
-          pb-14
-          sm:px-6
-          sm:pt-40
-          sm:pb-20
-          lg:pb-24
-        "
-      >
-        <div
-          className="
-            grid
-            items-end
-            gap-8
-            lg:grid-cols-[1fr_340px]
-            lg:gap-12
-          "
-        >
-          <div>
-            <p className="text-xs font-medium tracking-[0.18em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.2em]">
-              Contact
-            </p>
+      <section className="mx-auto max-w-6xl px-5 pt-32 pb-10 sm:px-6 sm:pt-40 sm:pb-14">
+        <div className="max-w-3xl">
+          <p className="font-mono text-xs font-medium tracking-[0.18em] text-blue-400 uppercase">
+            Contact
+          </p>
 
-            <h1
-              className="
-                mt-4
-                max-w-4xl
-                text-4xl
-                leading-[1]
-                font-semibold
-                tracking-tight
-                text-white
-                sm:mt-5
-                sm:text-6xl
-                md:text-7xl
-              "
-            >
-              Tell us what you want to build.
-            </h1>
+          <h1 className="mt-4 text-4xl leading-[1.02] font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            Tell us what you want to improve.
+          </h1>
 
-            <p className="mt-5 max-w-2xl leading-relaxed text-gray-400 sm:mt-7 sm:text-lg">
-              Tell us what you want to create, improve or automate. A short
-              explanation of the problem and your desired result is enough to
-              start.
-            </p>
+          <p className="mt-5 max-w-2xl leading-relaxed text-gray-400 sm:text-lg">
+            No technical specification required — a short description of the
+            problem, the current process and the result you want is plenty to
+            get started.
+          </p>
 
-            <div className="mt-7 flex flex-wrap gap-x-6 gap-y-3 text-sm text-gray-400 sm:mt-9">
-              <div className="flex items-center gap-2">
+          <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2.5 text-sm text-gray-400">
+            {[
+              "Reply within 1 business day",
+              "No obligation",
+              "First consultation is free",
+            ].map((point) => (
+              <span
+                key={point}
+                className="flex items-center gap-2"
+              >
                 <CheckIcon />
-                No obligation
-              </div>
-
-              <div className="flex items-center gap-2">
-                <CheckIcon />
-                Clear project scope
-              </div>
-
-              <div className="flex items-center gap-2">
-                <CheckIcon />
-                Direct communication
-              </div>
-            </div>
+                {point}
+              </span>
+            ))}
           </div>
-
-
-          {/* Contact information card */}
-          <InfoPanel
-            as="aside"
-            className="p-6 sm:p-7"
-          >
-            <div className="relative">
-              <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase sm:text-sm">
-                Contact information
-              </p>
-
-              <div className="mt-6 space-y-6">
-                <ContactDetail
-                  label="Email"
-                  value={contactEmail}
-                  href={`mailto:${contactEmail}`}
-                />
-
-                <ContactDetail
-                  label="Response time"
-                  value="Usually within 1 business day"
-                />
-
-                <ContactDetail
-                  label="Availability"
-                  value="Monday – Friday"
-                />
-
-                <ContactDetail
-                  label="Location"
-                  value="Bulgaria / Remote projects"
-                />
-              </div>
-            </div>
-          </InfoPanel>
         </div>
       </section>
 
 
-      {/* Contact form and process */}
-      <section
-        className="
-          mx-auto
-          max-w-6xl
-          px-5
-          pb-14
-          sm:px-6
-          sm:pb-20
-          lg:pb-24
-        "
-      >
-        <div
-          className="
-            grid
-            items-start
-            gap-5
-            lg:grid-cols-[1.2fr_0.8fr]
-          "
-        >
+      {/* Form + what happens next */}
+      <section className="mx-auto max-w-6xl px-5 pb-16 sm:px-6 sm:pb-20">
+        <div className="grid items-start gap-5 lg:grid-cols-[1.2fr_0.8fr]">
           {/* Form */}
           <InfoPanel
             as="form"
             onSubmit={handleSubmit}
-            className="p-6 sm:p-9"
+            className="p-6 sm:p-8"
           >
-            <div className="max-w-2xl">
-              <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.18em]">
-                Project request
-              </p>
+            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+              Project enquiry
+            </h2>
 
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:mt-4 sm:text-4xl">
-                Tell us about your project
-              </h2>
+            <p className="mt-3 leading-relaxed text-gray-400">
+              This form opens your own email app with the message prepared —
+              nothing is stored on a server.
+            </p>
 
-              <p className="mt-4 leading-relaxed text-gray-400">
-                You do not need a complete technical specification. Describe
-                the problem, the current process and what you want to achieve.
-              </p>
-            </div>
-
-            <div className="mt-8 grid gap-5 sm:grid-cols-2">
+            <div className="mt-7 grid gap-5 sm:grid-cols-2">
               <Input
                 label="Your name"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
+                autoComplete="name"
                 required
               />
 
               <Input
-                label="Company name"
+                label="Company"
                 name="company"
                 value={formData.company}
                 onChange={handleChange}
+                autoComplete="organization"
+                placeholder="Optional"
               />
 
               <Input
-                label="Email address"
+                label="Work email"
                 name="email"
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                required
-              />
-
-              <Input
-                label="Phone number"
-                name="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Optional"
-              />
-
-              <Select
-                label="Service"
-                name="service"
-                value={formData.service}
-                onChange={handleChange}
-                options={services}
+                autoComplete="email"
                 required
               />
 
               <Select
-                label="Estimated budget"
+                label="Project type"
+                name="projectType"
+                value={formData.projectType}
+                onChange={handleChange}
+                options={projectTypes}
+                required
+              />
+
+              <Select
+                label="Approximate budget"
                 name="budget"
                 value={formData.budget}
                 onChange={handleChange}
                 options={budgetOptions}
+                hint="Optional — helps us suggest a realistic approach"
+              />
+
+              <Select
+                label="Desired timeline"
+                name="timeline"
+                value={formData.timeline}
+                onChange={handleChange}
+                options={timelineOptions}
+                hint="Optional"
               />
 
               <div className="sm:col-span-2">
                 <Textarea
-                  label="Project description"
-                  name="projectDescription"
-                  value={formData.projectDescription}
+                  label="Short description"
+                  name="description"
+                  value={formData.description}
                   onChange={handleChange}
-                  placeholder="Describe what you want to build, improve or automate..."
+                  placeholder="Example: “Every week we collect reports from 5 sites into Excel by hand. We want that to happen automatically.”"
                   required
                 />
               </div>
@@ -400,42 +268,26 @@ ${formData.projectDescription}
               />
 
               <span>
-                I agree that the submitted information may be used to review
-                and respond to my project inquiry.
+                I agree that the information I submit may be used to review
+                and respond to my enquiry.
               </span>
             </label>
 
             <button
               type="submit"
-              className="
-                group
-                mt-7
-                inline-flex
-                w-full
-                items-center
-                justify-center
-                gap-3
-                rounded-xl
-                bg-blue-600
-                px-6
-                py-4
-                font-semibold
-                text-white
-                transition
-                duration-300
-                hover:bg-blue-500
-                hover:shadow-[0_0_35px_rgba(59,130,246,0.28)]
-                sm:w-auto
-              "
+              className="mt-7 inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white transition duration-200 hover:bg-blue-500 hover:shadow-[0_0_35px_rgba(59,130,246,0.28)] sm:w-auto"
             >
-              Send project request
+              Send the enquiry
               <ArrowIcon />
             </button>
 
             {submitted && (
-              <p className="mt-5 text-sm leading-relaxed text-blue-300">
-                Your email application should now open with your project
-                information already prepared.
+              <p
+                className="mt-5 text-sm leading-relaxed text-emerald-300"
+                role="status"
+              >
+                Your email app should now have opened with the message ready.
+                If it did not, write to us directly at {contactEmail}.
               </p>
             )}
           </InfoPanel>
@@ -444,47 +296,28 @@ ${formData.projectDescription}
           {/* What happens next */}
           <InfoPanel
             as="aside"
-            className="p-6 sm:p-8 lg:sticky lg:top-28"
+            className="p-6 sm:p-7 lg:sticky lg:top-24"
           >
-            <p className="text-xs font-medium tracking-[0.16em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.18em]">
+            <p className="font-mono text-xs font-medium tracking-[0.16em] text-blue-400 uppercase">
               What happens next
             </p>
 
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:mt-4">
-              A clear path from request to project.
-            </h2>
-
-            <div className="mt-8 space-y-6">
+            <div className="mt-6 space-y-5">
               {nextSteps.map((step) => (
                 <article
                   key={step.number}
-                  className="grid grid-cols-[42px_1fr] gap-4"
+                  className="flex items-start gap-4"
                 >
-                  <span
-                    className="
-                      flex
-                      h-10
-                      w-10
-                      items-center
-                      justify-center
-                      rounded-xl
-                      border
-                      border-blue-400/20
-                      bg-blue-500/8
-                      text-sm
-                      font-semibold
-                      text-blue-300
-                    "
-                  >
+                  <span className="font-mono text-sm font-semibold text-blue-400">
                     {step.number}
                   </span>
 
                   <div>
-                    <h3 className="font-semibold text-white">
+                    <h3 className="font-bold text-white">
                       {step.title}
                     </h3>
 
-                    <p className="mt-2 text-sm leading-relaxed text-gray-400">
+                    <p className="mt-1 text-sm leading-relaxed text-gray-400">
                       {step.description}
                     </p>
                   </div>
@@ -492,245 +325,27 @@ ${formData.projectDescription}
               ))}
             </div>
 
-            <div className="mt-8 border-t border-white/8 pt-7">
-              <ul className="space-y-3">
-                {[
-                  "Scope and price agreed before development",
-                  "No upfront payment for custom projects",
-                  "Working solution shown before payment",
-                  "Basic Website package paid in advance",
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-center gap-3 text-sm text-gray-300"
-                  >
-                    <CheckIcon />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+            <div className="mt-7 border-t border-white/8 pt-6">
+              <p className="text-sm text-gray-500">
+                Prefer plain email?
+              </p>
+
+              <a
+                href={`mailto:${contactEmail}`}
+                className="mt-1.5 inline-flex min-h-10 items-center font-medium text-gray-200 transition hover:text-blue-300"
+              >
+                {contactEmail}
+              </a>
+
+              <p className="mt-3 text-xs text-gray-600">
+                Monday – Friday · Bulgaria · Remote projects
+              </p>
             </div>
           </InfoPanel>
         </div>
       </section>
-
-
-      {/* FAQ */}
-      <section
-        className="
-          border-y
-          border-white/6
-          bg-white/[0.015]
-        "
-      >
-        <div
-          className="
-            mx-auto
-            max-w-4xl
-            px-5
-            py-14
-            sm:px-6
-            sm:py-20
-            lg:py-24
-          "
-        >
-          <div className="text-center">
-            <p className="text-xs font-medium tracking-[0.18em] text-blue-400 uppercase sm:text-sm sm:tracking-[0.2em]">
-              Questions
-            </p>
-
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:mt-5 sm:text-5xl">
-              Frequently asked questions
-            </h2>
-          </div>
-
-          <div className="mt-8 space-y-3 sm:mt-12 sm:space-y-4">
-            {faqs.map((faq) => (
-              <details
-                key={faq.question}
-                className="
-                  group
-                  rounded-2xl
-                  border
-                  border-white/8
-                  bg-white/3
-                  p-5
-                  open:border-blue-500/25
-                  open:bg-blue-500/5
-                  sm:p-6
-                "
-              >
-                <summary
-                  className="
-                    flex
-                    cursor-pointer
-                    list-none
-                    items-center
-                    justify-between
-                    gap-5
-                    font-semibold
-                    text-white
-                  "
-                >
-                  <span>{faq.question}</span>
-
-                  <span
-                    className="
-                      shrink-0
-                      text-xl
-                      font-light
-                      text-blue-400
-                      transition-transform
-                      duration-300
-                      group-open:rotate-45
-                    "
-                  >
-                    +
-                  </span>
-                </summary>
-
-                <p className="mt-4 max-w-2xl leading-relaxed text-gray-400">
-                  {faq.answer}
-                </p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-
-      {/* Direct email CTA */}
-      <section
-        className="
-          mx-auto
-          max-w-6xl
-          px-5
-          py-14
-          pb-20
-          sm:px-6
-          sm:py-20
-          sm:pb-28
-          lg:py-24
-          lg:pb-32
-        "
-      >
-        <InfoPanel className="px-6 py-11 text-center sm:px-12 sm:py-16">
-          <div
-            className="
-              pointer-events-none
-              absolute
-              top-1/2
-              left-1/2
-              h-72
-              w-[520px]
-              max-w-full
-              -translate-x-1/2
-              -translate-y-1/2
-              rounded-full
-              bg-blue-600/12
-              blur-[100px]
-            "
-          />
-
-          <div className="relative">
-            <div
-              className="
-                mx-auto
-                flex
-                h-12
-                w-12
-                items-center
-                justify-center
-                rounded-2xl
-                border
-                border-blue-400/25
-                bg-blue-500/10
-                text-blue-300
-              "
-            >
-              <MailIcon />
-            </div>
-
-            <p className="mt-5 text-xs font-medium tracking-[0.18em] text-blue-400 uppercase sm:text-sm">
-              Prefer email?
-            </p>
-
-            <h2 className="mx-auto mt-4 max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-5xl">
-              Send your project details directly.
-            </h2>
-
-            <p className="mx-auto mt-5 max-w-xl leading-relaxed text-gray-400">
-              You can contact us directly at{" "}
-              <span className="text-gray-200">{contactEmail}</span>.
-            </p>
-
-            <a
-              href={`mailto:${contactEmail}`}
-              className="
-                group
-                mt-7
-                inline-flex
-                items-center
-                gap-3
-                rounded-xl
-                bg-blue-600
-                px-6
-                py-3.5
-                font-semibold
-                text-white
-                transition
-                hover:bg-blue-500
-                hover:shadow-[0_0_35px_rgba(59,130,246,0.28)]
-                sm:mt-8
-              "
-            >
-              Send an email
-              <ArrowIcon />
-            </a>
-
-            <div className="mt-6">
-              <Link
-                to="/services"
-                className="text-sm font-semibold text-gray-400 transition hover:text-white"
-              >
-                Explore all services
-              </Link>
-            </div>
-          </div>
-        </InfoPanel>
-      </section>
     </div>
   )
-}
-
-
-function ContactDetail({
-  label,
-  value,
-  href,
-}) {
-  const content = (
-    <>
-      <p className="text-sm text-gray-500">{label}</p>
-
-      <p className="mt-1 font-medium text-gray-200">
-        {value}
-      </p>
-    </>
-  )
-
-  if (href) {
-    return (
-      <a
-        href={href}
-        className="block transition hover:opacity-80"
-      >
-        {content}
-      </a>
-    )
-  }
-
-  return <div>{content}</div>
 }
 
 
@@ -741,13 +356,22 @@ function Input({
   onChange,
   type = "text",
   placeholder = "",
+  autoComplete,
   required = false,
 }) {
   return (
     <label className="block">
       <span className="text-sm font-medium text-gray-300">
         {label}
-        {required && <span className="text-blue-400"> *</span>}
+        {required && (
+          <span
+            className="text-blue-400"
+            aria-hidden="true"
+          >
+            {" "}
+            *
+          </span>
+        )}
       </span>
 
       <input
@@ -756,24 +380,9 @@ function Input({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        autoComplete={autoComplete}
         required={required}
-        className="
-          mt-2
-          w-full
-          rounded-xl
-          border
-          border-white/10
-          bg-black/20
-          px-4
-          py-3.5
-          text-white
-          outline-none
-          transition
-          placeholder:text-gray-600
-          focus:border-blue-500/60
-          focus:ring-2
-          focus:ring-blue-500/10
-        "
+        className="mt-2 w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white transition outline-none placeholder:text-gray-600 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/15"
       />
     </label>
   )
@@ -792,7 +401,15 @@ function Textarea({
     <label className="block">
       <span className="text-sm font-medium text-gray-300">
         {label}
-        {required && <span className="text-blue-400"> *</span>}
+        {required && (
+          <span
+            className="text-blue-400"
+            aria-hidden="true"
+          >
+            {" "}
+            *
+          </span>
+        )}
       </span>
 
       <textarea
@@ -802,24 +419,7 @@ function Textarea({
         placeholder={placeholder}
         required={required}
         rows="6"
-        className="
-          mt-2
-          w-full
-          resize-y
-          rounded-xl
-          border
-          border-white/10
-          bg-black/20
-          px-4
-          py-3.5
-          text-white
-          outline-none
-          transition
-          placeholder:text-gray-600
-          focus:border-blue-500/60
-          focus:ring-2
-          focus:ring-blue-500/10
-        "
+        className="mt-2 w-full resize-y rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white transition outline-none placeholder:text-gray-600 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/15"
       />
     </label>
   )
@@ -832,13 +432,22 @@ function Select({
   value,
   onChange,
   options,
+  hint,
   required = false,
 }) {
   return (
     <label className="block">
       <span className="text-sm font-medium text-gray-300">
         {label}
-        {required && <span className="text-blue-400"> *</span>}
+        {required && (
+          <span
+            className="text-blue-400"
+            aria-hidden="true"
+          >
+            {" "}
+            *
+          </span>
+        )}
       </span>
 
       <select
@@ -846,26 +455,9 @@ function Select({
         value={value}
         onChange={onChange}
         required={required}
-        className="
-          mt-2
-          w-full
-          rounded-xl
-          border
-          border-white/10
-          bg-[#0b0b0b]
-          px-4
-          py-3.5
-          text-white
-          outline-none
-          transition
-          focus:border-blue-500/60
-          focus:ring-2
-          focus:ring-blue-500/10
-        "
+        className="mt-2 w-full rounded-xl border border-white/10 bg-[#0b0d11] px-4 py-3 text-white transition outline-none focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/15"
       >
-        <option value="">
-          Select an option
-        </option>
+        <option value="">Select…</option>
 
         {options.map((option) => (
           <option
@@ -876,6 +468,12 @@ function Select({
           </option>
         ))}
       </select>
+
+      {hint && (
+        <span className="mt-1.5 block text-xs text-gray-600">
+          {hint}
+        </span>
+      )}
     </label>
   )
 }

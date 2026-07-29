@@ -12,44 +12,44 @@ function prefersReducedMotion() {
 
 const scenarios = [
   {
-    id: "invoice-intake",
-    label: "invoice-intake",
+    id: "invoices",
+    label: "invoices",
     lines: [
       { tone: "cmd", text: "adm run invoice-intake" },
-      { tone: "muted", text: "· watching inbox for attachments…" },
+      { tone: "muted", text: "· watching the inbox for new invoices…" },
       { tone: "info", text: "→ new invoice detected — INV-2047.pdf" },
-      { tone: "ok", text: "✓ data extracted: client, total, due date (0.8s)" },
+      { tone: "ok", text: "✓ extracted: supplier, total, due date (0.8s)" },
       { tone: "ok", text: "✓ record added to the accounting sheet" },
-      { tone: "ok", text: "✓ payment reminder scheduled automatically" },
-      { tone: "ok", text: "✓ summary sent to finance@yourcompany.com" },
+      { tone: "ok", text: "✓ payment reminder scheduled" },
+      { tone: "ok", text: "✓ summary sent to the finance team" },
       { tone: "done", text: "● done in 4.2s — 0 manual steps" },
     ],
   },
   {
-    id: "weekly-report",
-    label: "weekly-report",
+    id: "report",
+    label: "weekly report",
     lines: [
       { tone: "cmd", text: "adm run weekly-report" },
       { tone: "muted", text: "· collecting data from 4 connected systems…" },
       { tone: "ok", text: "✓ sales figures pulled from the CRM" },
-      { tone: "ok", text: "✓ hours synced from the time tracker" },
+      { tone: "ok", text: "✓ logged hours synced from the tracker" },
       { tone: "ok", text: "✓ KPIs calculated and charted" },
-      { tone: "info", text: "→ report compiled — weekly-report.pdf" },
+      { tone: "info", text: "→ report compiled — report-w31.pdf" },
       { tone: "ok", text: "✓ delivered to the management channel" },
       { tone: "done", text: "● done in 6.8s — every Monday, 07:00" },
     ],
   },
   {
-    id: "lead-router",
-    label: "lead-router",
+    id: "enquiries",
+    label: "enquiries",
     lines: [
       { tone: "cmd", text: "adm run lead-router" },
-      { tone: "muted", text: "· new form submission received…" },
-      { tone: "ok", text: "✓ lead enriched with company details" },
+      { tone: "muted", text: "· new enquiry received from the website…" },
+      { tone: "ok", text: "✓ company details enriched" },
       { tone: "ok", text: "✓ scored 87/100 — high intent" },
       { tone: "info", text: "→ routed to sales with full context" },
-      { tone: "ok", text: "✓ follow-up email drafted for approval" },
-      { tone: "done", text: "● done in 2.1s — human approves, robot types" },
+      { tone: "ok", text: "✓ reply drafted, waiting for approval" },
+      { tone: "done", text: "● done in 2.1s — a human approves, the system types" },
     ],
   },
 ]
@@ -80,9 +80,9 @@ function ConsoleLine({ line, animate }) {
 
 
 /*
-  Fake terminal that "runs" example automations line by line,
-  cycling between scenarios. Visitors can also switch scenarios
-  through the tabs above the output.
+  Interactive demonstration: a console that "runs" example automations
+  line by line and cycles through the scenarios. Visitors can switch
+  scenarios using the tabs.
 */
 function AutomationConsole() {
   const reducedMotion = prefersReducedMotion()
@@ -135,21 +135,21 @@ function AutomationConsole() {
       className="
         relative
         overflow-hidden
-        rounded-3xl
+        rounded-2xl
         border
         border-white/10
-        bg-[#070a10]/90
+        bg-[#080b11]/95
         shadow-[0_24px_80px_rgba(0,0,0,0.45)]
       "
     >
-      {/* Glow */}
+      {/* Accent lighting */}
       <div
         className="pointer-events-none absolute -top-24 -right-24 h-56 w-56 rounded-full bg-blue-500/10 blur-[80px]"
         aria-hidden="true"
       />
 
       {/* Window header */}
-      <div className="flex items-center justify-between gap-4 border-b border-white/8 px-5 py-3.5">
+      <div className="flex items-center justify-between gap-4 border-b border-white/8 px-5 py-3">
         <div
           className="flex items-center gap-2"
           aria-hidden="true"
@@ -159,8 +159,8 @@ function AutomationConsole() {
           <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/60" />
         </div>
 
-        <p className="hidden text-xs font-medium tracking-[0.14em] text-gray-500 uppercase sm:block">
-          adm · automation console
+        <p className="hidden font-mono text-xs tracking-[0.12em] text-gray-500 uppercase sm:block">
+          adm · automations
         </p>
 
         <p className="flex items-center gap-2 text-xs font-medium text-emerald-300">
@@ -174,7 +174,7 @@ function AutomationConsole() {
 
       {/* Scenario tabs */}
       <div
-        className="flex flex-wrap gap-1.5 border-b border-white/8 px-4 py-3"
+        className="flex flex-wrap gap-1.5 border-b border-white/8 px-4 py-2.5"
         role="tablist"
         aria-label="Example automations"
       >
@@ -186,12 +186,14 @@ function AutomationConsole() {
             aria-selected={index === scenarioIndex}
             onClick={() => handleTabClick(index)}
             className={`
+              min-h-10
               rounded-lg
               px-3
               py-1.5
               font-mono
               text-xs
               transition
+              duration-200
               ${
                 index === scenarioIndex
                   ? "bg-blue-500/12 text-blue-300"
@@ -206,7 +208,7 @@ function AutomationConsole() {
 
       {/* Output */}
       <div
-        className="min-h-[264px] px-5 py-5 font-mono text-[13px] sm:min-h-[276px] sm:px-6 sm:text-sm"
+        className="min-h-[264px] px-5 py-4 font-mono text-[12.5px] sm:min-h-[276px] sm:px-6 sm:text-[13px]"
         aria-live="off"
       >
         {linesToShow.map((line) => (

@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react"
 import {
   createBrowserRouter,
+  Navigate,
   RouterProvider,
 } from "react-router"
 
@@ -13,12 +14,13 @@ import Home from "./pages/Home"
   Every other route is split out and fetched on navigation.
 */
 const Services = lazy(() => import("./pages/Services"))
-const Products = lazy(() => import("./pages/Products"))
+const ServiceDetails = lazy(() => import("./pages/ServiceDetails"))
+const BasicWebsite = lazy(() => import("./pages/BasicWebsite"))
+const Process = lazy(() => import("./pages/Process"))
 const About = lazy(() => import("./pages/About"))
 const Contact = lazy(() => import("./pages/Contact"))
+const Privacy = lazy(() => import("./pages/Privacy"))
 const NotFound = lazy(() => import("./pages/NotFound"))
-const BasicWebsite = lazy(() => import("./pages/BasicWebsite"))
-const ServiceDetails = lazy(() => import("./pages/ServiceDetails"))
 
 
 function PageFallback() {
@@ -58,8 +60,29 @@ const router = createBrowserRouter([
       },
 
       {
+        path: "services/basic-website",
+        element: lazyRoute(<BasicWebsite />),
+      },
+
+      {
+        path: "services/:slug",
+        element: lazyRoute(<ServiceDetails />),
+      },
+
+      /* Old URLs from previous versions of the site */
+      {
         path: "products",
-        element: lazyRoute(<Products />),
+        element: <Navigate to="/services" replace />,
+      },
+
+      {
+        path: "projects",
+        element: <Navigate to="/services" replace />,
+      },
+
+      {
+        path: "process",
+        element: lazyRoute(<Process />),
       },
 
       {
@@ -73,18 +96,13 @@ const router = createBrowserRouter([
       },
 
       {
+        path: "privacy",
+        element: lazyRoute(<Privacy />),
+      },
+
+      {
         path: "*",
         element: lazyRoute(<NotFound />),
-      },
-
-      {
-        path: "/services/basic-website",
-        element: lazyRoute(<BasicWebsite />),
-      },
-
-      {
-        path: "services/:slug",
-        element: lazyRoute(<ServiceDetails />),
       },
 
     ],

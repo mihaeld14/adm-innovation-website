@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, NavLink, useLocation } from "react-router"
 import logo from "../assets/Logo.webp"
 import servicesData from "../data/servicesData"
@@ -7,7 +7,7 @@ import servicesData from "../data/servicesData"
 const navigation = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
-  { label: "Products", href: "/products" },
+  { label: "Process", href: "/process" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ]
@@ -15,7 +15,7 @@ const navigation = [
 
 const serviceNavigation = [
   ...servicesData.map((service) => ({
-    label: service.title,
+    label: service.nav,
     href: `/services/${service.slug}`,
     description: service.shortDescription,
     number: service.number,
@@ -23,9 +23,8 @@ const serviceNavigation = [
   {
     label: "Basic Business Website",
     href: "/services/basic-website",
-    description:
-      "A professional business website with up to six pages from €120.",
-    number: "07",
+    description: "Fixed €120 package — up to six pages for small businesses.",
+    number: "06",
   },
 ]
 
@@ -52,38 +51,13 @@ function ChevronIcon({ open = false }) {
 }
 
 
-function ArrowIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      className="
-        h-4
-        w-4
-        transition-transform
-        duration-200
-        group-hover/service:translate-x-1
-      "
-    >
-      <path
-        d="M5 12h14M13 6l6 6-6 6"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-
 function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
 
+  const servicesRef = useRef(null)
   const location = useLocation()
 
   const servicesActive =
@@ -98,9 +72,7 @@ function Navbar() {
 
     handleScroll()
 
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    })
+    window.addEventListener("scroll", handleScroll, { passive: true })
 
     return () => {
       window.removeEventListener("scroll", handleScroll)
@@ -108,19 +80,61 @@ function Navbar() {
   }, [])
 
 
+  /* On navigation: scroll to top and close any open menus */
   useEffect(() => {
     window.scrollTo(0, 0)
 
-    const closeMenuTimer = window.setTimeout(() => {
+    const closeTimer = window.setTimeout(() => {
       setMenuOpen(false)
       setServicesOpen(false)
       setMobileServicesOpen(false)
     }, 0)
 
     return () => {
-      window.clearTimeout(closeMenuTimer)
+      window.clearTimeout(closeTimer)
     }
   }, [location.pathname])
+
+
+  /* Escape closes the dropdown and the mobile navigation */
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setServicesOpen(false)
+        setMenuOpen(false)
+        setMobileServicesOpen(false)
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [])
+
+
+  /* A click outside the dropdown closes it */
+  useEffect(() => {
+    if (!servicesOpen) {
+      return undefined
+    }
+
+    const handlePointerDown = (event) => {
+      if (
+        servicesRef.current &&
+        !servicesRef.current.contains(event.target)
+      ) {
+        setServicesOpen(false)
+      }
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown)
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown)
+    }
+  }, [servicesOpen])
 
 
   useEffect(() => {
@@ -160,10 +174,10 @@ function Navbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${
-        scrolled ? "py-2.5" : "py-5"
+        scrolled ? "py-2" : "py-3.5"
       } ${
         scrolled || menuOpen || servicesOpen
-          ? "border-white/10 bg-[#050505]/85 backdrop-blur-lg"
+          ? "border-white/10 bg-[#060709]/88 backdrop-blur-lg"
           : "border-transparent bg-transparent"
       }`}
     >
@@ -172,60 +186,36 @@ function Navbar() {
           {/* Logo */}
           <Link
             to="/"
-            className="
-              group
-              relative
-              z-50
-              flex
-              min-w-0
-              items-center
-              justify-self-start
-              gap-3
-            "
-            aria-label="ADM Innovations home"
+            className="group relative z-50 flex min-w-0 items-center justify-self-start gap-3"
+            aria-label="ADM Innovations — home"
           >
             <img
               src={logo}
-              alt="ADM Innovations logo"
+              alt=""
               width="160"
               height="160"
               fetchPriority="high"
               decoding="async"
-              className={`h-13 w-auto shrink-0 origin-left object-contain transition-transform duration-300 min-[380px]:h-15 sm:h-20 ${
+              className={`h-11 w-auto shrink-0 origin-left object-contain transition-transform duration-300 sm:h-14 ${
                 scrolled ? "scale-90" : "scale-100"
               }`}
             />
 
-            <div
-              className={`min-w-0 origin-left transition-transform duration-300 ${
-                scrolled ? "scale-[0.94]" : "scale-100"
-              }`}
-            >
-              <div className="text-[13px] leading-tight font-semibold whitespace-nowrap text-white min-[380px]:text-sm sm:text-base">
+            <span className="min-w-0">
+              <span className="block font-display text-sm leading-tight font-bold whitespace-nowrap text-white sm:text-base">
                 ADM Innovations
-              </div>
+              </span>
 
-              <div className="text-[8px] leading-tight tracking-[0.06em] whitespace-nowrap text-gray-500 uppercase min-[380px]:text-[9px] sm:text-[11px] sm:tracking-[0.18em]">
-                Software &amp; Automations
-              </div>
-            </div>
+              <span className="block font-mono text-[8px] leading-tight tracking-[0.14em] whitespace-nowrap text-gray-500 uppercase sm:text-[10px]">
+                Software · AI · Automation
+              </span>
+            </span>
           </Link>
 
 
           {/* Desktop navigation */}
           <nav
-            className="
-              hidden
-              items-center
-              justify-self-center
-              gap-1
-              rounded-full
-              border
-              border-white/10
-              bg-white/3
-              p-1
-              md:flex
-            "
+            className="hidden items-center justify-self-center gap-0.5 rounded-full border border-white/10 bg-white/3 p-1 md:flex"
             aria-label="Main navigation"
           >
             {navigation.map((item) => {
@@ -233,70 +223,48 @@ function Navbar() {
                 return (
                   <div
                     key={item.label}
-                    className="relative"
+                    ref={servicesRef}
+                    className="relative flex items-center"
                     onMouseEnter={() => setServicesOpen(true)}
                     onMouseLeave={() => setServicesOpen(false)}
-                    onFocus={() => setServicesOpen(true)}
                     onBlur={handleServicesBlur}
                   >
                     <NavLink
                       to={item.href}
-                      aria-haspopup="true"
-                      aria-expanded={servicesOpen}
-                      className={`
-                        flex
-                        items-center
-                        gap-1.5
-                        rounded-full
-                        px-4
-                        py-2
-                        text-sm
-                        font-medium
-                        transition
-                        ${
-                          servicesActive
-                            ? "bg-white/9 text-white shadow-sm"
-                            : "text-gray-400 hover:bg-white/6 hover:text-white"
-                        }
-                      `}
+                      className={`rounded-l-full py-2 pr-1.5 pl-3.5 text-sm font-medium transition ${
+                        servicesActive
+                          ? "bg-white/9 text-white shadow-sm"
+                          : "text-gray-400 hover:bg-white/6 hover:text-white"
+                      }`}
                     >
                       Services
-                      <ChevronIcon open={servicesOpen} />
                     </NavLink>
 
-
-                    {/* Desktop services dropdown */}
-                    <div
-                      className={`
-                        absolute
-                        top-full
-                        left-1/2
-                        z-50
-                        w-[calc(100vw-2rem)]
-                        max-w-[760px]
-                        -translate-x-1/2
-                        pt-4
-                        transition-all
-                        duration-200
-                        ${
-                          servicesOpen
-                            ? "visible translate-y-0 opacity-100"
-                            : "invisible -translate-y-2 opacity-0"
-                        }
-                      `}
+                    <button
+                      type="button"
+                      aria-haspopup="true"
+                      aria-expanded={servicesOpen}
+                      aria-label="Open the Services submenu"
+                      onClick={() => setServicesOpen((current) => !current)}
+                      className={`rounded-r-full py-2.5 pr-2.5 pl-0.5 transition ${
+                        servicesActive
+                          ? "bg-white/9 text-white"
+                          : "text-gray-400 hover:bg-white/6 hover:text-white"
+                      }`}
                     >
-                      <div
-                        className="
-                          overflow-hidden
-                          rounded-3xl
-                          border
-                          border-white/10
-                          bg-[#080808]/97
-                          p-3
-                          shadow-[0_30px_100px_rgba(0,0,0,0.65)]
-                          backdrop-blur-2xl
-                        "
-                      >
+                      <ChevronIcon open={servicesOpen} />
+                    </button>
+
+
+                    {/* Services dropdown */}
+                    <div
+                      className={`absolute top-full left-1/2 z-50 w-[calc(100vw-2rem)] max-w-[720px] -translate-x-1/2 pt-4 transition-[transform,opacity] duration-200 ${
+                        servicesOpen
+                          ? "visible translate-y-0 opacity-100"
+                          : "invisible -translate-y-2 opacity-0"
+                      }`}
+                    >
+                      <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#0a0d13]/97 p-2.5 shadow-[0_30px_100px_rgba(0,0,0,0.65)] backdrop-blur-2xl">
                         <div className="grid grid-cols-2 gap-1">
                           {serviceNavigation.map((service) => {
                             const isActive =
@@ -306,117 +274,29 @@ function Navbar() {
                               <Link
                                 key={service.href}
                                 to={service.href}
-                                className={`
-                                  group/service
-                                  flex
-                                  items-start
-                                  gap-4
-                                  rounded-2xl
-                                  border
-                                  px-4
-                                  py-4
-                                  transition
-                                  duration-200
-                                  ${
-                                    isActive
-                                      ? "border-blue-500/25 bg-blue-500/8"
-                                      : "border-transparent hover:border-white/8 hover:bg-white/5"
-                                  }
-                                `}
+                                tabIndex={servicesOpen ? 0 : -1}
+                                className={`group/service flex items-start gap-3.5 rounded-xl border px-3.5 py-3.5 transition duration-200 ${
+                                  isActive
+                                    ? "border-blue-500/25 bg-blue-500/8"
+                                    : "border-transparent hover:border-white/8 hover:bg-white/5"
+                                }`}
                               >
-                                <span
-                                  className="
-                                    mt-0.5
-                                    flex
-                                    h-9
-                                    w-9
-                                    shrink-0
-                                    items-center
-                                    justify-center
-                                    rounded-xl
-                                    border
-                                    border-blue-400/15
-                                    bg-blue-500/7
-                                    text-xs
-                                    font-semibold
-                                    text-blue-300
-                                  "
-                                >
+                                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-blue-400/15 bg-blue-500/7 font-mono text-[11px] font-semibold text-blue-300">
                                   {service.number}
                                 </span>
 
                                 <span className="min-w-0 flex-1">
-                                  <span className="flex items-center justify-between gap-3">
-                                    <span className="font-medium text-white">
-                                      {service.label}
-                                    </span>
-
-                                    <span
-                                      className="
-                                        shrink-0
-                                        text-gray-600
-                                        transition
-                                        group-hover/service:text-blue-300
-                                      "
-                                    >
-                                      <ArrowIcon />
-                                    </span>
+                                  <span className="block font-medium text-white">
+                                    {service.label}
                                   </span>
 
-                                  <span
-                                    className="
-                                      mt-1.5
-                                      block
-                                      line-clamp-2
-                                      text-xs
-                                      leading-relaxed
-                                      text-gray-500
-                                      transition
-                                      group-hover/service:text-gray-400
-                                    "
-                                  >
+                                  <span className="mt-1 block line-clamp-2 text-xs leading-relaxed text-gray-500 transition group-hover/service:text-gray-400">
                                     {service.description}
                                   </span>
                                 </span>
                               </Link>
                             )
                           })}
-                        </div>
-
-                        <div
-                          className="
-                            mt-3
-                            flex
-                            items-center
-                            justify-between
-                            gap-5
-                            border-t
-                            border-white/8
-                            px-4
-                            pt-3
-                          "
-                        >
-                          <p className="text-xs text-gray-500">
-                            Explore all services and project options.
-                          </p>
-
-                          <Link
-                            to="/services"
-                            className="
-                              group/service
-                              inline-flex
-                              items-center
-                              gap-2
-                              text-sm
-                              font-medium
-                              text-gray-300
-                              transition
-                              hover:text-white
-                            "
-                          >
-                            View all services
-                            <ArrowIcon />
-                          </Link>
                         </div>
                       </div>
                     </div>
@@ -430,7 +310,7 @@ function Navbar() {
                   to={item.href}
                   end={item.href === "/"}
                   className={({ isActive }) =>
-                    `rounded-full px-4 py-2 text-sm font-medium transition ${
+                    `rounded-full px-3.5 py-2 text-sm font-medium transition ${
                       isActive
                         ? "bg-white/9 text-white shadow-sm"
                         : "text-gray-400 hover:bg-white/6 hover:text-white"
@@ -444,72 +324,12 @@ function Navbar() {
           </nav>
 
 
-          {/* Desktop CTA */}
+          {/* Primary CTA */}
           <Link
             to="/contact"
-            className="
-              group
-              relative
-              isolate
-              hidden
-              items-center
-              justify-center
-              justify-self-end
-              gap-2
-              rounded-full
-              border
-              border-white/10
-              bg-white/3
-              px-5
-              py-2.5
-              text-sm
-              font-semibold
-              whitespace-nowrap
-              text-white
-              shadow-[0_0_34px_rgba(37,99,235,0.14)]
-              backdrop-blur-md
-              transition
-              hover:scale-[1.02]
-              hover:border-white/20
-              hover:bg-white/8
-              hover:shadow-[0_0_44px_rgba(59,130,246,0.22)]
-              active:scale-[0.98]
-              md:inline-flex
-            "
+            className="hidden items-center justify-center justify-self-end gap-2 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-white shadow-[0_0_30px_rgba(37,99,235,0.25)] transition duration-200 hover:bg-blue-500 hover:shadow-[0_0_40px_rgba(59,130,246,0.35)] active:scale-[0.98] md:inline-flex"
           >
-            <span
-              className="
-                pointer-events-none
-                absolute
-                -inset-10
-                -z-10
-                rounded-full
-                bg-blue-500/12
-                opacity-80
-                blur-2xl
-                transition
-                duration-300
-                group-hover:bg-blue-400/18
-                group-hover:opacity-100
-              "
-              aria-hidden="true"
-            />
-
-            <span className="relative">
-              Start a project
-            </span>
-
-            <span
-              className="
-                relative
-                text-gray-400
-                transition
-                group-hover:text-blue-200
-              "
-              aria-hidden="true"
-            >
-              &rarr;
-            </span>
+            Free consultation
           </Link>
 
 
@@ -517,54 +337,30 @@ function Navbar() {
           <button
             type="button"
             onClick={() => setMenuOpen((current) => !current)}
-            className="
-              relative
-              z-50
-              col-start-3
-              flex
-              h-11
-              w-11
-              items-center
-              justify-center
-              justify-self-end
-              rounded-xl
-              border
-              border-white/10
-              bg-white/4
-              text-white
-              transition
-              hover:bg-white/8
-              md:hidden
-            "
+            className="relative z-50 col-start-3 flex h-11 w-11 items-center justify-center justify-self-end rounded-xl border border-white/10 bg-white/4 text-white transition hover:bg-white/8 md:hidden"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
           >
-            <div className="relative h-5 w-5">
+            <span className="relative block h-5 w-5">
               <span
                 className={`absolute top-0.75 left-0 h-0.5 w-5 rounded-full bg-white transition-all duration-300 ${
-                  menuOpen
-                    ? "translate-y-1.5 rotate-45"
-                    : ""
+                  menuOpen ? "translate-y-1.5 rotate-45" : ""
                 }`}
               />
 
               <span
                 className={`absolute top-2.25 left-0 h-0.5 w-5 rounded-full bg-white transition-all duration-300 ${
-                  menuOpen
-                    ? "opacity-0"
-                    : "opacity-100"
+                  menuOpen ? "opacity-0" : "opacity-100"
                 }`}
               />
 
               <span
                 className={`absolute top-3.75 left-0 h-0.5 w-5 rounded-full bg-white transition-all duration-300 ${
-                  menuOpen
-                    ? "-translate-y-1.5 -rotate-45"
-                    : ""
+                  menuOpen ? "-translate-y-1.5 -rotate-45" : ""
                 }`}
               />
-            </div>
+            </span>
           </button>
         </div>
       </div>
@@ -580,60 +376,25 @@ function Navbar() {
         }`}
       >
         <div className="overflow-hidden">
-          <div className="mx-auto w-full px-3 pt-5 pb-3 sm:px-4">
+          <div className="mx-auto w-full px-3 pt-4 pb-3 sm:px-4">
             <nav
-              className="
-                max-h-[calc(100vh-110px)]
-                overflow-y-auto
-                rounded-2xl
-                border
-                border-white/10
-                bg-[#0a0a0a]/95
-                p-3
-                shadow-2xl
-                shadow-black/50
-              "
+              className="max-h-[calc(100vh-100px)] overflow-y-auto rounded-2xl border border-white/10 bg-[#0a0d13]/96 p-3 shadow-2xl shadow-black/50"
               aria-label="Mobile navigation"
             >
-              {navigation.map((item, index) => {
+              {navigation.map((item) => {
                 if (item.label === "Services") {
                   return (
-                    <div
-                      key={item.label}
-                      style={{
-                        transitionDelay: menuOpen
-                          ? `${index * 40}ms`
-                          : "0ms",
-                      }}
-                      className={`transition-all duration-200 ${
-                        menuOpen
-                          ? "translate-x-0 opacity-100"
-                          : "-translate-x-2.5 opacity-0"
-                      }`}
-                    >
+                    <div key={item.label}>
                       <button
                         type="button"
                         onClick={() =>
                           setMobileServicesOpen((current) => !current)
                         }
-                        className={`
-                          flex
-                          w-full
-                          items-center
-                          justify-between
-                          rounded-xl
-                          px-4
-                          py-3.5
-                          text-left
-                          text-base
-                          font-medium
-                          transition
-                          ${
-                            servicesActive
-                              ? "bg-white/8 text-white"
-                              : "text-gray-300 hover:bg-white/6 hover:text-white"
-                          }
-                        `}
+                        className={`flex min-h-12 w-full items-center justify-between rounded-xl px-4 py-3 text-left text-base font-medium transition ${
+                          servicesActive
+                            ? "bg-white/8 text-white"
+                            : "text-gray-300 hover:bg-white/6 hover:text-white"
+                        }`}
                         aria-expanded={mobileServicesOpen}
                         aria-controls="mobile-services-navigation"
                       >
@@ -650,84 +411,32 @@ function Navbar() {
                         }`}
                       >
                         <div className="overflow-hidden">
-                          <div
-                            className="
-                              mt-1
-                              space-y-1
-                              border-l
-                              border-white/10
-                              py-1
-                              pl-3
-                              ml-4
-                            "
-                          >
+                          <div className="mt-1 ml-4 space-y-0.5 border-l border-white/10 py-1 pl-3">
                             <Link
                               to="/services"
-                              className="
-                                flex
-                                items-center
-                                justify-between
-                                rounded-xl
-                                px-3
-                                py-3
-                                text-sm
-                                font-medium
-                                text-blue-300
-                                transition
-                                hover:bg-white/5
-                                hover:text-blue-200
-                              "
+                              className="flex min-h-11 items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium text-blue-300 transition hover:bg-white/5 hover:text-blue-200"
                             >
-                              View all services
-                              <span aria-hidden="true">
-                                &rarr;
-                              </span>
+                              All services
+                              <span aria-hidden="true">&rarr;</span>
                             </Link>
 
-                            {serviceNavigation.map((service) => {
-                              const isActive =
-                                location.pathname === service.href
+                            {serviceNavigation.map((service) => (
+                              <Link
+                                key={service.href}
+                                to={service.href}
+                                className={`flex min-h-11 items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
+                                  location.pathname === service.href
+                                    ? "bg-blue-500/8 text-white"
+                                    : "text-gray-400 hover:bg-white/5 hover:text-white"
+                                }`}
+                              >
+                                <span className="font-mono text-xs font-semibold text-blue-400">
+                                  {service.number}
+                                </span>
 
-                              return (
-                                <Link
-                                  key={service.href}
-                                  to={service.href}
-                                  className={`
-                                    flex
-                                    items-center
-                                    justify-between
-                                    gap-3
-                                    rounded-xl
-                                    px-3
-                                    py-3
-                                    text-sm
-                                    transition
-                                    ${
-                                      isActive
-                                        ? "bg-blue-500/8 text-white"
-                                        : "text-gray-400 hover:bg-white/5 hover:text-white"
-                                    }
-                                  `}
-                                >
-                                  <span className="flex items-center gap-3">
-                                    <span className="text-xs font-semibold text-blue-400">
-                                      {service.number}
-                                    </span>
-
-                                    <span>
-                                      {service.label}
-                                    </span>
-                                  </span>
-
-                                  <span
-                                    className="text-gray-600"
-                                    aria-hidden="true"
-                                  >
-                                    &rarr;
-                                  </span>
-                                </Link>
-                              )
-                            })}
+                                <span>{service.label}</span>
+                              </Link>
+                            ))}
                           </div>
                         </div>
                       </div>
@@ -740,17 +449,8 @@ function Navbar() {
                     key={item.label}
                     to={item.href}
                     end={item.href === "/"}
-                    style={{
-                      transitionDelay: menuOpen
-                        ? `${index * 40}ms`
-                        : "0ms",
-                    }}
                     className={({ isActive }) =>
-                      `flex items-center justify-between rounded-xl px-4 py-3.5 text-base font-medium transition-all duration-200 ${
-                        menuOpen
-                          ? "translate-x-0 opacity-100"
-                          : "-translate-x-2.5 opacity-0"
-                      } ${
+                      `flex min-h-12 items-center justify-between rounded-xl px-4 py-3 text-base font-medium transition ${
                         isActive
                           ? "bg-white/8 text-white"
                           : "text-gray-300 hover:bg-white/6 hover:text-white"
@@ -771,22 +471,9 @@ function Navbar() {
 
               <Link
                 to="/contact"
-                className="
-                  mt-3
-                  flex
-                  items-center
-                  justify-center
-                  rounded-xl
-                  bg-white
-                  px-5
-                  py-3.5
-                  font-semibold
-                  text-black
-                  transition
-                  hover:bg-gray-200
-                "
+                className="mt-3 flex min-h-12 items-center justify-center rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-500"
               >
-                Start a project
+                Free consultation
               </Link>
             </nav>
           </div>
