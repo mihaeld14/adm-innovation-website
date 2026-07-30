@@ -3,10 +3,10 @@ import { useEffect } from "react"
 
 /*
   The site's canonical home. The same address is also hard-coded in
-  index.html, public/sitemap.xml and public/robots.txt — update all four
-  together when the custom domain (adm-innovations.com) goes live.
+  index.html, public/sitemap.xml and public/robots.txt — if the domain
+  ever changes, update all four together.
 */
-const SITE_URL = "https://adm-innovation-website.pages.dev"
+const SITE_URL = "https://adm-innovations.com"
 const SITE_NAME = "ADM Innovations"
 
 
