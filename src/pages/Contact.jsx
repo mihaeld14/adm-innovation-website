@@ -7,7 +7,7 @@ import {
 import usePageMeta from "../lib/meta"
 
 
-const contactEmail = "contact@adminnovations.com"
+const contactEmail = "contact@adm-innovations.com"
 
 
 const projectTypes = [
@@ -75,6 +75,8 @@ const initialForm = {
   budget: "",
   timeline: "",
   consent: false,
+  /* Honeypot — hidden from people, irresistible to bots. */
+  website: "",
 }
 
 
@@ -87,7 +89,10 @@ function Contact() {
   })
 
   const [formData, setFormData] = useState(initialForm)
-  const [submitted, setSubmitted] = useState(false)
+
+  /* "idle" | "sending" | "sent" | "error" */
+  const [status, setStatus] = useState("idle")
+  const [errorMessage, setErrorMessage] = useState("")
 
 
   const handleChange = (event) => {
@@ -100,36 +105,42 @@ function Contact() {
   }
 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
-    const subject = encodeURIComponent(
-      `Project enquiry — ${formData.company || formData.name}`,
-    )
+    if (status === "sending") {
+      return
+    }
 
-    const body = encodeURIComponent(
-      `
-ADM INNOVATIONS PROJECT ENQUIRY
+    setStatus("sending")
+    setErrorMessage("")
 
-CONTACT
-Name: ${formData.name}
-Company: ${formData.company || "Not provided"}
-Email: ${formData.email}
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(formData),
+      })
 
-PROJECT
-Type: ${formData.projectType}
-Budget: ${formData.budget || "Not specified"}
-Timeline: ${formData.timeline || "Not specified"}
+      const result = await response.json().catch(() => ({}))
 
-DESCRIPTION
-${formData.description}
-      `.trim(),
-    )
+      if (!response.ok) {
+        setErrorMessage(
+          result.error ||
+            "Something went wrong while sending. Please try again.",
+        )
+        setStatus("error")
+        return
+      }
 
-    setSubmitted(true)
-
-    window.location.href =
-      `mailto:${contactEmail}?subject=${subject}&body=${body}`
+      setFormData(initialForm)
+      setStatus("sent")
+    } catch {
+      setErrorMessage(
+        "We could not reach the server. Please check your connection and try again.",
+      )
+      setStatus("error")
+    }
   }
 
 
@@ -185,9 +196,28 @@ ${formData.description}
             </h2>
 
             <p className="mt-3 leading-relaxed text-gray-400">
-              This form opens your own email app with the message prepared —
-              nothing is stored on a server.
+              Send it straight from here and we will reply to the address you
+              give us, usually within one business day.
             </p>
+
+            {/* Honeypot: off-screen, skipped by keyboard, hidden from
+                assistive tech. Only a bot fills this in. */}
+            <div
+              aria-hidden="true"
+              className="absolute left-[-9999px] h-px w-px overflow-hidden"
+            >
+              <label htmlFor="website">Leave this field empty</label>
+
+              <input
+                id="website"
+                type="text"
+                name="website"
+                value={formData.website}
+                onChange={handleChange}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
 
             <div className="mt-7 grid gap-5 sm:grid-cols-2">
               <Input
@@ -275,21 +305,58 @@ ${formData.description}
 
             <button
               type="submit"
-              className="mt-7 inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white transition duration-200 hover:bg-blue-500 hover:shadow-[0_0_35px_rgba(59,130,246,0.28)] sm:w-auto"
+              disabled={status === "sending"}
+              className="mt-7 inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white transition duration-200 hover:bg-blue-500 hover:shadow-[0_0_35px_rgba(59,130,246,0.28)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-blue-600 disabled:hover:shadow-none sm:w-auto"
             >
-              Send the enquiry
-              <ArrowIcon />
+              {status === "sending" ? (
+                <>
+                  Sending…
+                  <span
+                    className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"
+                    aria-hidden="true"
+                  />
+                </>
+              ) : (
+                <>
+                  Send the enquiry
+                  <ArrowIcon />
+                </>
+              )}
             </button>
 
-            {submitted && (
-              <p
-                className="mt-5 text-sm leading-relaxed text-emerald-300"
-                role="status"
-              >
-                Your email app should now have opened with the message ready.
-                If it did not, write to us directly at {contactEmail}.
-              </p>
-            )}
+            {/*
+              Kept in the DOM at all times so screen readers announce
+              whatever lands here, rather than missing a node that only
+              appears after the fact.
+            */}
+            <div
+              role="status"
+              aria-live="polite"
+              className="mt-5 empty:mt-0"
+            >
+              {status === "sent" && (
+                <p className="flex items-start gap-2.5 leading-relaxed text-emerald-300">
+                  <CheckIcon className="mt-1" />
+                  <span>
+                    Thanks — your enquiry is on its way. We will reply to{" "}
+                    the address you gave us, usually within one business day.
+                  </span>
+                </p>
+              )}
+
+              {status === "error" && (
+                <p className="leading-relaxed text-red-300">
+                  {errorMessage} You can also email us directly at{" "}
+                  <a
+                    href={`mailto:${contactEmail}`}
+                    className="underline decoration-red-300/50 underline-offset-4 hover:text-red-200"
+                  >
+                    {contactEmail}
+                  </a>
+                  .
+                </p>
+              )}
+            </div>
           </InfoPanel>
 
 

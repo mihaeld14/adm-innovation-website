@@ -3,7 +3,7 @@ import logo from "../assets/Logo.webp"
 import servicesData from "../data/servicesData"
 
 
-const contactEmail = "contact@adminnovations.com"
+const contactEmail = "contact@adm-innovations.com"
 
 
 const pageLinks = [

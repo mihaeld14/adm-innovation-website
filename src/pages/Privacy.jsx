@@ -22,7 +22,7 @@ const sections = [
   },
   {
     title: "Your rights",
-    body: "If you have written to us and would like that correspondence deleted, email contact@adminnovations.com and we will take care of it.",
+    body: "If you have written to us and would like that correspondence deleted, email contact@adm-innovations.com and we will take care of it.",
   },
 ]
 
@@ -72,10 +72,10 @@ function Privacy() {
         <p className="mt-8 text-sm text-gray-500">
           Questions about privacy? Email us at{" "}
           <a
-            href="mailto:contact@adminnovations.com"
+            href="mailto:contact@adm-innovations.com"
             className="text-gray-300 underline decoration-gray-600 underline-offset-4 transition hover:text-blue-300"
           >
-            contact@adminnovations.com
+            contact@adm-innovations.com
           </a>{" "}
           or head back to the{" "}
           <Link
