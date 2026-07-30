@@ -1,7 +1,12 @@
 import { useEffect } from "react"
 
 
-const SITE_URL = "https://adm-website.vercel.app"
+/*
+  The site's canonical home. The same address is also hard-coded in
+  index.html, public/sitemap.xml and public/robots.txt — update all four
+  together when the custom domain (adm-innovations.com) goes live.
+*/
+const SITE_URL = "https://adm-innovation-website.pages.dev"
 const SITE_NAME = "ADM Innovations"
 
 

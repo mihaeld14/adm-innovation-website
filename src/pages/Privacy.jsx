@@ -14,7 +14,7 @@ const sections = [
   },
   {
     title: "Hosting",
-    body: "The site is hosted on Vercel. As with any web hosting, loading the pages involves processing technical data such as your IP address — that is a standard part of how the internet works and is governed by the hosting provider's own policy.",
+    body: "The site is hosted on Cloudflare. As with any web hosting, loading the pages involves processing technical data such as your IP address — that is a standard part of how the internet works and is governed by the hosting provider's own policy.",
   },
   {
     title: "Confidentiality of project information",

@@ -1,0 +1,5 @@
+# Single-page app fallback for Cloudflare (Workers static assets and Pages).
+# React Router handles routing in the browser, so any path that is not a
+# real file must still return index.html. Without this, refreshing on
+# /services/ai or /contact would 404.
+/*    /index.html   200
