@@ -239,7 +239,7 @@ function Contact() {
               />
 
               <Input
-                label="Work email"
+                label="Email"
                 name="email"
                 type="email"
                 value={formData.email}
