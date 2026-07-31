@@ -135,6 +135,9 @@ async function handlePost(context) {
   const to = env.CONTACT_TO || TO_FALLBACK
   const from = env.CONTACT_FROM || FROM_FALLBACK
 
+  /* Which language version of the site the enquiry came from. */
+  const site = payload.language === "bg" ? "Bulgarian (/bg)" : "English"
+
   const rows = [
     ["Name", form.name],
     ["Company", form.company || "Not provided"],
@@ -142,6 +145,7 @@ async function handlePost(context) {
     ["Project type", form.projectType],
     ["Budget", form.budget || "Not specified"],
     ["Timeline", form.timeline || "Not specified"],
+    ["Site language", site],
   ]
 
   const text = [

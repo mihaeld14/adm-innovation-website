@@ -1,5 +1,6 @@
 import { Link } from "react-router"
-import servicesData from "../data/servicesData"
+
+import { getServices } from "../data/servicesData"
 import {
   ArrowIcon,
   CheckIcon,
@@ -8,15 +9,22 @@ import {
 } from "../components/CardStandards"
 import Reveal from "../components/Reveal"
 import usePageMeta from "../lib/meta"
+import { useLanguage } from "../i18n/context"
+import { localisePath } from "../i18n/config"
 
 
 function Services() {
+  const { language, t } = useLanguage()
+
   usePageMeta({
-    title: "Services — software, AI and automation",
-    description:
-      "Custom business software, AI solutions, process automation, websites and support — with a fixed scope and review before payment.",
+    title: t.services.meta.title,
+    description: t.services.meta.description,
     path: "/services",
+    language,
   })
+
+  const url = (path) => localisePath(path, language)
+  const services = getServices(language)
 
   return (
     <div className="relative overflow-hidden">
@@ -25,17 +33,15 @@ function Services() {
         <div className="grid items-end gap-8 lg:grid-cols-[1fr_360px] lg:gap-12">
           <div>
             <p className="font-mono text-xs font-medium tracking-[0.18em] text-blue-400 uppercase">
-              Services
+              {t.services.label}
             </p>
 
             <h1 className="mt-4 max-w-4xl text-4xl leading-[1.02] font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              We start with the problem, not the technology.
+              {t.services.heading}
             </h1>
 
             <p className="mt-5 max-w-2xl leading-relaxed text-gray-400 sm:text-lg">
-              Every service is described by what it solves — not by
-              programming languages. Pick whichever is closest to your
-              situation, or simply describe the problem to us.
+              {t.services.intro}
             </p>
           </div>
 
@@ -44,22 +50,19 @@ function Services() {
             className="p-6"
           >
             <p className="font-mono text-xs font-medium tracking-[0.14em] text-blue-400 uppercase">
-              How payment works
+              {t.services.payment.label}
             </p>
 
             <h2 className="mt-3 text-xl font-bold tracking-tight text-white">
-              Review first. Pay after.
+              {t.services.payment.heading}
             </h2>
 
             <p className="mt-3 text-base leading-relaxed text-gray-400">
-              Custom projects require no advance payment — you see the working
-              solution before you pay. Scope and price are fixed in writing
-              before we start.
+              {t.services.payment.body}
             </p>
 
             <p className="mt-4 border-t border-white/8 pt-3.5 text-sm leading-relaxed text-gray-500">
-              Exception: the Basic Business Website package (€120) is paid in
-              advance.
+              {t.services.payment.note}
             </p>
           </InfoPanel>
         </div>
@@ -69,13 +72,13 @@ function Services() {
       {/* Services — detailed cards */}
       <section className="mx-auto max-w-6xl px-5 pb-16 sm:px-6 sm:pb-20">
         <div className="space-y-4">
-          {servicesData.map((service, index) => (
+          {services.map((service, index) => (
             <Reveal
               key={service.slug}
               delay={Math.min(index * 0.05, 0.15)}
             >
               <ClickableCard
-                to={`/services/${service.slug}`}
+                to={url(`/services/${service.slug}`)}
                 className="p-6 sm:p-8"
                 contentClassName="grid gap-6 pr-10 lg:grid-cols-[220px_1fr_1fr]"
               >
@@ -91,7 +94,7 @@ function Services() {
 
                 <div>
                   <p className="font-mono text-[11px] tracking-[0.14em] text-gray-600 uppercase">
-                    The problem
+                    {t.services.problemLabel}
                   </p>
 
                   <p className="mt-2 text-base leading-relaxed text-gray-400">
@@ -101,7 +104,7 @@ function Services() {
 
                 <div>
                   <p className="font-mono text-[11px] tracking-[0.14em] text-gray-600 uppercase">
-                    Our solution
+                    {t.services.solutionLabel}
                   </p>
 
                   <p className="mt-2 text-base leading-relaxed text-gray-300">
@@ -129,28 +132,26 @@ function Services() {
         {/* Fixed package */}
         <Reveal className="mt-4">
           <ClickableCard
-            to="/services/basic-website"
+            to={url("/services/basic-website")}
             className="border-dashed p-6 sm:p-8"
             contentClassName="flex flex-wrap items-center justify-between gap-6 pr-10"
           >
             <div className="max-w-2xl">
               <span className="font-mono text-xs font-semibold text-blue-400">
-                Fixed package · the only service paid in advance
+                {t.services.package.label}
               </span>
 
               <h2 className="mt-2 text-2xl font-bold tracking-tight text-white">
-                Basic Business Website — €120
+                {t.services.package.heading}
               </h2>
 
               <p className="mt-2 text-base leading-relaxed text-gray-400">
-                Up to six pages, responsive design, a contact form, basic SEO
-                and deployment support. Around 5–7 working days once the
-                content is supplied.
+                {t.services.package.body}
               </p>
             </div>
 
             <span className="inline-flex items-center gap-2 font-semibold text-blue-300">
-              Package details
+              {t.services.package.cta}
             </span>
           </ClickableCard>
         </Reveal>
@@ -168,19 +169,18 @@ function Services() {
 
             <div className="relative">
               <h2 className="mx-auto max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Not sure which service you need?
+                {t.services.cta.heading}
               </h2>
 
               <p className="mx-auto mt-4 max-w-xl leading-relaxed text-gray-400">
-                Describe the problem or the process — we will suggest the most
-                suitable and most economical approach.
+                {t.services.cta.body}
               </p>
 
               <Link
-                to="/contact"
+                to={url("/contact")}
                 className="mt-7 inline-flex min-h-12 items-center gap-3 rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white transition hover:bg-blue-500 hover:shadow-[0_0_35px_rgba(59,130,246,0.28)]"
               >
-                Describe your problem
+                {t.services.cta.button}
                 <ArrowIcon />
               </Link>
             </div>

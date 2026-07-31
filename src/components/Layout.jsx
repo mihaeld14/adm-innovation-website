@@ -1,13 +1,18 @@
 import { lazy, Suspense } from "react"
 import { Outlet } from "react-router"
+
 import Navbar from "./Navbar"
 import Footer from "./Footer"
+import LanguageProvider from "../i18n/LanguageProvider"
+import { useCopy } from "../i18n/context"
 
 
 const ParticleField = lazy(() => import("./ParticleField"))
 
 
-function Layout() {
+function Shell() {
+  const t = useCopy()
+
   return (
     <div className="grain relative isolate min-h-screen overflow-x-hidden bg-canvas text-ink">
       {/* Global background */}
@@ -37,7 +42,7 @@ function Layout() {
           href="#main"
           className="skip-link"
         >
-          Skip to content
+          {t.common.skipToContent}
         </a>
 
         <div
@@ -57,6 +62,19 @@ function Layout() {
         <Footer />
       </div>
     </div>
+  )
+}
+
+
+/*
+  The provider sits outside the shell so every component below it —
+  navbar, pages, footer — reads the language from the current URL.
+*/
+function Layout() {
+  return (
+    <LanguageProvider>
+      <Shell />
+    </LanguageProvider>
   )
 }
 

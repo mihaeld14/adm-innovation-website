@@ -1,69 +1,12 @@
 import { useState } from "react"
+
 import {
   ArrowIcon,
   CheckIcon,
   InfoPanel,
 } from "../components/CardStandards"
 import usePageMeta from "../lib/meta"
-
-
-const contactEmail = "contact@adm-innovations.com"
-
-
-const projectTypes = [
-  "Business software / internal system",
-  "AI solution or assistant",
-  "Process automation",
-  "New website or platform",
-  "Basic Business Website (€120)",
-  "Support for an existing system",
-  "Something else / not sure yet",
-]
-
-
-const budgetOptions = [
-  "Under €500",
-  "€500 – €1,500",
-  "€1,500 – €5,000",
-  "Over €5,000",
-  "Not sure yet",
-]
-
-
-const timelineOptions = [
-  "Within 1 month",
-  "1 – 3 months",
-  "More than 3 months",
-  "Flexible",
-]
-
-
-const nextSteps = [
-  {
-    number: "01",
-    title: "We review your enquiry",
-    description:
-      "We read through the information and identify the main objective of the project.",
-  },
-  {
-    number: "02",
-    title: "A short free conversation",
-    description:
-      "We discuss the process, the problem and the possible approaches — with no obligation.",
-  },
-  {
-    number: "03",
-    title: "You receive a written quote",
-    description:
-      "Fixed scope, price and timeline, before any development has started.",
-  },
-  {
-    number: "04",
-    title: "You review and approve",
-    description:
-      "On custom projects you see the working solution before you pay.",
-  },
-]
+import { useLanguage } from "../i18n/context"
 
 
 const initialForm = {
@@ -81,11 +24,13 @@ const initialForm = {
 
 
 function Contact() {
+  const { language, t } = useLanguage()
+
   usePageMeta({
-    title: "Contact — free consultation",
-    description:
-      "Get in touch with ADM Innovations: describe the problem or process you want to improve. We reply within 1 business day.",
+    title: t.contact.meta.title,
+    description: t.contact.meta.description,
     path: "/contact",
+    language,
   })
 
   const [formData, setFormData] = useState(initialForm)
@@ -93,6 +38,8 @@ function Contact() {
   /* "idle" | "sending" | "sent" | "error" */
   const [status, setStatus] = useState("idle")
   const [errorMessage, setErrorMessage] = useState("")
+
+  const copy = t.contact.form
 
 
   const handleChange = (event) => {
@@ -119,16 +66,15 @@ function Contact() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(formData),
+        /* `language` travels with the enquiry so the notification says
+           which version of the site it came from. */
+        body: JSON.stringify({ ...formData, language }),
       })
 
       const result = await response.json().catch(() => ({}))
 
       if (!response.ok) {
-        setErrorMessage(
-          result.error ||
-            "Something went wrong while sending. Please try again.",
-        )
+        setErrorMessage(result.error || copy.genericError)
         setStatus("error")
         return
       }
@@ -136,9 +82,7 @@ function Contact() {
       setFormData(initialForm)
       setStatus("sent")
     } catch {
-      setErrorMessage(
-        "We could not reach the server. Please check your connection and try again.",
-      )
+      setErrorMessage(copy.networkError)
       setStatus("error")
     }
   }
@@ -150,25 +94,19 @@ function Contact() {
       <section className="mx-auto max-w-6xl px-5 pt-32 pb-10 sm:px-6 sm:pt-40 sm:pb-14">
         <div className="max-w-3xl">
           <p className="font-mono text-xs font-medium tracking-[0.18em] text-blue-400 uppercase">
-            Contact
+            {t.contact.label}
           </p>
 
           <h1 className="mt-4 text-4xl leading-[1.02] font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Tell us what you want to improve.
+            {t.contact.heading}
           </h1>
 
           <p className="mt-5 max-w-2xl leading-relaxed text-gray-400 sm:text-lg">
-            No technical specification required — a short description of the
-            problem, the current process and the result you want is plenty to
-            get started.
+            {t.contact.intro}
           </p>
 
           <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2.5 text-sm text-gray-400">
-            {[
-              "Reply within 1 business day",
-              "No obligation",
-              "First consultation is free",
-            ].map((point) => (
+            {t.contact.assurances.map((point) => (
               <span
                 key={point}
                 className="flex items-center gap-2"
@@ -192,12 +130,11 @@ function Contact() {
             className="p-6 sm:p-8"
           >
             <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-              Project enquiry
+              {copy.heading}
             </h2>
 
             <p className="mt-3 leading-relaxed text-gray-400">
-              Send it straight from here and we will reply to the address you
-              give us, usually within one business day.
+              {copy.intro}
             </p>
 
             {/* Honeypot: off-screen, skipped by keyboard, hidden from
@@ -206,7 +143,7 @@ function Contact() {
               aria-hidden="true"
               className="absolute left-[-9999px] h-px w-px overflow-hidden"
             >
-              <label htmlFor="website">Leave this field empty</label>
+              <label htmlFor="website">{copy.honeypotLabel}</label>
 
               <input
                 id="website"
@@ -221,7 +158,7 @@ function Contact() {
 
             <div className="mt-7 grid gap-5 sm:grid-cols-2">
               <Input
-                label="Your name"
+                label={copy.name}
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
@@ -230,16 +167,16 @@ function Contact() {
               />
 
               <Input
-                label="Company"
+                label={copy.company}
                 name="company"
                 value={formData.company}
                 onChange={handleChange}
                 autoComplete="organization"
-                placeholder="Optional"
+                placeholder={copy.optional}
               />
 
               <Input
-                label="Email"
+                label={copy.email}
                 name="email"
                 type="email"
                 value={formData.email}
@@ -249,39 +186,42 @@ function Contact() {
               />
 
               <Select
-                label="Project type"
+                label={copy.projectType}
                 name="projectType"
                 value={formData.projectType}
                 onChange={handleChange}
-                options={projectTypes}
+                options={copy.projectTypes}
+                placeholder={copy.select}
                 required
               />
 
               <Select
-                label="Approximate budget"
+                label={copy.budget}
                 name="budget"
                 value={formData.budget}
                 onChange={handleChange}
-                options={budgetOptions}
-                hint="Optional — helps us suggest a realistic approach"
+                options={copy.budgets}
+                placeholder={copy.select}
+                hint={copy.budgetHint}
               />
 
               <Select
-                label="Desired timeline"
+                label={copy.timeline}
                 name="timeline"
                 value={formData.timeline}
                 onChange={handleChange}
-                options={timelineOptions}
-                hint="Optional"
+                options={copy.timelines}
+                placeholder={copy.select}
+                hint={copy.timelineHint}
               />
 
               <div className="sm:col-span-2">
                 <Textarea
-                  label="Short description"
+                  label={copy.description}
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  placeholder="Example: “Every week we collect reports from 5 sites into Excel by hand. We want that to happen automatically.”"
+                  placeholder={copy.descriptionPlaceholder}
                   required
                 />
               </div>
@@ -297,10 +237,7 @@ function Contact() {
                 className="mt-1 h-4 w-4 shrink-0 accent-blue-600"
               />
 
-              <span>
-                I agree that the information I submit may be used to review
-                and respond to my enquiry.
-              </span>
+              <span>{copy.consent}</span>
             </label>
 
             <button
@@ -310,7 +247,7 @@ function Contact() {
             >
               {status === "sending" ? (
                 <>
-                  Sending…
+                  {copy.sending}
                   <span
                     className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"
                     aria-hidden="true"
@@ -318,7 +255,7 @@ function Contact() {
                 </>
               ) : (
                 <>
-                  Send the enquiry
+                  {copy.submit}
                   <ArrowIcon />
                 </>
               )}
@@ -337,21 +274,18 @@ function Contact() {
               {status === "sent" && (
                 <p className="flex items-start gap-2.5 leading-relaxed text-emerald-300">
                   <CheckIcon className="mt-1" />
-                  <span>
-                    Thanks — your enquiry is on its way. We will reply to{" "}
-                    the address you gave us, usually within one business day.
-                  </span>
+                  <span>{copy.success}</span>
                 </p>
               )}
 
               {status === "error" && (
                 <p className="leading-relaxed text-red-300">
-                  {errorMessage} You can also email us directly at{" "}
+                  {errorMessage} {copy.errorSuffix}{" "}
                   <a
-                    href={`mailto:${contactEmail}`}
+                    href={`mailto:${t.common.email}`}
                     className="underline decoration-red-300/50 underline-offset-4 hover:text-red-200"
                   >
-                    {contactEmail}
+                    {t.common.email}
                   </a>
                   .
                 </p>
@@ -366,11 +300,11 @@ function Contact() {
             className="p-6 sm:p-7 lg:sticky lg:top-24"
           >
             <p className="font-mono text-xs font-medium tracking-[0.16em] text-blue-400 uppercase">
-              What happens next
+              {t.contact.next.label}
             </p>
 
             <div className="mt-6 space-y-5">
-              {nextSteps.map((step) => (
+              {t.contact.next.steps.map((step) => (
                 <article
                   key={step.number}
                   className="flex items-start gap-4"
@@ -394,18 +328,18 @@ function Contact() {
 
             <div className="mt-7 border-t border-white/8 pt-6">
               <p className="text-sm text-gray-500">
-                Prefer plain email?
+                {t.contact.next.preferEmail}
               </p>
 
               <a
-                href={`mailto:${contactEmail}`}
+                href={`mailto:${t.common.email}`}
                 className="mt-1.5 inline-flex min-h-10 items-center font-medium text-gray-200 transition hover:text-blue-300"
               >
-                {contactEmail}
+                {t.common.email}
               </a>
 
               <p className="mt-3 text-xs text-gray-600">
-                Monday – Friday · Bulgaria · Remote projects
+                {t.contact.next.availability}
               </p>
             </div>
           </InfoPanel>
@@ -499,6 +433,7 @@ function Select({
   value,
   onChange,
   options,
+  placeholder,
   hint,
   required = false,
 }) {
@@ -524,7 +459,7 @@ function Select({
         required={required}
         className="mt-2 w-full rounded-xl border border-white/10 bg-[#0b0d11] px-4 py-3 text-white transition outline-none focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/15"
       >
-        <option value="">Select…</option>
+        <option value="">{placeholder}</option>
 
         {options.map((option) => (
           <option

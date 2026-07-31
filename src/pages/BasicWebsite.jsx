@@ -1,4 +1,5 @@
 import { Link } from "react-router"
+
 import {
   ArrowIcon,
   CheckIcon,
@@ -6,123 +7,28 @@ import {
 } from "../components/CardStandards"
 import Reveal from "../components/Reveal"
 import usePageMeta from "../lib/meta"
-
-
-const included = [
-  {
-    title: "Up to 6 pages",
-    description:
-      "Home, services, about, contact and more — the pages your business actually uses.",
-  },
-  {
-    title: "Responsive design",
-    description: "Works equally well on phone, tablet and desktop.",
-  },
-  {
-    title: "Professional presentation",
-    description:
-      "A clean, credible design built around your company and services — not a template.",
-  },
-  {
-    title: "Contact form",
-    description: "A straightforward way for customers to reach you.",
-  },
-  {
-    title: "Basic SEO",
-    description:
-      "Proper headings, page titles, descriptions and image alt text.",
-  },
-  {
-    title: "Deployment",
-    description:
-      "Help publishing the site and connecting your domain.",
-  },
-]
-
-
-const processSteps = [
-  {
-    number: "01",
-    title: "Confirm the scope",
-    description:
-      "We agree the pages, the content and the fixed €120 package price.",
-  },
-  {
-    number: "02",
-    title: "Payment and development",
-    description:
-      "After the advance payment the site is designed and built — typically 5–7 working days once the content is supplied.",
-  },
-  {
-    number: "03",
-    title: "Review",
-    description:
-      "You review the site and send one consolidated list of corrections.",
-  },
-  {
-    number: "04",
-    title: "Launch",
-    description:
-      "After approval the finished site is published and the domain connected.",
-  },
-]
-
-
-const notIncluded = [
-  "Domain and hosting (paid separately)",
-  "Online store or payments",
-  "User accounts and login",
-  "Booking or reservation systems",
-  "Admin panel",
-  "Professional copywriting",
-  "More than one language",
-  "Ongoing maintenance",
-]
-
-
-const faqs = [
-  {
-    question: "What does the €120 include?",
-    answer:
-      "A responsive informational website with up to six standard pages, a contact form, basic SEO setup, one consolidated revision round and deployment support.",
-  },
-  {
-    question: "When is payment due?",
-    answer:
-      "The fixed €120 price is paid in advance once the scope has been confirmed. This is the only service we ask to be paid up front.",
-  },
-  {
-    question: "Are domain and hosting included?",
-    answer:
-      "No — those are paid separately by you (typically €20–50 per year in total). We help you choose and configure a suitable provider.",
-  },
-  {
-    question: "What content do we need to provide?",
-    answer:
-      "Your logo, page copy, service information, contact details and any images you want to use.",
-  },
-  {
-    question: "Can the site be extended later?",
-    answer:
-      "Yes. Additional pages, languages and functionality can be added under a separate quote whenever you need them.",
-  },
-]
+import { useLanguage } from "../i18n/context"
+import { localisePath } from "../i18n/config"
 
 
 function BasicWebsite() {
+  const { language, t } = useLanguage()
+
   usePageMeta({
-    title: "Basic Business Website — €120",
-    description:
-      "A professional company website with up to six pages for €120 — responsive design, contact form, basic SEO and launch in 5–7 working days.",
+    title: t.basicWebsite.meta.title,
+    description: t.basicWebsite.meta.description,
     path: "/services/basic-website",
+    language,
   })
+
+  const url = (path) => localisePath(path, language)
 
   return (
     <div className="relative overflow-hidden">
       {/* Hero */}
       <section className="mx-auto max-w-6xl px-5 pt-32 pb-12 sm:px-6 sm:pt-40 sm:pb-16">
         <Link
-          to="/services"
+          to={url("/services")}
           className="group inline-flex min-h-10 items-center gap-2 text-sm text-gray-400 transition hover:text-white"
         >
           <span
@@ -131,31 +37,29 @@ function BasicWebsite() {
           >
             ←
           </span>
-          All services
+          {t.common.backToServices}
         </Link>
 
         <div className="mt-7 grid items-end gap-8 lg:grid-cols-[1fr_300px] lg:gap-12">
           <div>
             <p className="font-mono text-xs font-medium tracking-[0.18em] text-blue-400 uppercase">
-              Fixed package
+              {t.basicWebsite.label}
             </p>
 
             <h1 className="mt-4 max-w-4xl text-4xl leading-[1.02] font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              A professional website without unnecessary complexity.
+              {t.basicWebsite.heading}
             </h1>
 
             <p className="mt-5 max-w-2xl leading-relaxed text-gray-400 sm:text-lg">
-              For small businesses, independent professionals and local
-              services that need a credible online presence at a clear
-              starting price.
+              {t.basicWebsite.intro}
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
-                to="/contact"
+                to={url("/contact")}
                 className="inline-flex min-h-12 items-center justify-center gap-3 rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white transition hover:bg-blue-500 hover:shadow-[0_0_35px_rgba(59,130,246,0.28)]"
               >
-                Request a website
+                {t.basicWebsite.requestCta}
                 <ArrowIcon />
               </Link>
 
@@ -163,7 +67,7 @@ function BasicWebsite() {
                 href="#included"
                 className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/12 bg-white/4 px-6 py-3.5 font-semibold text-gray-200 transition hover:border-white/25 hover:bg-white/7"
               >
-                What is included
+                {t.basicWebsite.seeIncluded}
               </a>
             </div>
           </div>
@@ -171,7 +75,7 @@ function BasicWebsite() {
           {/* Price */}
           <InfoPanel className="p-6 sm:p-7">
             <p className="font-mono text-xs tracking-[0.14em] text-gray-400 uppercase">
-              Package from
+              {t.basicWebsite.price.from}
             </p>
 
             <div className="mt-3 flex items-start">
@@ -185,16 +89,16 @@ function BasicWebsite() {
             </div>
 
             <p className="mt-3 text-sm font-medium text-gray-300">
-              Fixed price · paid in advance
+              {t.basicWebsite.price.note}
             </p>
 
             <div className="mt-4 space-y-2 border-t border-white/8 pt-4">
               <p className="text-base leading-relaxed text-gray-400">
-                The scope and price are confirmed before payment.
+                {t.basicWebsite.price.confirm}
               </p>
 
               <p className="text-sm leading-relaxed text-gray-500">
-                Domain and hosting are paid separately.
+                {t.basicWebsite.price.domainNote}
               </p>
             </div>
           </InfoPanel>
@@ -208,11 +112,7 @@ function BasicWebsite() {
           className="grid p-0 sm:grid-cols-3"
           contentClassName="contents"
         >
-          {[
-            { label: "Pages", value: "Up to 6" },
-            { label: "Delivery", value: "5–7 working days" },
-            { label: "Revisions", value: "One full round" },
-          ].map((fact, index) => (
+          {t.basicWebsite.facts.map((fact, index) => (
             <div
               key={fact.label}
               className={`p-5 sm:p-6 ${
@@ -240,16 +140,16 @@ function BasicWebsite() {
         <div className="mx-auto max-w-6xl px-5 py-14 sm:px-6 sm:py-20">
           <Reveal className="max-w-3xl">
             <p className="font-mono text-xs tracking-[0.18em] text-blue-400 uppercase">
-              Included in the package
+              {t.basicWebsite.included.label}
             </p>
 
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Everything needed for a credible online presence
+              {t.basicWebsite.included.heading}
             </h2>
           </Reveal>
 
           <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {included.map((feature, index) => (
+            {t.basicWebsite.included.items.map((feature, index) => (
               <Reveal
                 key={feature.title}
                 delay={(index % 3) * 0.06}
@@ -283,11 +183,11 @@ function BasicWebsite() {
         <Reveal>
           <InfoPanel className="h-full p-6 sm:p-8">
             <p className="font-mono text-xs tracking-[0.16em] text-blue-400 uppercase">
-              How it works
+              {t.basicWebsite.how.label}
             </p>
 
             <div className="mt-5 space-y-5">
-              {processSteps.map((step) => (
+              {t.basicWebsite.how.steps.map((step) => (
                 <div
                   key={step.number}
                   className="flex items-start gap-4"
@@ -314,16 +214,15 @@ function BasicWebsite() {
         <Reveal delay={0.08}>
           <InfoPanel className="h-full p-6 sm:p-8">
             <p className="font-mono text-xs tracking-[0.16em] text-blue-400 uppercase">
-              Outside the package
+              {t.basicWebsite.notIncluded.label}
             </p>
 
             <p className="mt-3 text-base leading-relaxed text-gray-400">
-              These are not included in the €120 price, but most of them can
-              be added under a separate quote:
+              {t.basicWebsite.notIncluded.intro}
             </p>
 
             <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
-              {notIncluded.map((item) => (
+              {t.basicWebsite.notIncluded.items.map((item) => (
                 <li
                   key={item}
                   className="flex items-start gap-2.5 text-base leading-relaxed text-gray-400"
@@ -345,16 +244,16 @@ function BasicWebsite() {
       <section className="mx-auto max-w-4xl px-5 py-10 sm:px-6 sm:py-14">
         <Reveal className="text-center">
           <p className="font-mono text-xs tracking-[0.18em] text-blue-400 uppercase">
-            Questions
+            {t.basicWebsite.faq.label}
           </p>
 
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Frequently asked questions
+            {t.basicWebsite.faq.heading}
           </h2>
         </Reveal>
 
         <div className="mt-8 space-y-3">
-          {faqs.map((faq) => (
+          {t.basicWebsite.faq.items.map((faq) => (
             <details
               key={faq.question}
               className="group rounded-xl border border-white/8 bg-white/3 p-5 open:border-blue-500/25 open:bg-blue-500/5"
@@ -390,19 +289,18 @@ function BasicWebsite() {
 
             <div className="relative">
               <h2 className="mx-auto max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Ready for an online presence that fits your business?
+                {t.basicWebsite.cta.heading}
               </h2>
 
               <p className="mx-auto mt-4 max-w-xl leading-relaxed text-gray-400">
-                Tell us about the company and the site you need — we will
-                confirm the scope and get started.
+                {t.basicWebsite.cta.body}
               </p>
 
               <Link
-                to="/contact"
+                to={url("/contact")}
                 className="mt-7 inline-flex min-h-12 items-center gap-3 rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white transition hover:bg-blue-500 hover:shadow-[0_0_35px_rgba(59,130,246,0.28)]"
               >
-                Request a website
+                {t.basicWebsite.requestCta}
                 <ArrowIcon />
               </Link>
             </div>

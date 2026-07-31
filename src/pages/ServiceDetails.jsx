@@ -1,5 +1,6 @@
 import { Link, Navigate, useParams } from "react-router"
-import servicesData, { legacySlugMap } from "../data/servicesData"
+
+import { getService, legacySlugMap } from "../data/servicesData"
 import {
   ArrowIcon,
   CheckIcon,
@@ -7,32 +8,43 @@ import {
 } from "../components/CardStandards"
 import Reveal from "../components/Reveal"
 import usePageMeta from "../lib/meta"
+import { useLanguage } from "../i18n/context"
+import { localisePath } from "../i18n/config"
 
 
 function ServiceDetails() {
   const { slug } = useParams()
+  const { language, t } = useLanguage()
 
   const resolvedSlug = legacySlugMap[slug] ?? slug
+  const service = getService(resolvedSlug, language)
 
-  const service = servicesData.find(
-    (item) => item.slug === resolvedSlug,
-  )
+  const url = (path) => localisePath(path, language)
 
   usePageMeta({
-    title: service ? service.title : "Services",
-    description: service
-      ? service.shortDescription
-      : "ADM Innovations services",
+    title: service ? service.title : t.services.label,
+    description: service ? service.shortDescription : t.services.meta.description,
     path: service ? `/services/${service.slug}` : "/services",
+    language,
   })
 
   if (!service) {
-    return <Navigate to="/services" replace />
+    return (
+      <Navigate
+        to={url("/services")}
+        replace
+      />
+    )
   }
 
-  /* Old URL → redirect to the current one */
+  /* Old URL → redirect to the current one, staying in this language */
   if (slug !== resolvedSlug) {
-    return <Navigate to={`/services/${resolvedSlug}`} replace />
+    return (
+      <Navigate
+        to={url(`/services/${resolvedSlug}`)}
+        replace
+      />
+    )
   }
 
   return (
@@ -40,7 +52,7 @@ function ServiceDetails() {
       {/* Hero */}
       <section className="mx-auto max-w-6xl px-5 pt-32 pb-12 sm:px-6 sm:pt-40 sm:pb-16">
         <Link
-          to="/services"
+          to={url("/services")}
           className="group inline-flex min-h-10 items-center gap-2 text-sm text-gray-400 transition hover:text-white"
         >
           <span
@@ -49,12 +61,12 @@ function ServiceDetails() {
           >
             ←
           </span>
-          All services
+          {t.common.backToServices}
         </Link>
 
         <div className="mt-7 max-w-4xl">
           <p className="font-mono text-xs font-medium tracking-[0.18em] text-blue-400 uppercase">
-            Service {service.number} · {service.title}
+            {t.serviceDetails.serviceLabel} {service.number} · {service.title}
           </p>
 
           <h1 className="mt-4 text-4xl leading-[1.02] font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
@@ -67,10 +79,10 @@ function ServiceDetails() {
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
-              to="/contact"
+              to={url("/contact")}
               className="inline-flex min-h-12 items-center justify-center gap-3 rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white transition hover:bg-blue-500 hover:shadow-[0_0_35px_rgba(59,130,246,0.28)]"
             >
-              Free consultation
+              {t.common.freeConsultation}
               <ArrowIcon />
             </Link>
 
@@ -78,7 +90,7 @@ function ServiceDetails() {
               href="#details"
               className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/12 bg-white/4 px-6 py-3.5 font-semibold text-gray-200 transition hover:border-white/25 hover:bg-white/7"
             >
-              Explore the details
+              {t.serviceDetails.exploreDetails}
             </a>
           </div>
         </div>
@@ -94,7 +106,7 @@ function ServiceDetails() {
           <Reveal>
             <InfoPanel className="h-full p-6 sm:p-8">
               <p className="font-mono text-[11px] tracking-[0.14em] text-gray-500 uppercase">
-                The problem
+                {t.serviceDetails.problemLabel}
               </p>
 
               <p className="mt-4 text-lg leading-relaxed text-gray-300">
@@ -106,7 +118,7 @@ function ServiceDetails() {
           <Reveal delay={0.08}>
             <InfoPanel className="h-full p-6 sm:p-8">
               <p className="font-mono text-[11px] tracking-[0.14em] text-blue-400 uppercase">
-                Our solution
+                {t.serviceDetails.solutionLabel}
               </p>
 
               <p className="mt-4 text-lg leading-relaxed text-white">
@@ -122,11 +134,11 @@ function ServiceDetails() {
       <section className="mx-auto max-w-6xl px-5 py-14 sm:px-6 sm:py-20">
         <Reveal className="max-w-3xl">
           <p className="font-mono text-xs font-medium tracking-[0.18em] text-blue-400 uppercase">
-            Examples
+            {t.serviceDetails.examples.label}
           </p>
 
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Where this service creates value
+            {t.serviceDetails.examples.heading}
           </h2>
         </Reveal>
 
@@ -154,11 +166,11 @@ function ServiceDetails() {
         <div className="mx-auto max-w-6xl px-5 py-14 sm:px-6 sm:py-20">
           <Reveal className="max-w-3xl">
             <p className="font-mono text-xs font-medium tracking-[0.18em] text-blue-400 uppercase">
-              The result
+              {t.serviceDetails.benefits.label}
             </p>
 
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              What your company gains
+              {t.serviceDetails.benefits.heading}
             </h2>
           </Reveal>
 
@@ -193,7 +205,7 @@ function ServiceDetails() {
         <Reveal>
           <InfoPanel className="h-full p-6 sm:p-8">
             <p className="font-mono text-xs font-medium tracking-[0.16em] text-blue-400 uppercase">
-              What you receive
+              {t.serviceDetails.deliverables.label}
             </p>
 
             <ul className="mt-5 grid gap-3 sm:grid-cols-2">
@@ -213,22 +225,19 @@ function ServiceDetails() {
         <Reveal delay={0.08}>
           <InfoPanel className="h-full p-6 sm:p-8">
             <p className="font-mono text-xs font-medium tracking-[0.16em] text-blue-400 uppercase">
-              Payment
+              {t.serviceDetails.payment.label}
             </p>
 
             <h2 className="mt-3 text-xl font-bold tracking-tight text-white">
-              You review the finished solution before you pay.
+              {t.serviceDetails.payment.heading}
             </h2>
 
             <p className="mt-3 text-base leading-relaxed text-gray-400">
-              The scope and price are confirmed in writing before development
-              begins. You see a working version of the solution, approve it,
-              and only then does payment and final handover happen.
+              {t.serviceDetails.payment.body}
             </p>
 
             <p className="mt-4 border-t border-white/8 pt-3.5 text-sm leading-relaxed text-gray-500">
-              Any change outside the confirmed scope is discussed and approved
-              before it can affect the price.
+              {t.serviceDetails.payment.note}
             </p>
           </InfoPanel>
         </Reveal>
@@ -239,11 +248,11 @@ function ServiceDetails() {
       <section className="mx-auto max-w-4xl px-5 py-14 sm:px-6 sm:py-20">
         <Reveal className="text-center">
           <p className="font-mono text-xs font-medium tracking-[0.18em] text-blue-400 uppercase">
-            Questions
+            {t.serviceDetails.faq.label}
           </p>
 
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Frequently asked questions
+            {t.serviceDetails.faq.heading}
           </h2>
         </Reveal>
 
@@ -284,19 +293,18 @@ function ServiceDetails() {
 
             <div className="relative">
               <h2 className="mx-auto max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Recognise this problem in your company?
+                {t.serviceDetails.cta.heading}
               </h2>
 
               <p className="mx-auto mt-4 max-w-xl leading-relaxed text-gray-400">
-                Tell us about the process and the result you want. You will
-                get a concrete proposal, not a sales presentation.
+                {t.serviceDetails.cta.body}
               </p>
 
               <Link
-                to="/contact"
+                to={url("/contact")}
                 className="mt-7 inline-flex min-h-12 items-center gap-3 rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white transition hover:bg-blue-500 hover:shadow-[0_0_35px_rgba(59,130,246,0.28)]"
               >
-                Free consultation
+                {t.common.freeConsultation}
                 <ArrowIcon />
               </Link>
             </div>

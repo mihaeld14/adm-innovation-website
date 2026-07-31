@@ -1,32 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { Link, NavLink, useLocation } from "react-router"
+
 import logo from "../assets/Logo.webp"
-import servicesData from "../data/servicesData"
-
-
-const navigation = [
-  { label: "Home", href: "/" },
-  { label: "Services", href: "/services" },
-  { label: "Process", href: "/process" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-]
-
-
-const serviceNavigation = [
-  ...servicesData.map((service) => ({
-    label: service.nav,
-    href: `/services/${service.slug}`,
-    description: service.shortDescription,
-    number: service.number,
-  })),
-  {
-    label: "Basic Business Website",
-    href: "/services/basic-website",
-    description: "Fixed €120 package — up to six pages for small businesses.",
-    number: "06",
-  },
-]
+import LanguageSwitcher from "./LanguageSwitcher"
+import { useLanguage } from "../i18n/context"
+import { localisePath } from "../i18n/config"
+import { getServices } from "../data/servicesData"
 
 
 function ChevronIcon({ open = false }) {
@@ -60,9 +39,35 @@ function Navbar() {
   const servicesRef = useRef(null)
   const location = useLocation()
 
-  const servicesActive =
-    location.pathname === "/services" ||
-    location.pathname.startsWith("/services/")
+  const { language, basePath, t } = useLanguage()
+
+  /* Resolves a language-free path to the current language. */
+  const url = (path) => localisePath(path, language)
+
+  const navigation = [
+    { label: t.nav.home, href: "/" },
+    { label: t.nav.services, href: "/services" },
+    { label: t.nav.process, href: "/process" },
+    { label: t.nav.about, href: "/about" },
+    { label: t.nav.contact, href: "/contact" },
+  ]
+
+  const serviceNavigation = [
+    ...getServices(language).map((service) => ({
+      label: service.nav,
+      href: `/services/${service.slug}`,
+      description: service.shortDescription,
+      number: service.number,
+    })),
+    {
+      label: t.nav.basicWebsite,
+      href: "/services/basic-website",
+      description: t.nav.basicWebsiteDescription,
+      number: "06",
+    },
+  ]
+
+  const servicesActive = basePath.startsWith("/services")
 
 
   useEffect(() => {
@@ -185,9 +190,9 @@ function Navbar() {
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 lg:gap-6">
           {/* Logo */}
           <Link
-            to="/"
+            to={url("/")}
             className="group relative z-50 flex min-w-0 items-center justify-self-start gap-3"
-            aria-label="ADM Innovations — home"
+            aria-label={t.nav.homeAria}
           >
             <img
               src={logo}
@@ -207,7 +212,7 @@ function Navbar() {
               </span>
 
               <span className="block font-mono text-[8px] leading-tight tracking-[0.14em] whitespace-nowrap text-gray-500 uppercase sm:text-[10px]">
-                Software · AI · Automation
+                {t.nav.tagline}
               </span>
             </span>
           </Link>
@@ -216,13 +221,13 @@ function Navbar() {
           {/* Desktop navigation */}
           <nav
             className="hidden items-center justify-self-center gap-0.5 rounded-full border border-white/10 bg-white/3 p-1 md:flex"
-            aria-label="Main navigation"
+            aria-label={t.nav.mainNavigation}
           >
             {navigation.map((item) => {
-              if (item.label === "Services") {
+              if (item.href === "/services") {
                 return (
                   <div
-                    key={item.label}
+                    key={item.href}
                     ref={servicesRef}
                     className="relative flex items-center"
                     onMouseEnter={() => setServicesOpen(true)}
@@ -230,21 +235,21 @@ function Navbar() {
                     onBlur={handleServicesBlur}
                   >
                     <NavLink
-                      to={item.href}
+                      to={url(item.href)}
                       className={`rounded-l-full py-2 pr-1.5 pl-3.5 text-sm font-medium transition ${
                         servicesActive
                           ? "bg-white/9 text-white shadow-sm"
                           : "text-gray-400 hover:bg-white/6 hover:text-white"
                       }`}
                     >
-                      Services
+                      {item.label}
                     </NavLink>
 
                     <button
                       type="button"
                       aria-haspopup="true"
                       aria-expanded={servicesOpen}
-                      aria-label="Open the Services submenu"
+                      aria-label={t.nav.openServicesSubmenu}
                       onClick={() => setServicesOpen((current) => !current)}
                       className={`rounded-r-full py-2.5 pr-2.5 pl-0.5 transition ${
                         servicesActive
@@ -267,13 +272,12 @@ function Navbar() {
                       <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#0a0d13]/97 p-2.5 shadow-[0_30px_100px_rgba(0,0,0,0.65)] backdrop-blur-2xl">
                         <div className="grid grid-cols-2 gap-1">
                           {serviceNavigation.map((service) => {
-                            const isActive =
-                              location.pathname === service.href
+                            const isActive = basePath === service.href
 
                             return (
                               <Link
                                 key={service.href}
-                                to={service.href}
+                                to={url(service.href)}
                                 tabIndex={servicesOpen ? 0 : -1}
                                 className={`group/service flex items-start gap-3.5 rounded-xl border px-3.5 py-3.5 transition duration-200 ${
                                   isActive
@@ -306,8 +310,8 @@ function Navbar() {
 
               return (
                 <NavLink
-                  key={item.label}
-                  to={item.href}
+                  key={item.href}
+                  to={url(item.href)}
                   end={item.href === "/"}
                   className={({ isActive }) =>
                     `rounded-full px-3.5 py-2 text-sm font-medium transition ${
@@ -324,44 +328,52 @@ function Navbar() {
           </nav>
 
 
-          {/* Primary CTA */}
-          <Link
-            to="/contact"
-            className="hidden items-center justify-center justify-self-end gap-2 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-white shadow-[0_0_30px_rgba(37,99,235,0.25)] transition duration-200 hover:bg-blue-500 hover:shadow-[0_0_40px_rgba(59,130,246,0.35)] active:scale-[0.98] md:inline-flex"
-          >
-            Free consultation
-          </Link>
+          {/* Language switch + primary CTA */}
+          <div className="hidden items-center justify-self-end gap-2.5 md:flex">
+            <LanguageSwitcher />
+
+            <Link
+              to={url("/contact")}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-white shadow-[0_0_30px_rgba(37,99,235,0.25)] transition duration-200 hover:bg-blue-500 hover:shadow-[0_0_40px_rgba(59,130,246,0.35)] active:scale-[0.98]"
+            >
+              {t.common.freeConsultation}
+            </Link>
+          </div>
 
 
-          {/* Mobile menu button */}
-          <button
-            type="button"
-            onClick={() => setMenuOpen((current) => !current)}
-            className="relative z-50 col-start-3 flex h-11 w-11 items-center justify-center justify-self-end rounded-xl border border-white/10 bg-white/4 text-white transition hover:bg-white/8 md:hidden"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            aria-controls="mobile-navigation"
-          >
-            <span className="relative block h-5 w-5">
-              <span
-                className={`absolute top-0.75 left-0 h-0.5 w-5 rounded-full bg-white transition-all duration-300 ${
-                  menuOpen ? "translate-y-1.5 rotate-45" : ""
-                }`}
-              />
+          {/* Mobile: language switch sits outside the menu so it is always reachable */}
+          <div className="col-start-3 flex items-center gap-2 justify-self-end md:hidden">
+            <LanguageSwitcher />
 
-              <span
-                className={`absolute top-2.25 left-0 h-0.5 w-5 rounded-full bg-white transition-all duration-300 ${
-                  menuOpen ? "opacity-0" : "opacity-100"
-                }`}
-              />
+            <button
+              type="button"
+              onClick={() => setMenuOpen((current) => !current)}
+              className="relative z-50 flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/4 text-white transition hover:bg-white/8"
+              aria-label={menuOpen ? t.nav.closeMenu : t.nav.openMenu}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-navigation"
+            >
+              <span className="relative block h-5 w-5">
+                <span
+                  className={`absolute top-0.75 left-0 h-0.5 w-5 rounded-full bg-white transition-all duration-300 ${
+                    menuOpen ? "translate-y-1.5 rotate-45" : ""
+                  }`}
+                />
 
-              <span
-                className={`absolute top-3.75 left-0 h-0.5 w-5 rounded-full bg-white transition-all duration-300 ${
-                  menuOpen ? "-translate-y-1.5 -rotate-45" : ""
-                }`}
-              />
-            </span>
-          </button>
+                <span
+                  className={`absolute top-2.25 left-0 h-0.5 w-5 rounded-full bg-white transition-all duration-300 ${
+                    menuOpen ? "opacity-0" : "opacity-100"
+                  }`}
+                />
+
+                <span
+                  className={`absolute top-3.75 left-0 h-0.5 w-5 rounded-full bg-white transition-all duration-300 ${
+                    menuOpen ? "-translate-y-1.5 -rotate-45" : ""
+                  }`}
+                />
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -379,12 +391,12 @@ function Navbar() {
           <div className="mx-auto w-full px-3 pt-4 pb-3 sm:px-4">
             <nav
               className="max-h-[calc(100vh-100px)] overflow-y-auto rounded-2xl border border-white/10 bg-[#0a0d13]/96 p-3 shadow-2xl shadow-black/50"
-              aria-label="Mobile navigation"
+              aria-label={t.nav.mobileNavigation}
             >
               {navigation.map((item) => {
-                if (item.label === "Services") {
+                if (item.href === "/services") {
                   return (
-                    <div key={item.label}>
+                    <div key={item.href}>
                       <button
                         type="button"
                         onClick={() =>
@@ -398,7 +410,7 @@ function Navbar() {
                         aria-expanded={mobileServicesOpen}
                         aria-controls="mobile-services-navigation"
                       >
-                        <span>Services</span>
+                        <span>{item.label}</span>
                         <ChevronIcon open={mobileServicesOpen} />
                       </button>
 
@@ -413,19 +425,19 @@ function Navbar() {
                         <div className="overflow-hidden">
                           <div className="mt-1 ml-4 space-y-0.5 border-l border-white/10 py-1 pl-3">
                             <Link
-                              to="/services"
+                              to={url("/services")}
                               className="flex min-h-11 items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium text-blue-300 transition hover:bg-white/5 hover:text-blue-200"
                             >
-                              All services
+                              {t.common.allServices}
                               <span aria-hidden="true">&rarr;</span>
                             </Link>
 
                             {serviceNavigation.map((service) => (
                               <Link
                                 key={service.href}
-                                to={service.href}
+                                to={url(service.href)}
                                 className={`flex min-h-11 items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
-                                  location.pathname === service.href
+                                  basePath === service.href
                                     ? "bg-blue-500/8 text-white"
                                     : "text-gray-400 hover:bg-white/5 hover:text-white"
                                 }`}
@@ -446,8 +458,8 @@ function Navbar() {
 
                 return (
                   <NavLink
-                    key={item.label}
-                    to={item.href}
+                    key={item.href}
+                    to={url(item.href)}
                     end={item.href === "/"}
                     className={({ isActive }) =>
                       `flex min-h-12 items-center justify-between rounded-xl px-4 py-3 text-base font-medium transition ${
@@ -470,10 +482,10 @@ function Navbar() {
               })}
 
               <Link
-                to="/contact"
+                to={url("/contact")}
                 className="mt-3 flex min-h-12 items-center justify-center rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-500"
               >
-                Free consultation
+                {t.common.freeConsultation}
               </Link>
             </nav>
           </div>

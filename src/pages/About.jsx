@@ -1,4 +1,5 @@
 import { Link } from "react-router"
+
 import heroGraphic from "../assets/hero.webp"
 import {
   ArrowIcon,
@@ -7,64 +8,28 @@ import {
 } from "../components/CardStandards"
 import Reveal from "../components/Reveal"
 import usePageMeta from "../lib/meta"
+import { useLanguage } from "../i18n/context"
+import { localisePath } from "../i18n/config"
 
 
-const letters = [
-  {
-    letter: "A",
-    word: "Automate",
-    accent: "text-blue-300 border-blue-400/30 bg-blue-500/6",
-    description:
-      "Repetitive work belongs to machines. Every process we touch should need fewer clicks, less retyping and fewer reminders than before.",
-  },
-  {
-    letter: "D",
-    word: "Design",
-    accent: "text-cyan-300 border-cyan-400/30 bg-cyan-500/6",
-    description:
-      "Powerful systems fail when people avoid using them. We design software employees open willingly, not because they have to.",
-  },
-  {
-    letter: "M",
-    word: "Modernise",
-    accent: "text-sky-300 border-sky-400/30 bg-sky-500/6",
-    description:
-      "Yesterday's tools should not run tomorrow's business. We replace spreadsheets, paper trails and patched-together tools with real systems.",
-  },
-]
-
-
-const values = [
-  {
-    title: "Clarity over jargon",
-    description:
-      "You always know what is being built, why it matters and what it costs — in plain language, without buzzwords.",
-  },
-  {
-    title: "Ownership of the result",
-    description:
-      "We do not hand over code and disappear. We deliver working outcomes and stand behind them after launch.",
-  },
-  {
-    title: "Attention to detail",
-    description:
-      "Spacing, wording, loading time, edge cases. The small things are what make software feel professional rather than merely tolerable.",
-  },
-  {
-    title: "Long-term thinking",
-    description:
-      "Every system is built so it can grow — new features, users and integrations without starting over.",
-  },
+const letterAccents = [
+  "text-blue-300 border-blue-400/30 bg-blue-500/6",
+  "text-cyan-300 border-cyan-400/30 bg-cyan-500/6",
+  "text-sky-300 border-sky-400/30 bg-sky-500/6",
 ]
 
 
 function About() {
+  const { language, t } = useLanguage()
+
   usePageMeta({
-    title: "About — practical software, built to measure",
-    description:
-      "ADM Innovations is an independent software studio from Bulgaria, building websites, internal systems, AI tools and automations for growing companies.",
+    title: t.about.meta.title,
+    description: t.about.meta.description,
     path: "/about",
+    language,
   })
+
+  const url = (path) => localisePath(path, language)
 
   return (
     <div className="relative overflow-hidden">
@@ -72,25 +37,20 @@ function About() {
       <section className="mx-auto grid max-w-6xl items-center gap-10 px-5 pt-32 pb-14 sm:px-6 sm:pt-40 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
         <div>
           <p className="font-mono text-xs font-medium tracking-[0.18em] text-blue-400 uppercase">
-            About
+            {t.about.label}
           </p>
 
           <h1 className="mt-4 text-4xl leading-[1.02] font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Built to measure.{" "}
-            <span className="gradient-text">Serious systems.</span>
+            {t.about.headingLead}{" "}
+            <span className="gradient-text">{t.about.headingAccent}</span>
           </h1>
 
           <p className="mt-5 max-w-2xl leading-relaxed text-gray-400 sm:text-lg">
-            ADM Innovations is an independent software studio based in
-            Bulgaria. We build websites, internal systems, AI tools and
-            automations for companies tired of manual work and awkward
-            off-the-shelf software.
+            {t.about.intro}
           </p>
 
           <p className="mt-4 max-w-2xl leading-relaxed text-gray-400">
-            Every project is scoped, designed and built around the way your
-            business actually works — never bent to fit a product we happen
-            to sell.
+            {t.about.intro2}
           </p>
         </div>
 
@@ -102,7 +62,7 @@ function About() {
 
           <img
             src={heroGraphic}
-            alt="Three-dimensional circuit board carrying the ADM logo"
+            alt={t.about.imageAlt}
             width="420"
             height="420"
             loading="eager"
@@ -118,18 +78,18 @@ function About() {
         <div className="mx-auto max-w-6xl px-5 py-14 sm:px-6 sm:py-20">
           <Reveal className="max-w-3xl">
             <p className="font-mono text-xs font-medium tracking-[0.18em] text-blue-400 uppercase">
-              What the name stands for
+              {t.about.letters.label}
             </p>
 
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
-              Three letters. One way of working.
+              {t.about.letters.heading}
             </h2>
           </Reveal>
 
           <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {letters.map((item, index) => (
+            {t.about.letters.items.map((item, index) => (
               <Reveal
-                key={item.letter}
+                key={item.word}
                 delay={index * 0.08}
                 className="h-full"
               >
@@ -142,7 +102,7 @@ function About() {
                   </span>
 
                   <span
-                    className={`relative flex h-12 w-12 items-center justify-center rounded-xl border font-display text-xl font-bold ${item.accent}`}
+                    className={`relative flex h-12 w-12 items-center justify-center rounded-xl border font-display text-xl font-bold ${letterAccents[index % letterAccents.length]}`}
                   >
                     {item.letter}
                   </span>
@@ -166,34 +126,19 @@ function About() {
       <section className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-6 sm:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <Reveal>
           <p className="font-mono text-xs font-medium tracking-[0.18em] text-cyan-300 uppercase">
-            Why ADM exists
+            {t.about.why.label}
           </p>
 
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
-            Behind most companies sits the same picture.
+            {t.about.why.heading}
           </h2>
         </Reveal>
 
         <Reveal delay={0.1}>
           <div className="space-y-5 leading-relaxed text-gray-400">
-            <p>
-              Information copied between spreadsheets. Reports assembled by
-              hand. Reminders that live in someone's head. Programs that
-              almost — but never quite — fit the way people actually work.
-            </p>
-
-            <p>
-              ADM Innovations was started to attack exactly that. Not
-              technology for its own sake, but systems that quietly remove
-              repetitive work, make information visible and let a business
-              look as professional online as it is in person.
-            </p>
-
-            <p>
-              That is also why we work the way we do: fixed scope before the
-              start, a review of the working solution before payment, and code
-              that ends up belonging to you.
-            </p>
+            {t.about.why.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+            ))}
           </div>
         </Reveal>
       </section>
@@ -204,16 +149,16 @@ function About() {
         <div className="mx-auto max-w-6xl px-5 py-14 sm:px-6 sm:py-20">
           <Reveal className="max-w-3xl">
             <p className="font-mono text-xs font-medium tracking-[0.18em] text-blue-400 uppercase">
-              Values
+              {t.about.values.label}
             </p>
 
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
-              What we refuse to compromise on.
+              {t.about.values.heading}
             </h2>
           </Reveal>
 
           <div className="mt-10 grid gap-4 md:grid-cols-2">
-            {values.map((value, index) => (
+            {t.about.values.items.map((value, index) => (
               <Reveal
                 key={value.title}
                 delay={(index % 2) * 0.07}
@@ -249,29 +194,28 @@ function About() {
 
             <div className="relative">
               <h2 className="mx-auto max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                The best way to know us is to build something with us.
+                {t.about.cta.heading}
               </h2>
 
               <p className="mx-auto mt-4 max-w-xl leading-relaxed text-gray-400">
-                The first conversation is free, direct and jargon-free. Bring
-                a problem, a process or an idea.
+                {t.about.cta.body}
               </p>
 
               <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
-                  to="/contact"
+                  to={url("/contact")}
                   className="inline-flex min-h-12 items-center gap-3 rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white transition hover:bg-blue-500 hover:shadow-[0_0_35px_rgba(59,130,246,0.28)]"
                 >
-                  Start the conversation
+                  {t.about.cta.primary}
                   <ArrowIcon />
                 </Link>
 
                 <Link
-                  to="/services"
+                  to={url("/services")}
                   className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-white/12 bg-white/4 px-6 py-3.5 font-semibold text-gray-200 transition hover:border-white/25 hover:bg-white/7"
                 >
                   <CheckIcon />
-                  See what we build
+                  {t.about.cta.secondary}
                 </Link>
               </div>
             </div>
