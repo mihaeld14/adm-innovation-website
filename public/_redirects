@@ -1,5 +1,15 @@
-# Single-page app fallback for Cloudflare (Workers static assets and Pages).
-# React Router handles routing in the browser, so any path that is not a
-# real file must still return index.html. Without this, refreshing on
-# /services/ai or /contact would 404.
+# Cloudflare redirect rules (Workers static assets and Pages).
+# Order matters — the first match wins, so the short links have to come
+# before the catch-all fallback at the bottom.
+
+# Short links to the live demo of the €120 package, short enough to say
+# out loud or print on a card. Each language goes to the matching
+# language of the demo, so nobody lands in a language they were not
+# already reading.
+/demo       https://demo-basic-website.vercel.app/     302
+/bg/demo    https://demo-basic-website.vercel.app/bg   302
+
+# Single-page app fallback. React Router handles routing in the browser,
+# so any path that is not a real file must still return index.html.
+# Without this, refreshing on /services/ai or /contact would 404.
 /*    /index.html   200

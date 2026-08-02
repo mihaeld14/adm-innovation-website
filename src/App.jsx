@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react"
+import { lazy, Suspense, useEffect } from "react"
 import {
   createBrowserRouter,
   Navigate,
@@ -7,6 +7,7 @@ import {
 
 import Layout from "./components/Layout"
 import Home from "./pages/Home"
+import { useCopy } from "./i18n/context"
 import { LANGUAGES } from "./i18n/config"
 
 
@@ -43,6 +44,44 @@ function lazyRoute(element) {
 
 
 /*
+  /demo and /bg/demo are short links to the live demo of the €120
+  package. In production Cloudflare answers them with a real 302 from
+  public/_redirects, so this component never runs there. It exists so
+  the same links work in `npm run dev` and would still work if the site
+  ever moved to a host that ignores _redirects.
+
+  The destination comes from the copy dictionary, which is also what the
+  package page links to — one source of truth, and the reader stays in
+  the language they were already in.
+*/
+function DemoRedirect() {
+  const t = useCopy()
+  const { href } = t.basicWebsite.demo
+
+  useEffect(() => {
+    window.location.replace(href)
+  }, [href])
+
+  return (
+    <div
+      className="flex min-h-screen items-center justify-center px-5 text-center"
+      role="status"
+    >
+      <p className="text-gray-400">
+        {t.basicWebsite.demo.redirecting}{" "}
+        <a
+          href={href}
+          className="text-blue-400 underline underline-offset-4"
+        >
+          {t.basicWebsite.demo.button}
+        </a>
+      </p>
+    </div>
+  )
+}
+
+
+/*
   The same page tree for every language. English is served from the root
   and Bulgarian from /bg, so each language has its own real URL that can
   be linked, cached and indexed. `prefix` is prepended to the redirect
@@ -68,6 +107,11 @@ function pageRoutes(prefix) {
     {
       path: "services/:slug",
       element: lazyRoute(<ServiceDetails />),
+    },
+
+    {
+      path: "demo",
+      element: <DemoRedirect />,
     },
 
     /* Old URLs from previous versions of the site */

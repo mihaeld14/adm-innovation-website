@@ -507,6 +507,7 @@ const en = {
       body: "We built a complete demo site for an invented company, so you can click through exactly what €120 buys before you commit to anything. It is shown in both languages for your convenience — the package itself covers one.",
       button: "Open the demo site",
       note: "Opens in a new tab · Thermo Comfort is not a real company",
+      redirecting: "Taking you to the demo site — if nothing happens,",
       href: "https://demo-basic-website.vercel.app/",
     },
     seeIncluded: "What is included",
