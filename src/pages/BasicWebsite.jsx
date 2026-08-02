@@ -106,6 +106,65 @@ function BasicWebsite() {
       </section>
 
 
+      {/*
+        Live demo. The href comes from the dictionary, so an English
+        visitor lands on the English demo and a Bulgarian one on /bg —
+        the language they are already reading in.
+      */}
+      <section className="mx-auto max-w-6xl px-5 pb-12 sm:px-6 sm:pb-14">
+        <Reveal>
+          <InfoPanel className="p-6 sm:p-8">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:items-center">
+              <div>
+                <p className="font-mono text-xs font-medium tracking-[0.16em] text-blue-400 uppercase">
+                  {t.basicWebsite.demo.label}
+                </p>
+
+                <h2 className="mt-3 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                  {t.basicWebsite.demo.heading}
+                </h2>
+
+                <p className="mt-3 max-w-xl text-base leading-relaxed text-gray-400">
+                  {t.basicWebsite.demo.body}
+                </p>
+              </div>
+
+              <div className="lg:justify-self-end">
+                <a
+                  href={t.basicWebsite.demo.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-12 items-center gap-3 rounded-xl bg-white px-6 py-3.5 font-semibold text-black transition duration-200 hover:bg-gray-200"
+                >
+                  {t.basicWebsite.demo.button}
+
+                  {/* Marks the link as leaving the site */}
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                    className="h-4 w-4"
+                  >
+                    <path
+                      d="M14 5h5v5M19 5l-8 8M18 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </a>
+
+                <p className="mt-3 text-sm text-gray-500 lg:text-right">
+                  {t.basicWebsite.demo.note}
+                </p>
+              </div>
+            </div>
+          </InfoPanel>
+        </Reveal>
+      </section>
+
+
       {/* Quick facts */}
       <section className="mx-auto max-w-6xl px-5 pb-12 sm:px-6 sm:pb-16">
         <InfoPanel

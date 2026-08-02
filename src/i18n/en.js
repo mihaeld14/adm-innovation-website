@@ -501,6 +501,14 @@ const en = {
     intro:
       "For small businesses, independent professionals and local services that need a credible online presence at a clear starting price.",
     requestCta: "Request a website",
+    demo: {
+      label: "See it for yourself",
+      heading: "A live example of this package",
+      body: "We built a complete demo site for an invented company, so you can click through exactly what €120 buys before you commit to anything. It is shown in both languages for your convenience — the package itself covers one.",
+      button: "Open the demo site",
+      note: "Opens in a new tab · Thermo Comfort is not a real company",
+      href: "https://demo-basic-website.vercel.app/",
+    },
     seeIncluded: "What is included",
     price: {
       from: "Package from",
