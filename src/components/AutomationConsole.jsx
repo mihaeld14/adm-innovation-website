@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 
+import { useCopy } from "../i18n/context"
+
 
 function prefersReducedMotion() {
   return (
@@ -8,51 +10,6 @@ function prefersReducedMotion() {
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
   )
 }
-
-
-const scenarios = [
-  {
-    id: "invoices",
-    label: "invoices",
-    lines: [
-      { tone: "cmd", text: "adm run invoice-intake" },
-      { tone: "muted", text: "· watching the inbox for new invoices…" },
-      { tone: "info", text: "→ new invoice detected — INV-2047.pdf" },
-      { tone: "ok", text: "✓ extracted: supplier, total, due date (0.8s)" },
-      { tone: "ok", text: "✓ record added to the accounting sheet" },
-      { tone: "ok", text: "✓ payment reminder scheduled" },
-      { tone: "ok", text: "✓ summary sent to the finance team" },
-      { tone: "done", text: "● done in 4.2s — 0 manual steps" },
-    ],
-  },
-  {
-    id: "report",
-    label: "weekly report",
-    lines: [
-      { tone: "cmd", text: "adm run weekly-report" },
-      { tone: "muted", text: "· collecting data from 4 connected systems…" },
-      { tone: "ok", text: "✓ sales figures pulled from the CRM" },
-      { tone: "ok", text: "✓ logged hours synced from the tracker" },
-      { tone: "ok", text: "✓ KPIs calculated and charted" },
-      { tone: "info", text: "→ report compiled — report-w31.pdf" },
-      { tone: "ok", text: "✓ delivered to the management channel" },
-      { tone: "done", text: "● done in 6.8s — every Monday, 07:00" },
-    ],
-  },
-  {
-    id: "enquiries",
-    label: "enquiries",
-    lines: [
-      { tone: "cmd", text: "adm run lead-router" },
-      { tone: "muted", text: "· new enquiry received from the website…" },
-      { tone: "ok", text: "✓ company details enriched" },
-      { tone: "ok", text: "✓ scored 87/100 — high intent" },
-      { tone: "info", text: "→ routed to sales with full context" },
-      { tone: "ok", text: "✓ reply drafted, waiting for approval" },
-      { tone: "done", text: "● done in 2.1s — a human approves, the system types" },
-    ],
-  },
-]
 
 
 const toneClasses = {
@@ -83,14 +40,27 @@ function ConsoleLine({ line, animate }) {
   Interactive demonstration: a console that "runs" example automations
   line by line and cycles through the scenarios. Visitors can switch
   scenarios using the tabs.
+
+  The output lines live in the copy dictionaries, not here — a Bulgarian
+  reader used to see an English console log in the middle of a Bulgarian
+  page. Only the command names (`adm run invoice-intake`) stay identical
+  across languages, because commands are not prose.
 */
 function AutomationConsole() {
   const reducedMotion = prefersReducedMotion()
 
+  const t = useCopy()
+  const { scenarios, windowLabel, liveLabel, tabsLabel } = t.home.liveLogic.console
+
   const [scenarioIndex, setScenarioIndex] = useState(0)
   const [visibleCount, setVisibleCount] = useState(0)
 
-  const scenario = scenarios[scenarioIndex]
+  /*
+    Switching language swaps the scenario array under us. The modulo keeps
+    the index in range, and the line count is the same in both languages,
+    so the animation carries on from wherever it was.
+  */
+  const scenario = scenarios[scenarioIndex % scenarios.length]
   const finished = visibleCount >= scenario.lines.length
   const running = !reducedMotion && !finished
 
@@ -116,7 +86,7 @@ function AutomationConsole() {
     return () => {
       window.clearTimeout(timeoutId)
     }
-  }, [reducedMotion, finished, visibleCount, scenarioIndex])
+  }, [reducedMotion, finished, visibleCount, scenarioIndex, scenarios.length])
 
 
   const handleTabClick = (index) => {
@@ -160,7 +130,7 @@ function AutomationConsole() {
         </div>
 
         <p className="hidden font-mono text-xs tracking-[0.12em] text-gray-500 uppercase sm:block">
-          adm · automations
+          {windowLabel}
         </p>
 
         <p className="flex items-center gap-2 text-xs font-medium text-emerald-300">
@@ -168,7 +138,7 @@ function AutomationConsole() {
             className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-status"
             aria-hidden="true"
           />
-          live
+          {liveLabel}
         </p>
       </div>
 
@@ -176,7 +146,7 @@ function AutomationConsole() {
       <div
         className="flex flex-wrap gap-1.5 border-b border-white/8 px-4 py-2.5"
         role="tablist"
-        aria-label="Example automations"
+        aria-label={tabsLabel}
       >
         {scenarios.map((item, index) => (
           <button
